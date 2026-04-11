@@ -10,6 +10,7 @@ import { MenuNavLink } from '@/components/menu-nav-link'
 import { Breadcrumb } from '@/components/breadcrumb'
 import { getDisplayName } from '@/lib/profile-helpers'
 import { getSubscription, isSubscriptionValid } from '@/lib/queries/dashboard'
+import { getStoresByUser } from '@/lib/queries/store'
 
 export default async function DashboardLayout({
   children,
@@ -20,17 +21,16 @@ export default async function DashboardLayout({
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  const [profileResult, storesData, subscription] = await Promise.all([
+  const [profileResult, stores, subscription] = await Promise.all([
     supabase.from('profiles').select('*').eq('id', user.id).maybeSingle(),
-    supabase.from('stores').select('id, name').eq('user_id', user.id),
+    getStoresByUser(user.id),
     getSubscription(user.id),
   ])
 
   // Suspended user guard — redirect before rendering anything
-  if ((profileResult.data as any)?.status === 'suspended') redirect('/suspended')
-
   const profile = (profileResult.data as Database['public']['Tables']['profiles']['Row'] | null)
-  const stores = (storesData.data ?? []) as { id: string; name: string }[]
+  if (profile?.status === 'suspended') redirect('/suspended')
+  const navStores = stores.map(s => ({ id: s.id, name: s.name }))
   const displayName = getDisplayName(profile ?? { display_name: null, email: user.email || '' })
   const avatarUrl = profile?.avatar_url ?? null
   const hasValidSub = isSubscriptionValid(subscription)
@@ -68,7 +68,7 @@ export default async function DashboardLayout({
           {navItemsTop.map(({ href, label }) => (
             <NavLink key={href} href={href} label={label} />
           ))}
-          <MenuNavLink stores={stores} />
+          <MenuNavLink stores={navStores} />
           <div className="pt-3 mt-3 border-t border-gray-100">
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-3 mb-2">Lainnya</p>
             {navItemsBottom.map(({ href, label }) => (
@@ -133,7 +133,7 @@ export default async function DashboardLayout({
           {navItemsTop.map(({ href, label }) => (
             <NavLink key={href} href={href} label={label} mobile />
           ))}
-          <MenuNavLink stores={stores} mobile />
+          <MenuNavLink stores={navStores} mobile />
           {navItemsBottom.map(({ href, label }) => (
             <NavLink key={href} href={href} label={label} mobile />
           ))}

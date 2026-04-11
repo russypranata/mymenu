@@ -13,9 +13,6 @@ interface Props {
   primaryColor: string
   showPrice: boolean
   isDark: boolean
-  waNumber: string | null
-  storeName: string
-  waButtonText: string
   onClose: () => void
 }
 
@@ -46,6 +43,7 @@ export function MenuDetailModal({
   const titleColor = isDark ? 'text-white' : 'text-gray-900'
   const descColor = isDark ? 'text-gray-400' : 'text-gray-500'
   const menuImageBg = isDark ? 'bg-gray-700' : 'bg-gray-100'
+  const dividerColor = isDark ? 'border-gray-700' : 'border-gray-100'
 
   return (
     <div
@@ -54,11 +52,12 @@ export function MenuDetailModal({
       aria-modal="true"
       aria-labelledby="menu-detail-title"
     >
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
 
-      <div className={`relative w-full sm:max-w-sm rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden ${cardBg} max-h-[90vh] sm:max-h-[85vh] flex flex-col`}>
+      <div className={`relative w-full sm:max-w-sm rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden ${cardBg} max-h-[92vh] sm:max-h-[85vh] flex flex-col`}>
+
         {/* Image area */}
-        <div className={`relative w-full aspect-video ${menuImageBg} flex-shrink-0`}>
+        <div className={`relative w-full aspect-[4/3] ${menuImageBg} flex-shrink-0`}>
           {allImages.length > 0 ? (
             <>
               <Image
@@ -71,33 +70,30 @@ export function MenuDetailModal({
                 priority
               />
 
-              {/* Prev / Next */}
               {allImages.length > 1 && (
                 <>
                   <button
                     onClick={() => setActiveIdx(i => Math.max(0, i - 1))}
                     disabled={activeIdx === 0}
-                    className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 hover:bg-black/60 rounded-full flex items-center justify-center transition-colors disabled:opacity-30"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/40 hover:bg-black/60 rounded-full flex items-center justify-center transition-colors disabled:opacity-20"
                     aria-label="Foto sebelumnya"
                   >
-                    <ChevronLeft className="w-4 h-4 text-white" />
+                    <ChevronLeft className="w-5 h-5 text-white" />
                   </button>
                   <button
                     onClick={() => setActiveIdx(i => Math.min(allImages.length - 1, i + 1))}
                     disabled={activeIdx === allImages.length - 1}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 hover:bg-black/60 rounded-full flex items-center justify-center transition-colors disabled:opacity-30"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/40 hover:bg-black/60 rounded-full flex items-center justify-center transition-colors disabled:opacity-20"
                     aria-label="Foto berikutnya"
                   >
-                    <ChevronRight className="w-4 h-4 text-white" />
+                    <ChevronRight className="w-5 h-5 text-white" />
                   </button>
-
-                  {/* Dots */}
-                  <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
+                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
                     {allImages.map((_, i) => (
                       <button
                         key={i}
                         onClick={() => setActiveIdx(i)}
-                        className={`w-1.5 h-1.5 rounded-full transition-all ${i === activeIdx ? 'bg-white w-4' : 'bg-white/50'}`}
+                        className={`h-1.5 rounded-full transition-all ${i === activeIdx ? 'w-5 bg-white' : 'w-1.5 bg-white/50'}`}
                         aria-label={`Foto ${i + 1}`}
                       />
                     ))}
@@ -107,13 +103,14 @@ export function MenuDetailModal({
             </>
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <UtensilsCrossed className={`w-12 h-12 ${isDark ? 'text-gray-600' : 'text-gray-300'}`} />
+              <UtensilsCrossed className={`w-14 h-14 ${isDark ? 'text-gray-600' : 'text-gray-200'}`} />
             </div>
           )}
 
+          {/* Close button */}
           <button
             onClick={onClose}
-            className="absolute top-3 right-3 w-8 h-8 bg-black/40 hover:bg-black/60 rounded-full flex items-center justify-center transition-colors"
+            className="absolute top-3 right-3 w-9 h-9 bg-black/40 hover:bg-black/60 rounded-full flex items-center justify-center transition-colors"
             aria-label="Tutup"
           >
             <X className="w-4 h-4 text-white" />
@@ -122,12 +119,13 @@ export function MenuDetailModal({
 
         {/* Thumbnail strip */}
         {allImages.length > 1 && (
-          <div className="flex gap-2 px-4 pt-3 overflow-x-auto scrollbar-none flex-shrink-0">
+          <div className={`flex gap-2 px-4 pt-3 pb-1 overflow-x-auto scrollbar-none flex-shrink-0 border-b ${dividerColor}`}>
             {allImages.map((url, i) => (
               <button
                 key={i}
                 onClick={() => setActiveIdx(i)}
-                className={`relative w-12 h-12 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all ${i === activeIdx ? 'border-green-400' : 'border-transparent opacity-60 hover:opacity-100'}`}
+                className={`relative w-12 h-12 flex-shrink-0 rounded-xl overflow-hidden border-2 transition-all ${i === activeIdx ? 'opacity-100 scale-105' : 'border-transparent opacity-50 hover:opacity-80'}`}
+                style={i === activeIdx ? { borderColor: primaryColor } : {}}
                 aria-label={`Lihat foto ${i + 1}`}
               >
                 <Image src={url} alt={`Thumbnail ${i + 1}`} fill sizes="48px" className="object-cover" />
@@ -136,19 +134,23 @@ export function MenuDetailModal({
           </div>
         )}
 
-        {/* Content - Scrollable */}
-        <div className="p-5 space-y-3 overflow-y-auto flex-1">
+        {/* Content */}
+        <div className="p-5 overflow-y-auto flex-1 space-y-4">
           <div>
-            <h2 id="menu-detail-title" className={`text-lg font-bold ${titleColor}`}>{menu.name}</h2>
+            <h2 id="menu-detail-title" className={`text-xl font-extrabold leading-snug ${titleColor}`}>
+              {menu.name}
+            </h2>
             {showPrice && (
-              <p className="text-xl font-extrabold mt-1" style={{ color: primaryColor }}>
+              <p className="text-2xl font-extrabold mt-1.5" style={{ color: primaryColor }}>
                 {formatCurrency(menu.price)}
               </p>
             )}
           </div>
 
           {menu.description && (
-            <p className={`text-sm leading-relaxed ${descColor} whitespace-pre-wrap`}>{menu.description}</p>
+            <p className={`text-sm leading-relaxed ${descColor} whitespace-pre-wrap`}>
+              {menu.description}
+            </p>
           )}
         </div>
       </div>

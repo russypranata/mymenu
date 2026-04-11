@@ -49,8 +49,8 @@ export async function createMenu(input: CreateMenuInput): Promise<{ error: strin
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Tidak terautentikasi.' }
 
-  // Enforce subscription
-  const { valid, error: subError } = await requireSubscription()
+  // Enforce subscription — pass existing client to avoid double instantiation
+  const { valid, error: subError } = await requireSubscription(supabase)
   if (!valid) return { error: subError }
 
   const { data: store } = await supabase
@@ -173,5 +173,34 @@ export async function updateMenu(input: UpdateMenuInput): Promise<{ error: strin
   if (error) return { error: error.message }
   revalidatePath('/store', 'layout')
   revalidatePath('/menu')
+  return { error: null }
+}
+
+export async function reorderMenus(
+  storeId: string,
+  orderedIds: string[]
+): Promise<{ error: string | null }> {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Tidak terautentikasi.' }
+
+  // Verify store ownership
+  const { data: store } = await supabase
+    .from('stores')
+    .select('id')
+    .eq('id', storeId)
+    .eq('user_id', user.id)
+    .single()
+  if (!store) return { error: 'Toko tidak ditemukan atau akses ditolak.' }
+
+  // Batch update order values
+  const updates = orderedIds.map((id, index) =>
+    supabase.from('menus').update({ order: index }).eq('id', id).eq('store_id', storeId)
+  )
+  const results = await Promise.all(updates)
+  const failed = results.find(r => r.error)
+  if (failed?.error) return { error: failed.error.message }
+
+  revalidatePath(`/store/${storeId}/menu`)
   return { error: null }
 }

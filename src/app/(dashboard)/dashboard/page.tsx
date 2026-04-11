@@ -1,12 +1,12 @@
-﻿import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import type { Metadata } from 'next'
-import { Store, UtensilsCrossed, Plus, ArrowRight, ExternalLink, TrendingUp, AlertTriangle, Zap } from 'lucide-react'
+import { Store, UtensilsCrossed, ArrowRight, ExternalLink, TrendingUp, AlertTriangle, Zap, MessageCircle } from 'lucide-react'
 import { formatDate } from '@/lib/utils'
 import { getStoresByUser } from '@/lib/queries/store'
 import { getMenuCount } from '@/lib/queries/menu'
-import { getProfile, getSubscription, getPageViewCount } from '@/lib/queries/dashboard'
+import { getProfile, getSubscription, getPageViewCount, getWhatsAppClickCount } from '@/lib/queries/dashboard'
 
 export const metadata: Metadata = {
   title: 'Dashboard — MyMenu',
@@ -25,14 +25,14 @@ export default async function DashboardPage() {
   ])
 
   const storeIds = stores.map(s => s.id)
-  const [menuCount, viewCount] = await Promise.all([
+  const [menuCount, viewCount, waClickCount] = await Promise.all([
     getMenuCount(storeIds),
     getPageViewCount(storeIds),
+    getWhatsAppClickCount(storeIds),
   ])
 
   const firstStore = stores[0]
   const firstName = (profile?.display_name || profile?.email || user.email || '').split('@')[0]
-  const isSubscriptionActive = subscription?.status === 'active' || subscription?.status === 'trial'
 
   const expiresAt = subscription?.expires_at ? new Date(subscription.expires_at) : null
   const daysUntilExpiry = expiresAt ? Math.ceil((expiresAt.getTime() - Date.now()) / (1000 * 60 * 60 * 24)) : null
@@ -53,7 +53,7 @@ export default async function DashboardPage() {
             href="/store/new"
             className="flex items-center gap-2 px-4 py-2.5 bg-green-500 text-white text-sm font-semibold rounded-xl hover:bg-green-600 transition-colors shadow-sm"
           >
-            <Plus className="w-4 h-4" />
+            <Store className="w-4 h-4" />
             Buat Toko
           </Link>
         )}
@@ -116,15 +116,10 @@ export default async function DashboardPage() {
           value={viewCount}
         />
         <StatCard
-          icon={<Zap className={`w-4 h-4 ${isSubscriptionActive ? 'text-green-500' : 'text-gray-400'}`} />}
-          iconBg={isSubscriptionActive ? 'bg-green-50' : 'bg-gray-100'}
-          label="Langganan"
-          value={
-            <span className={`text-sm font-bold capitalize ${isSubscriptionActive ? 'text-green-600' : 'text-gray-400'}`}>
-              {subscription?.status === 'active' ? 'Aktif' :
-               subscription?.status === 'trial' ? 'Trial' : 'Tidak aktif'}
-            </span>
-          }
+          icon={<MessageCircle className="w-4 h-4 text-emerald-500" />}
+          iconBg="bg-emerald-50"
+          label="Klik WhatsApp"
+          value={waClickCount}
         />
       </div>
 
@@ -134,7 +129,7 @@ export default async function DashboardPage() {
           <h2 className="text-sm font-bold text-gray-900">Toko Anda</h2>
           {stores.length > 0 && (
             <Link href="/store/new" className="text-xs text-gray-400 font-medium hover:text-green-500 flex items-center gap-1 transition-colors">
-              <Plus className="w-3.5 h-3.5" /> Toko Baru
+              <Store className="w-3.5 h-3.5" /> Toko Baru
             </Link>
           )}
         </div>
@@ -184,7 +179,7 @@ export default async function DashboardPage() {
               href="/store/new"
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-500 text-white text-sm font-semibold rounded-xl hover:bg-green-600 transition-colors"
             >
-              <Plus className="w-4 h-4" />
+              <Store className="w-4 h-4" />
               Buat Toko Sekarang
             </Link>
           </div>

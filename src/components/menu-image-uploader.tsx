@@ -1,12 +1,13 @@
 ﻿'use client'
 
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import { ImageIcon, X, Plus } from 'lucide-react'
+import { ImageIcon, X, Plus, AlertCircle } from 'lucide-react'
 
 export interface ImageEntry {
-  id: string           // local id untuk key
-  preview: string      // object URL atau URL dari server
-  file: File | null    // null = sudah ada di server
+  id: string
+  preview: string   // object URL atau URL dari server
+  file: File | null // null = sudah ada di server
 }
 
 interface Props {
@@ -20,23 +21,54 @@ const MAX_SIZE = 2 * 1024 * 1024
 const ALLOWED = ['image/jpeg', 'image/png', 'image/webp']
 
 export function MenuImageUploader({ images, onChange, maxImages = 5, error }: Props) {
+  const [rejectedFiles, setRejectedFiles] = useState<string[]>([])
+  // Track object URLs created by this component so we can revoke them on cleanup
+  const objectUrlsRef = useRef<Set<string>>(new Set())
+
+  // Revoke all object URLs when component unmounts
+  useEffect(() => {
+    const urls = objectUrlsRef.current
+    return () => {
+      urls.forEach(url => URL.revokeObjectURL(url))
+    }
+  }, [])
+
   const handleAdd = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files ?? [])
     e.target.value = ''
+    setRejectedFiles([])
 
     const valid: ImageEntry[] = []
+    const rejected: string[] = []
+
     for (const file of files) {
-      if (!ALLOWED.includes(file.type)) continue
-      if (file.size > MAX_SIZE) continue
-      valid.push({ id: `${Date.now()}-${Math.random()}`, preview: URL.createObjectURL(file), file })
+      if (!ALLOWED.includes(file.type)) {
+        rejected.push(`"${file.name}" — format tidak didukung`)
+        continue
+      }
+      if (file.size > MAX_SIZE) {
+        rejected.push(`"${file.name}" — ukuran melebihi 2 MB`)
+        continue
+      }
+      const url = URL.createObjectURL(file)
+      objectUrlsRef.current.add(url)
+      valid.push({ id: `${Date.now()}-${Math.random()}`, preview: url, file })
     }
+
+    if (rejected.length > 0) setRejectedFiles(rejected)
 
     const next = [...images, ...valid].slice(0, maxImages)
     onChange(next)
   }
 
   const handleRemove = (id: string) => {
-    onChange(images.filter(img => img.id !== id))
+    const img = images.find(i => i.id === id)
+    // Revoke object URL if it was created locally
+    if (img?.file && objectUrlsRef.current.has(img.preview)) {
+      URL.revokeObjectURL(img.preview)
+      objectUrlsRef.current.delete(img.preview)
+    }
+    onChange(images.filter(i => i.id !== id))
   }
 
   const canAdd = images.length < maxImages
@@ -46,14 +78,7 @@ export function MenuImageUploader({ images, onChange, maxImages = 5, error }: Pr
       <div className="flex flex-wrap gap-3">
         {images.map((img, idx) => (
           <div key={img.id} className="relative w-20 h-20 flex-shrink-0 rounded-xl overflow-hidden border border-gray-200 bg-gray-50 group">
-            <Image
-              src={img.preview}
-              alt={`Foto ${idx + 1}`}
-              fill
-              sizes="80px"
-              className="object-cover"
-            />
-            {/* Badge utama */}
+            <Image src={img.preview} alt={`Foto ${idx + 1}`} fill sizes="80px" className="object-cover" />
             {idx === 0 && (
               <span className="absolute bottom-0 left-0 right-0 text-center text-[10px] font-bold bg-green-500/80 text-white py-0.5">
                 Utama
@@ -95,7 +120,24 @@ export function MenuImageUploader({ images, onChange, maxImages = 5, error }: Pr
         {images.length}/{maxImages} foto · Foto pertama jadi gambar utama · Maks 2 MB per foto (JPEG, PNG, WebP)
       </p>
 
-      {error && <p className="text-xs text-red-500">{error}</p>}
+      {/* Rejected file errors */}
+      {rejectedFiles.length > 0 && (
+        <div className="flex flex-col gap-1">
+          {rejectedFiles.map((msg, i) => (
+            <div key={i} className="flex items-center gap-1.5 text-xs text-red-500">
+              <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
+              {msg}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {error && (
+        <div className="flex items-center gap-1.5 text-xs text-red-500">
+          <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
+          {error}
+        </div>
+      )}
     </div>
   )
 }

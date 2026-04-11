@@ -1,21 +1,22 @@
 ﻿'use client'
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Edit, Trash2, ToggleLeft, ToggleRight, UtensilsCrossed } from 'lucide-react'
+import { Edit, Trash2, ToggleLeft, ToggleRight, UtensilsCrossed, GripVertical } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
 import { ConfirmDialog } from '@/components/confirm-dialog'
 import { useToast, ToastContainer } from '@/components/toast'
-import { toggleMenuStatus as toggleMenuStatusAction, deleteMenu as deleteMenuAction } from '@/lib/actions/menu'
+import {
+  toggleMenuStatus as toggleMenuStatusAction,
+  deleteMenu as deleteMenuAction,
+  reorderMenus as reorderMenusAction,
+} from '@/lib/actions/menu'
 import type { Database } from '@/types/database.types'
 
 type Menu = Database['public']['Tables']['menus']['Row']
 
-interface DeleteTarget {
-  id: string
-  name: string
-}
+interface DeleteTarget { id: string; name: string }
 
 export function MenuList({ initialMenus, storeId }: { initialMenus: Menu[]; storeId: string }) {
   const [menus, setMenus] = useState<Menu[]>(initialMenus)
@@ -24,6 +25,12 @@ export function MenuList({ initialMenus, storeId }: { initialMenus: Menu[]; stor
   const [deleteLoading, setDeleteLoading] = useState(false)
   const [, startTransition] = useTransition()
   const { toasts, addToast, removeToast } = useToast()
+
+  // Drag state
+  const dragId = useRef<string | null>(null)
+  const dragOverId = useRef<string | null>(null)
+  const [draggingId, setDraggingId] = useState<string | null>(null)
+  const [dragOverIdState, setDragOverIdState] = useState<string | null>(null)
 
   const setPending = (id: string, pending: boolean) => {
     setPendingIds(prev => {
@@ -55,11 +62,57 @@ export function MenuList({ initialMenus, storeId }: { initialMenus: Menu[]; stor
     setDeleteTarget(null)
   }
 
+  // Drag handlers
+  const handleDragStart = (id: string) => {
+    dragId.current = id
+    setDraggingId(id)
+  }
+
+  const handleDragOver = (e: React.DragEvent, id: string) => {
+    e.preventDefault()
+    if (dragId.current === id) return
+    dragOverId.current = id
+    setDragOverIdState(id)
+  }
+
+  const handleDrop = () => {
+    const from = dragId.current
+    const to = dragOverId.current
+    if (!from || !to || from === to) {
+      setDraggingId(null)
+      setDragOverIdState(null)
+      return
+    }
+
+    const reordered = [...menus]
+    const fromIdx = reordered.findIndex(m => m.id === from)
+    const toIdx = reordered.findIndex(m => m.id === to)
+    const [moved] = reordered.splice(fromIdx, 1)
+    reordered.splice(toIdx, 0, moved)
+
+    setMenus(reordered)
+    setDraggingId(null)
+    setDragOverIdState(null)
+    dragId.current = null
+    dragOverId.current = null
+
+    startTransition(async () => {
+      const { error } = await reorderMenusAction(storeId, reordered.map(m => m.id))
+      if (error) addToast('Gagal menyimpan urutan', 'error')
+    })
+  }
+
+  const handleDragEnd = () => {
+    setDraggingId(null)
+    setDragOverIdState(null)
+    dragId.current = null
+    dragOverId.current = null
+  }
+
   return (
     <>
       <ToastContainer toasts={toasts} onRemove={removeToast} />
 
-      {/* Delete confirmation modal */}
       <ConfirmDialog
         open={!!deleteTarget}
         title="Hapus menu?"
@@ -71,27 +124,38 @@ export function MenuList({ initialMenus, storeId }: { initialMenus: Menu[]; stor
       />
 
       <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
-        <div className="px-6 py-3 border-b border-gray-50 bg-gray-50/50">
+        <div className="px-6 py-3 border-b border-gray-50 bg-gray-50/50 flex items-center justify-between">
           <p className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Daftar Item</p>
+          <p className="text-xs text-gray-400">Seret untuk mengubah urutan</p>
         </div>
         <ul className="divide-y divide-gray-50">
           {menus.map((menu) => {
             const isItemPending = pendingIds.has(menu.id)
+            const isDragging = draggingId === menu.id
+            const isDragOver = dragOverIdState === menu.id && draggingId !== menu.id
             return (
               <li
                 key={menu.id}
-                className={`px-4 sm:px-6 py-4 flex items-center gap-3 sm:gap-4 transition-opacity ${!menu.is_active ? 'opacity-50' : ''}`}
+                draggable
+                onDragStart={() => handleDragStart(menu.id)}
+                onDragOver={e => handleDragOver(e, menu.id)}
+                onDrop={handleDrop}
+                onDragEnd={handleDragEnd}
+                className={`px-4 sm:px-6 py-4 flex items-center gap-3 sm:gap-4 transition-all cursor-default
+                  ${!menu.is_active ? 'opacity-50' : ''}
+                  ${isDragging ? 'opacity-40 scale-[0.99]' : ''}
+                  ${isDragOver ? 'bg-green-50 border-l-2 border-green-400' : ''}
+                `}
               >
+                {/* Drag handle */}
+                <div className="flex-shrink-0 cursor-grab active:cursor-grabbing text-gray-300 hover:text-gray-400 touch-none">
+                  <GripVertical className="w-4 h-4" aria-hidden="true" />
+                </div>
+
                 {/* Image */}
                 <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0 relative">
                   {menu.image_url ? (
-                    <Image
-                      src={menu.image_url}
-                      alt={menu.name}
-                      fill
-                      sizes="64px"
-                      className="object-cover"
-                    />
+                    <Image src={menu.image_url} alt={menu.name} fill sizes="64px" className="object-cover" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center" aria-hidden="true">
                       <UtensilsCrossed className="w-6 h-6 text-gray-300" />

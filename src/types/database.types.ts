@@ -178,6 +178,10 @@ export type Database = {
           show_price: boolean | null
           font: string | null
           menu_layout: string | null
+          phone: string | null
+          instagram: string | null
+          facebook: string | null
+          tiktok: string | null
           created_at: string
         }
         Insert: {
@@ -192,6 +196,10 @@ export type Database = {
           show_price?: boolean | null
           font?: string | null
           menu_layout?: string | null
+          phone?: string | null
+          instagram?: string | null
+          facebook?: string | null
+          tiktok?: string | null
           created_at?: string
         }
         Update: {
@@ -206,6 +214,10 @@ export type Database = {
           show_price?: boolean | null
           font?: string | null
           menu_layout?: string | null
+          phone?: string | null
+          instagram?: string | null
+          facebook?: string | null
+          tiktok?: string | null
           created_at?: string
         }
         Relationships: []

@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react'
 import Image from 'next/image'
-import { Palette, ImageIcon, AlertCircle, Save, X, Clock, LayoutList, LayoutGrid, Type } from 'lucide-react'
+import { Palette, ImageIcon, AlertCircle, Save, X, Clock, LayoutList, LayoutGrid, Type, Phone, Instagram, Facebook } from 'lucide-react'
 import { Spinner } from '@/components/spinner'
 import { uploadStoreAsset, updateStoreSettings } from '@/lib/actions/store'
 import type { Tables } from '@/types/database.types'
@@ -45,8 +45,11 @@ export function StoreAppearanceForm({ storeId, storeName, settings }: Props) {
   const [showPrice, setShowPrice] = useState(settings?.show_price ?? true)
   const [font, setFont] = useState(settings?.font ?? 'sans')
   const [menuLayout, setMenuLayout] = useState(settings?.menu_layout ?? 'list')
-  const [error, setError] = useState<string | null>(null)
-  const [isPending, setIsPending] = useState(false)
+  const [phone, setPhone] = useState(settings?.phone ?? '')
+  const [instagram, setInstagram] = useState(settings?.instagram ?? '')
+  const [facebook, setFacebook] = useState(settings?.facebook ?? '')
+  const [tiktok, setTiktok] = useState(settings?.tiktok ?? '')
+  const [error, setError] = useState<string | null>(null)  const [isPending, setIsPending] = useState(false)
   const { toasts, addToast, removeToast } = useToast()
   const [cropSrc, setCropSrc] = useState<string | null>(null)
   const [cropType, setCropType] = useState<'logo' | 'banner' | null>(null)
@@ -112,6 +115,10 @@ export function StoreAppearanceForm({ storeId, storeName, settings }: Props) {
       openingHours: openingHours.trim() || null,
       whatsappButtonText: waButtonText.trim() || 'Pesan via WhatsApp',
       showPrice, font, menuLayout,
+      phone: phone.trim() || null,
+      instagram: instagram.trim() || null,
+      facebook: facebook.trim() || null,
+      tiktok: tiktok.trim() || null,
     })
     setIsPending(false)
     if (error) { setError(error); addToast('Gagal menyimpan tampilan toko.', 'error'); return }
@@ -327,8 +334,70 @@ export function StoreAppearanceForm({ storeId, storeName, settings }: Props) {
         <p className="text-xs text-gray-400 mt-1.5">{waButtonText.length}/40 karakter</p>
       </div>
 
-      <div className="flex justify-end pt-2 border-t border-gray-100">
-        <button type="button" onClick={handleSave} disabled={isPending}
+      {/* ── Kontak & Sosial Media ── */}
+      <div className="pt-2 border-t border-gray-100 space-y-4">
+        <div>
+          <h3 className="text-sm font-bold text-gray-900 mb-0.5">Kontak & Sosial Media</h3>
+          <p className="text-xs text-gray-400">Ditampilkan di footer halaman menu publik.</p>
+        </div>
+
+        {/* Phone */}
+        <div>
+          <label htmlFor="sa-phone" className="block text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-1.5">
+            <Phone className="w-3.5 h-3.5 text-gray-400" />Nomor Telepon
+          </label>
+          <input id="sa-phone" type="tel" value={phone}
+            onChange={e => setPhone(e.target.value)}
+            className="w-full px-3.5 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-400 transition-all"
+            placeholder="cth. 08123456789" />
+          <p className="text-xs text-gray-400 mt-1">Nomor yang bisa dihubungi pelanggan (bukan untuk order).</p>
+        </div>
+
+        {/* Instagram */}
+        <div>
+          <label htmlFor="sa-ig" className="block text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-1.5">
+            <Instagram className="w-3.5 h-3.5 text-gray-400" />Instagram
+          </label>
+          <div className="flex">
+            <span className="px-3.5 py-3 bg-gray-100 border border-r-0 border-gray-200 rounded-l-xl text-sm text-gray-400 select-none">@</span>
+            <input id="sa-ig" type="text" value={instagram}
+              onChange={e => setInstagram(e.target.value.replace(/^@/, ''))}
+              className="flex-1 px-3.5 py-3 bg-gray-50 border border-gray-200 rounded-r-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-400 transition-all"
+              placeholder="namatoko" />
+          </div>
+        </div>
+
+        {/* Facebook */}
+        <div>
+          <label htmlFor="sa-fb" className="block text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-1.5">
+            <Facebook className="w-3.5 h-3.5 text-gray-400" />Facebook
+          </label>
+          <div className="flex">
+            <span className="px-3.5 py-3 bg-gray-100 border border-r-0 border-gray-200 rounded-l-xl text-sm text-gray-400 select-none whitespace-nowrap">fb.com/</span>
+            <input id="sa-fb" type="text" value={facebook}
+              onChange={e => setFacebook(e.target.value)}
+              className="flex-1 px-3.5 py-3 bg-gray-50 border border-gray-200 rounded-r-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-400 transition-all"
+              placeholder="namatoko" />
+          </div>
+        </div>
+
+        {/* TikTok */}
+        <div>
+          <label htmlFor="sa-tt" className="block text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-1.5">
+            <svg className="w-3.5 h-3.5 text-gray-400" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg>
+            TikTok
+          </label>
+          <div className="flex">
+            <span className="px-3.5 py-3 bg-gray-100 border border-r-0 border-gray-200 rounded-l-xl text-sm text-gray-400 select-none">@</span>
+            <input id="sa-tt" type="text" value={tiktok}
+              onChange={e => setTiktok(e.target.value.replace(/^@/, ''))}
+              className="flex-1 px-3.5 py-3 bg-gray-50 border border-gray-200 rounded-r-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-400 transition-all"
+              placeholder="namatoko" />
+          </div>
+        </div>
+      </div>
+
+      <div className="flex justify-end pt-2 border-t border-gray-100">        <button type="button" onClick={handleSave} disabled={isPending}
           className="flex items-center gap-2 px-5 py-2.5 bg-green-500 text-white text-sm font-semibold rounded-xl hover:bg-green-600 transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
           {isPending ? <><Spinner />Menyimpan...</> : <><Save className="w-4 h-4" />Simpan Tampilan</>}
         </button>

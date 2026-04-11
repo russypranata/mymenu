@@ -31,13 +31,13 @@ export async function createStore(input: CreateStoreInput): Promise<{ error: str
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Tidak terautentikasi.' }
 
-  // Enforce subscription
-  const { valid, error: subError } = await requireSubscription()
+  // Enforce subscription — pass existing client to avoid double instantiation
+  const { valid, error: subError } = await requireSubscription(supabase)
   if (!valid) return { error: subError }
 
   // Double-check slug availability server-side
-  const slugAvailable = await checkSlugAvailable(input.slug)
-  if (!slugAvailable) return { error: 'URL toko sudah digunakan. Coba nama lain.' }
+  const { data: slugConflict } = await supabase.from('stores').select('id').eq('slug', input.slug).maybeSingle()
+  if (slugConflict) return { error: 'URL toko sudah digunakan. Coba nama lain.' }
 
   const payload: StoreInsert = {
     user_id: user.id,
@@ -51,6 +51,7 @@ export async function createStore(input: CreateStoreInput): Promise<{ error: str
   const { error } = await supabase.from('stores').insert(payload)
   if (error) return { error: error.message }
 
+  revalidatePath('/store')
   revalidatePath('/dashboard')
   return { error: null }
 }
@@ -146,6 +147,10 @@ export interface UpdateStoreSettingsInput {
   showPrice?: boolean | null
   font?: string | null
   menuLayout?: string | null
+  phone?: string | null
+  instagram?: string | null
+  facebook?: string | null
+  tiktok?: string | null
 }
 
 export async function updateStoreSettings(
@@ -170,6 +175,10 @@ export async function updateStoreSettings(
     ...(input.showPrice !== undefined && { show_price: input.showPrice }),
     ...(input.font !== undefined && { font: input.font }),
     ...(input.menuLayout !== undefined && { menu_layout: input.menuLayout }),
+    ...(input.phone !== undefined && { phone: input.phone }),
+    ...(input.instagram !== undefined && { instagram: input.instagram }),
+    ...(input.facebook !== undefined && { facebook: input.facebook }),
+    ...(input.tiktok !== undefined && { tiktok: input.tiktok }),
   }, { onConflict: 'store_id' })
 
   if (error) return { error: error.message }

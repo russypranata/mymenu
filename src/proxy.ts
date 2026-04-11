@@ -1,21 +1,68 @@
+import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 /**
- * Next.js 16 Proxy — strictly for routing concerns only.
- * Auth, role checks, and session validation live in Server Component layouts.
+ * Next.js 16 Proxy — routing concerns + session refresh.
+ * Auth redirects and role checks live in Server Component layouts.
  * See: https://nextjs.org/docs/messages/middleware-to-proxy
  */
 export async function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl
+  let response = NextResponse.next({ request })
 
-  // Cookie refresh: required so Supabase session cookies stay valid across requests.
-  // This does NOT perform auth — it just forwards the request with updated cookies.
-  const response = NextResponse.next({ request })
+  // ── Supabase session refresh ──
+  // Required so session cookies stay valid across requests without user re-login.
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll()
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
+          response = NextResponse.next({ request })
+          cookiesToSet.forEach(({ name, value, options }) =>
+            response.cookies.set(name, value, options)
+          )
+        },
+      },
+    }
+  )
+  // Must call getUser() to trigger session refresh — do not remove
+  await supabase.auth.getUser()
 
-  // Add security headers to all responses
+  // ── Security headers ──
   response.headers.set('X-Frame-Options', 'DENY')
   response.headers.set('X-Content-Type-Options', 'nosniff')
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
+  response.headers.set('X-XSS-Protection', '1; mode=block')
+  response.headers.set(
+    'Permissions-Policy',
+    'camera=(), microphone=(), geolocation=(), payment=()'
+  )
+  response.headers.set(
+    'Content-Security-Policy',
+    [
+      "default-src 'self'",
+      // Next.js needs inline scripts for hydration
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+      // Tailwind inline styles + Supabase storage images
+      "style-src 'self' 'unsafe-inline'",
+      // Allow images from Supabase storage and data URIs (for image crop preview)
+      "img-src 'self' data: blob: https://*.supabase.co https://*.supabase.in",
+      // Supabase API calls
+      "connect-src 'self' https://*.supabase.co https://*.supabase.in wss://*.supabase.co",
+      // Fonts from self
+      "font-src 'self'",
+      // No iframes
+      "frame-src 'none'",
+      // No plugins
+      "object-src 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+    ].join('; ')
+  )
 
   return response
 }

@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { logger } from '@/lib/logger'
 import type { Database } from '@/types/database.types'
 
 type Profile = Database['public']['Tables']['profiles']['Row']
@@ -11,7 +12,10 @@ export async function getProfile(userId: string): Promise<Profile | null> {
     .select('*')
     .eq('id', userId)
     .maybeSingle()
-  if (error) console.error('[getProfile]', error.message)
+  if (error) {
+    logger.error('[getProfile]', error, { userId })
+    throw new Error(`[getProfile] ${error.message}`)
+  }
   return data as Profile | null
 }
 
@@ -24,7 +28,10 @@ export async function getSubscription(userId: string): Promise<Subscription | nu
     .order('created_at', { ascending: false })
     .limit(1)
     .maybeSingle()
-  if (error) console.error('[getSubscription]', error.message)
+  if (error) {
+    logger.error('[getSubscription]', error, { userId })
+    throw new Error(`[getSubscription] ${error.message}`)
+  }
   return data as Subscription | null
 }
 
@@ -36,7 +43,25 @@ export async function getPageViewCount(storeIds: string[]): Promise<number> {
     .select('*', { count: 'exact', head: true })
     .in('store_id', storeIds)
     .eq('event_type', 'page_view')
-  if (error) console.error('[getPageViewCount]', error.message)
+  if (error) {
+    logger.error('[getPageViewCount]', error, { storeIds })
+    throw new Error(`[getPageViewCount] ${error.message}`)
+  }
+  return count ?? 0
+}
+
+export async function getWhatsAppClickCount(storeIds: string[]): Promise<number> {
+  if (storeIds.length === 0) return 0
+  const supabase = await createClient()
+  const { count, error } = await supabase
+    .from('analytics')
+    .select('*', { count: 'exact', head: true })
+    .in('store_id', storeIds)
+    .eq('event_type', 'whatsapp_click')
+  if (error) {
+    logger.error('[getWhatsAppClickCount]', error, { storeIds })
+    throw new Error(`[getWhatsAppClickCount] ${error.message}`)
+  }
   return count ?? 0
 }
 

@@ -1,7 +1,7 @@
-﻿import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { Store, Plus, ExternalLink, Settings, UtensilsCrossed } from 'lucide-react'
+import { Store, ExternalLink, Settings, UtensilsCrossed } from 'lucide-react'
 import type { Metadata } from 'next'
 import { getStoresByUser } from '@/lib/queries/store'
 import { StoreDeleteButton } from '@/components/store-delete-button'
@@ -37,7 +37,7 @@ export default async function StorePage() {
           href="/store/new"
           className="flex items-center gap-2 px-4 py-2.5 bg-green-500 text-white text-sm font-semibold rounded-xl hover:bg-green-600 transition-colors shadow-sm"
         >
-          <Plus className="w-4 h-4" />
+          <Store className="w-4 h-4" />
           <span className="hidden sm:inline">Tambah Toko</span>
           <span className="sm:hidden">Tambah</span>
         </Link>
@@ -54,7 +54,7 @@ export default async function StorePage() {
             href="/store/new"
             className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-500 text-white text-sm font-semibold rounded-xl hover:bg-green-600 transition-colors"
           >
-            <Plus className="w-4 h-4" />
+            <Store className="w-4 h-4" />
             Buat Toko Sekarang
           </Link>
         </div>
