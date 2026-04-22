@@ -6,7 +6,9 @@ import { Store, UtensilsCrossed, ArrowRight, ExternalLink, TrendingUp, AlertTria
 import { formatDate } from '@/lib/utils'
 import { getStoresByUser } from '@/lib/queries/store'
 import { getMenuCount } from '@/lib/queries/menu'
-import { getProfile, getSubscription, getPageViewCount, getWhatsAppClickCount } from '@/lib/queries/dashboard'
+import { getProfile, getSubscription, getPageViewCount, getWhatsAppClickCount, getDailyAnalytics } from '@/lib/queries/dashboard'
+import { AnalyticsChart } from '@/components/analytics-chart'
+import { OnboardingChecklist } from '@/components/onboarding-checklist'
 
 export const metadata: Metadata = {
   title: 'Dashboard — MyMenu',
@@ -25,10 +27,11 @@ export default async function DashboardPage() {
   ])
 
   const storeIds = stores.map(s => s.id)
-  const [menuCount, viewCount, waClickCount] = await Promise.all([
+  const [menuCount, viewCount, waClickCount, dailyAnalytics] = await Promise.all([
     getMenuCount(storeIds),
     getPageViewCount(storeIds),
     getWhatsAppClickCount(storeIds),
+    getDailyAnalytics(storeIds, 7),
   ])
 
   const firstStore = stores[0]
@@ -56,8 +59,16 @@ export default async function DashboardPage() {
             <Store className="w-4 h-4" />
             Buat Toko
           </Link>
-        )}
-      </div>
+        )}      </div>
+
+      {/* Onboarding checklist — only show if not fully set up */}
+      {(stores.length === 0 || menuCount === 0) && (
+        <OnboardingChecklist
+          hasStore={stores.length > 0}
+          hasMenu={menuCount > 0}
+          hasShared={stores.length > 0}
+        />
+      )}
 
       {/* Banners - only show expiry warning, subscription activation handled by layout */}
       {subscription?.status === 'trial' && !expiresSoon && daysUntilExpiry !== null && daysUntilExpiry > 0 && (
@@ -98,10 +109,14 @@ export default async function DashboardPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <StatCard
-          icon={<Store className="w-4 h-4 text-green-500" />}
-          iconBg="bg-green-50"
-          label="Total Toko"
-          value={stores.length}
+          icon={<Store className={`w-4 h-4 ${stores.length > 0 ? 'text-green-500' : 'text-gray-400'}`} />}
+          iconBg={stores.length > 0 ? 'bg-green-50' : 'bg-gray-50'}
+          label="Status Toko"
+          value={
+            <span className={`text-sm font-bold ${stores.length > 0 ? 'text-green-600' : 'text-gray-400'}`}>
+              {stores.length > 0 ? 'Aktif' : 'Belum ada'}
+            </span>
+          }
         />
         <StatCard
           icon={<UtensilsCrossed className="w-4 h-4 text-green-500" />}
@@ -126,12 +141,10 @@ export default async function DashboardPage() {
       {/* Stores */}
       <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-50">
-          <h2 className="text-sm font-bold text-gray-900">Toko Anda</h2>
-          {stores.length > 0 && (
-            <Link href="/store/new" className="text-xs text-gray-400 font-medium hover:text-green-500 flex items-center gap-1 transition-colors">
-              <Store className="w-3.5 h-3.5" /> Toko Baru
-            </Link>
-          )}
+          <div>
+            <h2 className="text-sm font-bold text-gray-900">Toko Anda</h2>
+            <p className="text-xs text-gray-400 mt-0.5">Halaman menu digital yang bisa dibagikan via link & QR code</p>
+          </div>
         </div>
 
         {stores.length > 0 ? (
@@ -174,7 +187,7 @@ export default async function DashboardPage() {
               <Store className="w-6 h-6 text-green-400" />
             </div>
             <h3 className="text-base font-bold text-gray-900 mb-1">Belum ada toko</h3>
-            <p className="text-sm text-gray-500 mb-5 max-w-xs mx-auto">Buat toko pertama Anda untuk mulai mengelola menu digital.</p>
+            <p className="text-sm text-gray-500 mb-5 max-w-xs mx-auto">Buat halaman menu digital usaha Anda — bisa langsung dibagikan via link atau QR code ke pelanggan.</p>
             <Link
               href="/store/new"
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-500 text-white text-sm font-semibold rounded-xl hover:bg-green-600 transition-colors"
@@ -186,9 +199,13 @@ export default async function DashboardPage() {
         )}
       </div>
 
+      {/* Analytics Chart */}
+      {storeIds.length > 0 && (
+        <AnalyticsChart data={dailyAnalytics} />
+      )}
+
       {/* Quick actions */}
-      {firstStore && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      {firstStore && (        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <Link
             href={stores.length === 1 ? `/store/${firstStore.id}/menu/new` : '/store'}
             className="flex items-center gap-4 p-5 bg-white rounded-2xl border border-gray-100 hover:border-green-200 hover:shadow-sm transition-all group"

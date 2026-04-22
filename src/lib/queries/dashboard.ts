@@ -75,3 +75,56 @@ export function isSubscriptionValid(subscription: Subscription | null): boolean 
   if (!subscription.expires_at) return true // no expiry = always valid
   return new Date(subscription.expires_at) > new Date()
 }
+
+export interface DailyAnalytics {
+  date: string
+  page_views: number
+  whatsapp_clicks: number
+}
+
+/**
+ * Returns daily analytics for the last N days for given store IDs.
+ */
+export async function getDailyAnalytics(
+  storeIds: string[],
+  days = 7
+): Promise<DailyAnalytics[]> {
+  if (storeIds.length === 0) return []
+  const supabase = await createClient()
+
+  const since = new Date()
+  since.setDate(since.getDate() - (days - 1))
+  since.setHours(0, 0, 0, 0)
+
+  const { data, error } = await supabase
+    .from('analytics')
+    .select('event_type, created_at')
+    .in('store_id', storeIds)
+    .in('event_type', ['page_view', 'whatsapp_click'])
+    .gte('created_at', since.toISOString())
+
+  if (error) {
+    logger.error('[getDailyAnalytics]', error, { storeIds })
+    return []
+  }
+
+  // Build a map of date -> counts
+  const map: Record<string, { page_views: number; whatsapp_clicks: number }> = {}
+
+  // Pre-fill all days with 0
+  for (let i = 0; i < days; i++) {
+    const d = new Date()
+    d.setDate(d.getDate() - (days - 1 - i))
+    const key = d.toISOString().slice(0, 10)
+    map[key] = { page_views: 0, whatsapp_clicks: 0 }
+  }
+
+  for (const row of data ?? []) {
+    const key = row.created_at.slice(0, 10)
+    if (!map[key]) continue
+    if (row.event_type === 'page_view') map[key].page_views++
+    else if (row.event_type === 'whatsapp_click') map[key].whatsapp_clicks++
+  }
+
+  return Object.entries(map).map(([date, counts]) => ({ date, ...counts }))
+}

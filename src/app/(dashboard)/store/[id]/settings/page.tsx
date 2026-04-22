@@ -41,7 +41,7 @@ export default async function StoreSettingsPage({ params }: { params: Promise<{ 
         </div>
         <div>
           <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">Pengaturan Toko</h1>
-          <p className="text-sm text-gray-500 mt-0.5">{store.name}</p>
+          <p className="text-sm text-gray-500 mt-0.5">{store.name} · Kelola info, tampilan, dan URL halaman menu Anda</p>
         </div>
       </div>
 

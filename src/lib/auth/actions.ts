@@ -45,9 +45,10 @@ export async function register(
   })
 
   if (error) {
+    console.error('[register] Supabase error:', error.message, error.status)
     const msg = error.message.includes('already registered')
       ? 'Email ini sudah terdaftar. Silakan masuk.'
-      : 'Terjadi kesalahan. Silakan coba lagi.'
+      : `Terjadi kesalahan: ${error.message}`
     return { error: msg }
   }
 

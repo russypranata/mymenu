@@ -57,7 +57,8 @@ export default async function AdminUsersPage({
       />
 
       <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
-        <div className="overflow-x-auto">
+        {/* Desktop table */}
+        <div className="hidden sm:block overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-100">
@@ -116,6 +117,37 @@ export default async function AdminUsersPage({
             </tbody>
           </table>
         </div>
+
+        {/* Mobile card list */}
+        <div className="sm:hidden divide-y divide-gray-50">
+          {users.length === 0 ? (
+            <p className="px-5 py-14 text-center text-gray-400 text-sm">Tidak ada user ditemukan.</p>
+          ) : (
+            users.map((user) => (
+              <div key={user.id} className="px-4 py-4 space-y-2">
+                <div className="flex items-start justify-between gap-2">
+                  <a
+                    href={`/admin/users?${new URLSearchParams({ ...params, userId: user.id }).toString()}`}
+                    className="text-sm font-semibold text-gray-900 hover:text-green-500 transition-colors truncate"
+                  >
+                    {user.email}
+                  </a>
+                  <StatusBadge status={user.status} />
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${user.role === 'admin' ? 'bg-red-50 text-red-600' : 'bg-gray-100 text-gray-600'}`}>
+                      {user.role}
+                    </span>
+                    <span className="text-xs text-gray-400">{user.created_at ? formatDate(user.created_at) : '-'}</span>
+                  </div>
+                  <UserActions userId={user.id} currentStatus={user.status ?? 'active'} isSelf={user.id === currentUser?.id} />
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
         <AdminPagination total={total} page={page} pageSize={PAGE_SIZE} />
       </div>
 

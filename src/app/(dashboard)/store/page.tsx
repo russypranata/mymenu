@@ -30,17 +30,23 @@ export default async function StorePage() {
           </div>
           <div>
             <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">Toko Saya</h1>
-            <p className="text-sm text-gray-500 mt-0.5">{stores.length} toko terdaftar</p>
+            <p className="text-sm text-gray-500 mt-0.5">
+              {stores.length === 0
+                ? 'Buat halaman menu digital yang bisa dibagikan via link & QR code'
+                : 'Halaman menu digital Anda yang bisa dibagikan via link & QR code'}
+            </p>
           </div>
         </div>
-        <Link
-          href="/store/new"
-          className="flex items-center gap-2 px-4 py-2.5 bg-green-500 text-white text-sm font-semibold rounded-xl hover:bg-green-600 transition-colors shadow-sm"
-        >
-          <Store className="w-4 h-4" />
-          <span className="hidden sm:inline">Tambah Toko</span>
-          <span className="sm:hidden">Tambah</span>
-        </Link>
+        {stores.length === 0 && (
+          <Link
+            href="/store/new"
+            className="flex items-center gap-2 px-4 py-2.5 bg-green-500 text-white text-sm font-semibold rounded-xl hover:bg-green-600 transition-colors shadow-sm"
+          >
+            <Store className="w-4 h-4" />
+            <span className="hidden sm:inline">Buat Toko</span>
+            <span className="sm:hidden">Buat</span>
+          </Link>
+        )}
       </div>
 
       {stores.length === 0 ? (

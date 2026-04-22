@@ -37,7 +37,7 @@ export default function GuidePage() {
         <div>
           <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">Panduan Penggunaan</h1>
           <p className="text-sm text-gray-500 mt-0.5">
-            Pelajari cara mengelola toko dan menu digital Anda di MyMenu — dari awal sampai siap dibagikan ke pelanggan.
+            Pelajari cara mengelola halaman menu digital Anda di MyMenu — dari setup awal sampai siap dibagikan ke pelanggan.
           </p>
         </div>
       </div>
@@ -69,7 +69,7 @@ export default function GuidePage() {
       <div className="flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4">
         <Lightbulb className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
         <p className="text-sm text-amber-800">
-          <span className="font-semibold">Tips:</span> Mulai dengan membuat toko, buat kategori menu, lalu tambahkan item menu. Setelah itu bagikan link atau QR code toko ke pelanggan.
+          <span className="font-semibold">Tips:</span> Mulai dengan membuat toko (halaman menu digital Anda), buat kategori menu, lalu tambahkan item menu. Setelah itu bagikan link atau QR code ke pelanggan.
         </p>
       </div>
 
@@ -80,12 +80,13 @@ export default function GuidePage() {
         <StepCard
           step={1}
           title="Buat toko baru"
-          description="Klik tombol Tambah Toko di halaman Toko, lalu isi nama, URL, deskripsi, nomor WhatsApp, dan alamat toko Anda."
+          description="Toko di MyMenu adalah halaman menu digital usaha Anda yang bisa dibagikan via link atau QR code. Klik tombol Buat Toko, lalu isi nama, URL, deskripsi, nomor WhatsApp, dan alamat."
           action={{ label: 'Buat Toko', href: '/store/new' }}
           tips={[
             'URL toko otomatis dibuat dari nama — bisa kamu ubah sendiri.',
             'URL hanya boleh huruf kecil, angka, dan tanda hubung (-). Contoh: warung-bu-sari',
-            'Nomor WhatsApp dipakai untuk tombol pesan di halaman publik. Format: 628xxxxxxxxx',
+            'URL ini yang akan dibagikan ke pelanggan: mymenu.id/nama-toko-kamu',
+            'Nomor WhatsApp dipakai untuk tombol hubungi di halaman publik. Format: 628xxxxxxxxx',
           ]}
           icon={<Plus className="w-4 h-4" />}
         />
@@ -93,9 +94,9 @@ export default function GuidePage() {
         <StepCard
           step={2}
           title="Edit informasi toko"
-          description="Masuk ke Pengaturan Toko (ikon ⚙️ di daftar toko) untuk mengubah nama, URL, deskripsi, WhatsApp, atau alamat kapan saja."
+          description="Masuk ke Pengaturan Toko (ikon ⚙️ di daftar toko) untuk mengubah nama, URL halaman publik, deskripsi, WhatsApp, atau alamat kapan saja."
           tips={[
-            'Jika kamu ubah URL, link lama tidak akan berfungsi lagi.',
+            'Jika kamu ubah URL, link lama tidak akan berfungsi lagi — update semua tempat yang sudah memakai link tersebut.',
             'Pastikan nomor WhatsApp dalam format internasional: 628xxxxxxxxx',
           ]}
           icon={<Pencil className="w-4 h-4" />}
@@ -105,7 +106,7 @@ export default function GuidePage() {
           step={3}
           title="Hapus toko"
           description="Di halaman Toko, klik ikon hapus (🗑️) di samping toko yang ingin dihapus. Konfirmasi dengan mengetik nama toko."
-          tips={['Menghapus toko akan menghapus semua menu dan kategori di dalamnya secara permanen.']}
+          tips={['Menghapus toko akan menghapus semua menu, kategori, dan halaman publik secara permanen. Link yang sudah dibagikan tidak akan bisa diakses lagi.']}
           icon={<Trash2 className="w-4 h-4" />}
           danger
         />
@@ -316,14 +317,14 @@ export default function GuidePage() {
       </section>
 
       {/* CTA */}
-      <div className="bg-gradient-to-br from-green-500 to-amber-500 rounded-2xl p-6 text-white">
+      <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-6 text-white">
         <p className="text-lg font-extrabold mb-1">Siap mulai?</p>
         <p className="text-sm text-green-100 mb-4">Buat toko pertama Anda dan mulai kelola menu digital sekarang.</p>
         <Link
           href="/store/new"
           className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-green-500 text-sm font-bold rounded-xl hover:bg-green-50 transition-colors"
         >
-          <Plus className="w-4 h-4" />
+          <Store className="w-4 h-4" />
           Buat Toko Sekarang
         </Link>
       </div>

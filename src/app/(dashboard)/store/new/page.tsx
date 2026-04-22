@@ -3,15 +3,19 @@ import { redirect } from 'next/navigation'
 import { NewStoreForm } from '@/components/new-store-form'
 import { Store } from 'lucide-react'
 import type { Metadata } from 'next'
+import { getStoresByUser } from '@/lib/queries/store'
 
 export const metadata: Metadata = {
-  title: 'Buat Toko Baru — MyMenu',
+  title: 'Buat Toko — MyMenu',
 }
 
 export default async function NewStorePage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
+
+  const stores = await getStoresByUser(user.id)
+  if (stores.length > 0) redirect('/store')
 
   return (
     <div className="max-w-2xl space-y-6">
@@ -21,7 +25,7 @@ export default async function NewStorePage() {
         </div>
         <div>
           <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">Buat Toko Baru</h1>
-          <p className="text-sm text-gray-500 mt-0.5">Isi informasi dasar untuk memulai toko digital Anda.</p>
+          <p className="text-sm text-gray-500 mt-0.5">Buat halaman menu digital usaha Anda — isi nama, URL, dan nomor WhatsApp untuk mulai.</p>
         </div>
       </div>
       <NewStoreForm />

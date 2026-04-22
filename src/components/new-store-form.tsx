@@ -119,6 +119,7 @@ export function NewStoreForm() {
           <div>
             <p className="text-sm font-semibold text-gray-900">{nameValue || 'Nama Toko'}</p>
             <p className="text-xs text-gray-400 font-mono">mymenu.id/{slugValue || 'url-toko'}</p>
+            <p className="text-xs text-gray-400 mt-0.5">Link halaman menu publik Anda</p>
           </div>
         </div>
 
@@ -192,7 +193,7 @@ export function NewStoreForm() {
             placeholder="Ceritakan sedikit tentang toko Anda..."
           />
           <p className="text-xs text-gray-400 mt-1.5">
-            Maksimal 150 karakter. Deskripsi singkat yang menarik untuk ditampilkan di halaman toko.
+            Maksimal 150 karakter. Ditampilkan di halaman menu publik Anda.
           </p>
         </div>
 

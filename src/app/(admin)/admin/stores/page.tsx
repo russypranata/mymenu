@@ -40,7 +40,8 @@ export default async function AdminStoresPage({
       <StoreSearch currentSearch={params.search} />
 
       <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
-        <div className="overflow-x-auto">
+        {/* Desktop table */}
+        <div className="hidden sm:block overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-100">
@@ -85,6 +86,30 @@ export default async function AdminStoresPage({
             </tbody>
           </table>
         </div>
+
+        {/* Mobile card list */}
+        <div className="sm:hidden divide-y divide-gray-50">
+          {stores.length === 0 ? (
+            <p className="px-5 py-14 text-center text-gray-400 text-sm">Tidak ada toko ditemukan.</p>
+          ) : (
+            stores.map((store) => (
+              <div key={store.id} className="px-4 py-4 space-y-1.5">
+                <a
+                  href={`/admin/stores?${new URLSearchParams({ ...(params.search ? { search: params.search } : {}), storeId: store.id }).toString()}`}
+                  className="text-sm font-semibold text-gray-900 hover:text-green-500 transition-colors block"
+                >
+                  {store.name}
+                </a>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-mono text-gray-500 bg-gray-100 px-2 py-0.5 rounded">/{store.slug}</span>
+                  <span className="text-xs text-gray-400">{store.created_at ? formatDate(store.created_at) : '-'}</span>
+                </div>
+                <p className="text-xs text-gray-500">{store.profiles?.display_name || store.profiles?.email || '-'}</p>
+              </div>
+            ))
+          )}
+        </div>
+
         <AdminPagination total={total} page={page} pageSize={PAGE_SIZE} />
       </div>
 

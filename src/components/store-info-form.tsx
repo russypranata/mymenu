@@ -67,7 +67,7 @@ export function StoreInfoForm({ store }: { store: Tables<'stores'> }) {
       <ToastContainer toasts={toasts} onRemove={removeToast} />
       <div>
         <h2 className="text-base font-bold text-gray-900">Informasi Toko</h2>
-        <p className="text-sm text-gray-500 mt-0.5">Nama, URL, dan detail kontak toko Anda.</p>
+        <p className="text-sm text-gray-500 mt-0.5">Nama usaha, URL halaman publik, dan kontak yang ditampilkan ke pelanggan.</p>
       </div>
 
       {errors.root && (
@@ -84,6 +84,7 @@ export function StoreInfoForm({ store }: { store: Tables<'stores'> }) {
         <div>
           <p className="text-sm font-semibold text-gray-900">{nameValue || 'Nama Toko'}</p>
           <p className="text-xs text-gray-400 font-mono">mymenu.id/{slugValue || 'url-toko'}</p>
+          <p className="text-xs text-gray-400 mt-0.5">Link halaman menu publik Anda</p>
         </div>
       </div>
 
@@ -113,9 +114,9 @@ export function StoreInfoForm({ store }: { store: Tables<'stores'> }) {
           maxLength={150}
           className="w-full px-3.5 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-400 transition-all resize-none"
           placeholder="Ceritakan sedikit tentang toko Anda..." />
-        <p className="text-xs text-gray-400 mt-1.5">
-          Maksimal 150 karakter. Deskripsi singkat yang menarik untuk ditampilkan di halaman toko.
-        </p>
+          <p className="text-xs text-gray-400 mt-1.5">
+            Maksimal 150 karakter. Ditampilkan di halaman menu publik Anda.
+          </p>
       </div>
 
       <div>

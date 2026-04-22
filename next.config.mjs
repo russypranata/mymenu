@@ -7,6 +7,11 @@ const supabaseHostname = 'qdvfaypmvtnufgwfksvm.supabase.co'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '3mb',
+    },
+  },
   turbopack: {
     root: __dirname,
   },
@@ -21,7 +26,12 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'images.unsplash.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+      },
     ],
+    qualities: [75, 85, 90],
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
@@ -48,7 +58,7 @@ const nextConfig = {
               `default-src 'self'`,
               `script-src 'self' 'unsafe-inline' 'unsafe-eval'`, // unsafe-eval needed by Next.js dev
               `style-src 'self' 'unsafe-inline'`,
-              `img-src 'self' data: blob: https://*.supabase.co https://images.unsplash.com`,
+              `img-src 'self' data: blob: https://*.supabase.co https://images.unsplash.com https://picsum.photos https://fastly.picsum.photos`,
               `font-src 'self' data:`,
               `connect-src 'self' https://${supabaseHostname} wss://${supabaseHostname}`,
               `frame-ancestors 'self'`,

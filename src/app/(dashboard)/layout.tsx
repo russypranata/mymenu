@@ -30,6 +30,9 @@ export default async function DashboardLayout({
   // Suspended user guard — redirect before rendering anything
   const profile = (profileResult.data as Database['public']['Tables']['profiles']['Row'] | null)
   if (profile?.status === 'suspended') redirect('/suspended')
+
+  // Onboarding guard — redirect if phone not filled yet
+  if (!profile?.phone) redirect('/onboarding')
   const navStores = stores.map(s => ({ id: s.id, name: s.name }))
   const displayName = getDisplayName(profile ?? { display_name: null, email: user.email || '' })
   const avatarUrl = profile?.avatar_url ?? null

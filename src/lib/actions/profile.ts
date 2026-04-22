@@ -112,7 +112,28 @@ export async function updateAvatar(formData: FormData): Promise<ActionResult> {
   return { error: null }
 }
 
-// ─── updateEmail ──────────────────────────────────────────────────────────────
+// ─── updatePhone ─────────────────────────────────────────────────────────────
+
+export async function updatePhone({ phone }: { phone: string }): Promise<ActionResult> {
+  const cleaned = phone.replace(/\D/g, '')
+  if (!cleaned || cleaned.length < 9 || cleaned.length > 15) {
+    return { error: 'Nomor WhatsApp tidak valid.' }
+  }
+
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Tidak terautentikasi.' }
+
+  const { error } = await supabase
+    .from('profiles')
+    .update({ phone: cleaned })
+    .eq('id', user.id)
+
+  if (error) return { error: error.message }
+
+  revalidatePath('/profile')
+  return { error: null }
+}
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 

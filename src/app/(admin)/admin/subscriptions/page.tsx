@@ -48,7 +48,8 @@ export default async function AdminSubscriptionsPage({
       <SubFilters currentStatus={params.status} />
 
       <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
-        <div className="overflow-x-auto">
+        {/* Desktop table */}
+        <div className="hidden sm:block overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-100">
@@ -88,6 +89,32 @@ export default async function AdminSubscriptionsPage({
             </tbody>
           </table>
         </div>
+
+        {/* Mobile card list */}
+        <div className="sm:hidden divide-y divide-gray-50">
+          {subscriptions.length === 0 ? (
+            <p className="px-5 py-14 text-center text-gray-400 text-sm">Tidak ada subscription ditemukan.</p>
+          ) : (
+            subscriptions.map((sub) => (
+              <div key={sub.id} className="px-4 py-4 space-y-2">
+                <div className="flex items-start justify-between gap-2">
+                  <p className="text-sm font-semibold text-gray-900 truncate">{sub.profiles?.email ?? '-'}</p>
+                  <span className={`text-xs font-semibold px-2 py-0.5 rounded-full flex-shrink-0 ${STATUS_COLORS[sub.status ?? ''] ?? 'bg-gray-100 text-gray-500'}`}>
+                    {sub.status ?? '-'}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <p className="text-xs text-gray-500">{sub.profiles?.display_name || '-'}</p>
+                    <p className="text-xs text-gray-400">{formatDMY(sub.started_at)} — {formatDMY(sub.expires_at)}</p>
+                  </div>
+                  <SubActions subscriptionId={sub.id} currentStatus={sub.status ?? ''} />
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
         <AdminPagination total={total} page={page} pageSize={PAGE_SIZE} />
       </div>
     </div>

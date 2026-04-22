@@ -57,6 +57,12 @@ export default function Home() {
             {/* Nav Actions */}
             <div className="flex items-center gap-2.5">
               <Link
+                href="/harga"
+                className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 hover:text-green-500 hover:bg-green-50 rounded-lg transition-all"
+              >
+                Harga
+              </Link>
+              <Link
                 href="/login"
                 className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 hover:text-green-500 hover:bg-green-50 rounded-lg transition-all"
               >
@@ -133,14 +139,16 @@ export default function Home() {
                     className="w-full sm:w-auto flex items-center justify-center gap-2 px-7 py-3.5 bg-green-500 text-white text-base font-semibold rounded-xl hover:bg-green-600 transition-all"
                   >
                     <Zap className="w-5 h-5" strokeWidth={2} />
-                    Mulai Gratis 7 Hari
+                    Coba Gratis
                   </Link>
                   <Link
-                    href="#fitur"
+                    href="/demo-kedai-kopi"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="w-full sm:w-auto flex items-center justify-center gap-2 px-7 py-3.5 bg-yellow-400 text-gray-900 text-base font-semibold rounded-xl hover:bg-yellow-500 transition-all shadow-sm"
                   >
                     <Eye className="w-5 h-5" strokeWidth={2} />
-                    Lihat Fitur
+                    Lihat Demo
                   </Link>
                 </div>
 
@@ -685,15 +693,15 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="bg-stone-900 text-stone-400">
-        <div className="container mx-auto px-4 sm:px-6 pt-14 pb-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-14 pb-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
             {/* Brand */}
             <div>
               <div className="flex items-center gap-2.5 mb-4">
-                <div className="w-8 h-8 bg-green-500 rounded-xl flex items-center justify-center">
-                  <ClipboardList className="w-4 h-4 text-white" strokeWidth={2.5} />
+                <div className="w-9 h-9 bg-green-500 rounded-xl flex items-center justify-center">
+                  <ClipboardList className="w-5 h-5 text-white" strokeWidth={2.5} />
                 </div>
-                <span className="font-bold text-white text-lg tracking-tight">MyMenu</span>
+                <span className="font-bold text-white text-xl tracking-tight">MyMenu</span>
               </div>
               <p className="text-sm leading-relaxed text-stone-500">
                 Solusi menu digital untuk warung, kafe, dan restoran Indonesia. Mudah, cepat, terjangkau.
@@ -705,6 +713,8 @@ export default function Home() {
               <p className="text-xs font-semibold uppercase tracking-widest text-stone-500 mb-4">Produk</p>
               <ul className="space-y-2.5 text-sm">
                 <li><Link href="#fitur" className="hover:text-white transition-colors">Fitur</Link></li>
+                <li><Link href="/harga" className="hover:text-white transition-colors">Harga</Link></li>
+                <li><Link href="/demo-kedai-kopi" className="hover:text-white transition-colors">Demo</Link></li>
                 <li><Link href="/register" className="hover:text-white transition-colors">Coba Gratis</Link></li>
                 <li><Link href="/login" className="hover:text-white transition-colors">Masuk</Link></li>
               </ul>

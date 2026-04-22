@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { getDisplayName, getAvatarInitial } from '@/lib/profile-helpers'
 import { AvatarForm } from '@/components/avatar-form'
 import { ProfileForm } from '@/components/profile-form'
+import { PhoneForm } from '@/components/phone-form'
 import { EmailForm } from '@/components/email-form'
 import { PasswordForm } from '@/components/password-form'
 import { DeleteAccountSection } from '@/components/delete-account-section'
@@ -45,6 +46,7 @@ export default async function ProfilePage() {
         <SectionLabel>Profil</SectionLabel>
         <AvatarForm avatarUrl={profile?.avatar_url ?? null} initial={initial} />
         <ProfileForm displayName={displayName} />
+        <PhoneForm phone={profile?.phone ?? null} />
       </section>
 
       {/* Section: Keamanan */}

@@ -18,6 +18,7 @@ export type Database = {
           created_at: string
           display_name: string | null
           avatar_url: string | null
+          phone: string | null
         }
         Insert: {
           id: string
@@ -27,6 +28,7 @@ export type Database = {
           created_at?: string
           display_name?: string | null
           avatar_url?: string | null
+          phone?: string | null
         }
         Update: {
           id?: string
@@ -36,6 +38,7 @@ export type Database = {
           created_at?: string
           display_name?: string | null
           avatar_url?: string | null
+          phone?: string | null
         }
         Relationships: []
       }
@@ -228,6 +231,7 @@ export type Database = {
           store_id: string
           event_type: string
           metadata: Json | null
+          ip: string | null
           created_at: string
         }
         Insert: {
@@ -235,6 +239,7 @@ export type Database = {
           store_id: string
           event_type: string
           metadata?: Json | null
+          ip?: string | null
           created_at?: string
         }
         Update: {
@@ -242,6 +247,7 @@ export type Database = {
           store_id?: string
           event_type?: string
           metadata?: Json | null
+          ip?: string | null
           created_at?: string
         }
         Relationships: []
