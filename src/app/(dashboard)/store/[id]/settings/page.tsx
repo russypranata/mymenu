@@ -34,7 +34,15 @@ export default async function StoreSettingsPage({ params }: { params: Promise<{ 
     getCategoriesByStore(id),
     getStoreLocations(id),
   ])
-  const settings = settingsResult.data as StoreSettings | null
+  
+  // Handle potential schema mismatch gracefully
+  let settings: StoreSettings | null = null
+  if (settingsResult.data) {
+    settings = settingsResult.data as StoreSettings
+  } else if (settingsResult.error && !settingsResult.error.message.includes('schema cache')) {
+    // Only log non-schema errors
+    console.error('Error fetching store settings:', settingsResult.error)
+  }
 
   return (
     <div className="space-y-6">

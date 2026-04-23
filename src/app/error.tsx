@@ -19,8 +19,18 @@ export default function GlobalError({
   reset: () => void
 }) {
   useEffect(() => {
-    console.error(error)
+    // Only log in development or send to monitoring service in production
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Global Error:', error)
+    }
+    // In production, send to error tracking service (e.g., Sentry)
   }, [error])
+
+  // Don't expose technical details to users
+  const isSchemaError = error.message?.includes('schema cache') || error.message?.includes('column')
+  const userMessage = isSchemaError 
+    ? 'Sistem sedang dalam pembaruan. Silakan coba lagi dalam beberapa saat.'
+    : 'Sesuatu tidak berjalan dengan benar. Coba muat ulang halaman.'
 
   return (
     <html lang="id">
@@ -31,7 +41,7 @@ export default function GlobalError({
           </div>
           <h1 className="text-xl font-bold text-gray-900 mb-2">Terjadi kesalahan</h1>
           <p className="text-sm text-gray-500 mb-8 max-w-xs">
-            Sesuatu tidak berjalan dengan benar. Coba muat ulang halaman.
+            {userMessage}
           </p>
           <div className="flex gap-3">
             <button

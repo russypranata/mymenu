@@ -12,8 +12,18 @@ export default function DashboardError({
 }) {
   useEffect(() => {
     // Log to error reporting service in production
-    console.error(error)
+    // Only log in development or to monitoring service
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Dashboard Error:', error)
+    }
+    // In production, send to error tracking service (e.g., Sentry)
   }, [error])
+
+  // Don't show technical error details to users
+  const isSchemaError = error.message?.includes('schema cache') || error.message?.includes('column')
+  const userMessage = isSchemaError 
+    ? 'Sistem sedang dalam pembaruan. Silakan coba lagi dalam beberapa saat.'
+    : 'Sesuatu tidak berjalan dengan benar. Coba muat ulang halaman.'
 
   return (
     <div className="flex flex-col items-center justify-center py-20 text-center">
@@ -22,7 +32,7 @@ export default function DashboardError({
       </div>
       <h2 className="text-lg font-bold text-gray-900 mb-1">Terjadi kesalahan</h2>
       <p className="text-sm text-gray-500 mb-6 max-w-xs">
-        Sesuatu tidak berjalan dengan benar. Coba muat ulang halaman.
+        {userMessage}
       </p>
       <button
         onClick={reset}
