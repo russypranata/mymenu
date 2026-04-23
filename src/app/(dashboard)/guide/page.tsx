@@ -86,7 +86,7 @@ export default function GuidePage() {
             'URL toko otomatis dibuat dari nama — bisa kamu ubah sendiri.',
             'URL hanya boleh huruf kecil, angka, dan tanda hubung (-). Contoh: warung-bu-sari',
             'URL ini yang akan dibagikan ke pelanggan: mymenu.id/nama-toko-kamu',
-            'Nomor WhatsApp dipakai untuk tombol hubungi di halaman publik. Format: 628xxxxxxxxx',
+            'Nomor WhatsApp dipakai untuk tombol hubungi di halaman publik. Format: +628xxxxxxxxx',
           ]}
           icon={<Plus className="w-4 h-4" />}
         />
@@ -97,7 +97,7 @@ export default function GuidePage() {
           description="Masuk ke Pengaturan Toko (ikon ⚙️ di daftar toko) untuk mengubah nama, URL halaman publik, deskripsi, WhatsApp, atau alamat kapan saja."
           tips={[
             'Jika kamu ubah URL, link lama tidak akan berfungsi lagi — update semua tempat yang sudah memakai link tersebut.',
-            'Pastikan nomor WhatsApp dalam format internasional: 628xxxxxxxxx',
+            'Pastikan nomor WhatsApp dalam format internasional: +628xxxxxxxxx',
           ]}
           icon={<Pencil className="w-4 h-4" />}
         />

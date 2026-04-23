@@ -208,11 +208,11 @@ export function NewStoreForm() {
             className={`w-full px-3.5 py-3 bg-gray-50 border rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-400 transition-all ${
               errors.whatsapp ? 'border-red-300 bg-red-50' : 'border-gray-200'
             }`}
-            placeholder="cth. 628123456789"
+            placeholder="cth. +628123456789"
           />
           {errors.whatsapp
             ? <p id="wa-error" className="text-xs text-red-500 mt-1">{errors.whatsapp.message}</p>
-            : <p id="wa-hint" className="text-xs text-gray-400 mt-1.5">Format internasional, cth: 628123456789</p>
+            : <p id="wa-hint" className="text-xs text-gray-400 mt-1.5">Format internasional, cth: +628123456789</p>
           }
         </div>
 

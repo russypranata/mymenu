@@ -196,7 +196,7 @@ function LocationForm({ location, onSubmit, onCancel, loading }: LocationFormPro
           id="whatsapp"
           name="whatsapp"
           defaultValue={location?.whatsapp || ''}
-          placeholder="Contoh: 628123456789"
+          placeholder="Contoh: +628123456789"
           className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
         />
       </div>
