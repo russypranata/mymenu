@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { X, Plus, Minus, Trash2, MessageCircle } from 'lucide-react'
 import Image from 'next/image'
 import { useCart } from '@/components/cart-provider'
+import { useTheme } from '@/components/theme-provider'
 import { formatCurrency } from '@/lib/utils'
 
 interface Props {
@@ -11,13 +12,13 @@ interface Props {
   storeId: string
   storeName: string
   primaryColor: string
-  isDark: boolean
   buttonText?: string | null
   showPrice: boolean
 }
 
-export function CartDrawer({ whatsapp, storeId, storeName, primaryColor, isDark, buttonText, showPrice }: Props) {
+export function CartDrawer({ whatsapp, storeId, storeName, primaryColor, buttonText, showPrice }: Props) {
   const { items, increment, decrement, clear, total, count } = useCart()
+  const { isDark } = useTheme()
   const [open, setOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(true)
 

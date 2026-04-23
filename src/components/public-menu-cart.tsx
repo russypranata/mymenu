@@ -11,7 +11,6 @@ interface PublicMenuCartProps {
   locations: StoreLocation[]
   storeWhatsapp: string | null
   primaryColor: string
-  isDark: boolean
   buttonText: string | null | undefined
   showPrice: boolean
 }
@@ -22,7 +21,6 @@ export function PublicMenuCart({
   locations,
   storeWhatsapp,
   primaryColor,
-  isDark,
   buttonText,
   showPrice,
 }: PublicMenuCartProps) {
@@ -37,7 +35,6 @@ export function PublicMenuCart({
       storeId={storeId}
       storeName={storeName}
       primaryColor={primaryColor}
-      isDark={isDark}
       buttonText={buttonText}
       showPrice={showPrice}
     />

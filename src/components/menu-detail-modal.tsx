@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { X, UtensilsCrossed, ChevronLeft, ChevronRight } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
+import { useTheme } from '@/components/theme-provider'
 import type { Database } from '@/types/database.types'
 
 type Menu = Database['public']['Tables']['menus']['Row']
@@ -12,13 +13,13 @@ interface Props {
   menu: Menu
   primaryColor: string
   showPrice: boolean
-  isDark: boolean
   onClose: () => void
 }
 
 export function MenuDetailModal({
-  menu, primaryColor, showPrice, isDark, onClose
+  menu, primaryColor, showPrice, onClose
 }: Props) {
+  const { isDark } = useTheme()
   const allImages = [
     ...(menu.image_url ? [menu.image_url] : []),
     ...(menu.extra_images ?? []),

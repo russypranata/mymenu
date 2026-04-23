@@ -6,6 +6,7 @@ import { UtensilsCrossed, Search, X, Plus, Minus } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
 import { MenuDetailModal } from '@/components/menu-detail-modal'
 import { useCart } from '@/components/cart-provider'
+import { useTheme } from '@/components/theme-provider'
 import type { Database } from '@/types/database.types'
 
 type Menu = Database['public']['Tables']['menus']['Row']
@@ -18,8 +19,10 @@ interface Props {
   showPrice: boolean
   enableOrdering: boolean
   primaryColor: string
-  isDark: boolean
+  accentColor: string
   storeId: string
+  borderRadius: string
+  cardStyle: string
 }
 
 interface CardListProps {
@@ -31,12 +34,18 @@ interface CardListProps {
   showPrice: boolean
   enableOrdering: boolean
   primaryColor: string
-  isDark: boolean
+  accentColor: string
+  borderRadius: string
+  cardStyle: string
   onSelect: (menu: Menu) => void
 }
 
-function MenuCardList({ items, cardBg, menuNameColor, menuDescColor, menuImageBg, showPrice, enableOrdering, primaryColor, isDark, onSelect }: CardListProps) {
+function MenuCardList({ items, cardBg, menuNameColor, menuDescColor, menuImageBg, showPrice, enableOrdering, primaryColor, accentColor, borderRadius, cardStyle, onSelect }: CardListProps) {
   const { add, increment, decrement, items: cartItems } = useCart()
+  const { isDark } = useTheme()
+
+  const cardShadow = cardStyle === 'elevated' ? 'shadow-lg' : cardStyle === 'card' ? 'shadow-sm' : ''
+  const cardBorder = cardStyle === 'minimal' ? 'border-0' : 'border'
 
   return (
     <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6">
@@ -46,7 +55,7 @@ function MenuCardList({ items, cardBg, menuNameColor, menuDescColor, menuImageBg
         return (
           <li key={menu.id} className="flex">
             <div
-              className={`rounded-[1.5rem] border overflow-hidden flex flex-col w-full transition-all duration-300 ${cardBg}`}
+              className={`${borderRadius} ${cardBorder} ${cardShadow} overflow-hidden flex flex-col w-full transition-all duration-300 ${cardBg}`}
             >
               {/* Image */}
               <button
@@ -161,7 +170,8 @@ function MenuCardList({ items, cardBg, menuNameColor, menuDescColor, menuImageBg
 }
 
 // ── Main export ──
-export function PublicMenuList({ menus, categories = [], menuLayout, showPrice, enableOrdering, primaryColor, isDark, storeId }: Props) {
+export function PublicMenuList({ menus, categories = [], menuLayout, showPrice, enableOrdering, primaryColor, accentColor, storeId, borderRadius, cardStyle }: Props) {
+  const { isDark } = useTheme()
   const [selected, setSelected] = useState<Menu | null>(null)
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
@@ -182,7 +192,7 @@ export function PublicMenuList({ menus, categories = [], menuLayout, showPrice, 
     ? 'bg-slate-800 border-slate-700 text-white placeholder-slate-500'
     : 'bg-white border-slate-200 text-slate-900 placeholder-slate-400'
 
-  const sharedProps = { cardBg, menuNameColor, menuDescColor, menuImageBg, showPrice, enableOrdering, primaryColor, isDark, onSelect: setSelected }
+  const sharedProps = { cardBg, menuNameColor, menuDescColor, menuImageBg, showPrice, enableOrdering, primaryColor, accentColor, borderRadius, cardStyle, onSelect: setSelected }
 
   return (
     <>
@@ -312,7 +322,7 @@ export function PublicMenuList({ menus, categories = [], menuLayout, showPrice, 
       })()}
 
       {selected && (
-        <MenuDetailModal menu={selected} primaryColor={primaryColor} showPrice={showPrice} isDark={isDark} onClose={() => setSelected(null)} />
+        <MenuDetailModal menu={selected} primaryColor={primaryColor} showPrice={showPrice} onClose={() => setSelected(null)} />
       )}
     </>
   )

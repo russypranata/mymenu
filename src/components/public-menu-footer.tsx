@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { MapPin, Clock } from 'lucide-react'
 import { LocationSelector } from './location-selector'
 import { formatWhatsAppNumber } from '@/lib/utils'
+import { useTheme } from '@/components/theme-provider'
 import type { Tables } from '@/types/database.types'
 
 type StoreLocation = Tables<'store_locations'>
@@ -28,10 +29,10 @@ interface PublicMenuFooterProps {
   store: Store
   locations: StoreLocation[]
   primaryColor: string
-  isDark: boolean
 }
 
-export function PublicMenuFooter({ store, locations, primaryColor, isDark }: PublicMenuFooterProps) {
+export function PublicMenuFooter({ store, locations, primaryColor }: PublicMenuFooterProps) {
+  const { isDark } = useTheme()
   const [selectedLocation, setSelectedLocation] = useState<StoreLocation>(
     locations.find(loc => loc.is_primary) || locations[0]
   )
