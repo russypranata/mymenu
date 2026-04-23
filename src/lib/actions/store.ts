@@ -25,7 +25,7 @@ export async function checkSlugAvailable(slug: string): Promise<boolean> {
   return !data
 }
 
-export async function createStore(input: CreateStoreInput): Promise<{ error: string | null }> {
+export async function createStore(input: CreateStoreInput): Promise<{ error: string | null; storeId?: string }> {
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
@@ -48,12 +48,23 @@ export async function createStore(input: CreateStoreInput): Promise<{ error: str
     address: input.address ?? null,
   }
 
-  const { error } = await supabase.from('stores').insert(payload)
+  const { data: newStore, error } = await supabase.from('stores').insert(payload).select('id').single()
   if (error) return { error: error.message }
+
+  // Create primary location if address or whatsapp provided
+  if (newStore && (input.address || input.whatsapp)) {
+    await supabase.from('store_locations').insert({
+      store_id: newStore.id,
+      name: 'Lokasi Utama',
+      address: input.address || '',
+      whatsapp: input.whatsapp || null,
+      is_primary: true,
+    })
+  }
 
   revalidatePath('/store')
   revalidatePath('/dashboard')
-  return { error: null }
+  return { error: null, storeId: newStore.id }
 }
 
 export interface UpdateStoreInput {
@@ -61,8 +72,6 @@ export interface UpdateStoreInput {
   name: string
   slug: string
   description?: string | null
-  whatsapp?: string | null
-  address?: string | null
 }
 
 export async function updateStore(input: UpdateStoreInput): Promise<{ error: string | null }> {
@@ -82,13 +91,12 @@ export async function updateStore(input: UpdateStoreInput): Promise<{ error: str
     name: input.name,
     slug: input.slug,
     description: input.description ?? null,
-    whatsapp: input.whatsapp ?? null,
-    address: input.address ?? null,
   }).eq('id', input.id)
 
   if (error) return { error: error.message }
   revalidatePath('/store')
   revalidatePath('/dashboard')
+  revalidatePath(`/[slug]`, 'page')
   return { error: null }
 }
 

@@ -44,12 +44,12 @@ export default async function StoreSettingsPage({ params }: { params: Promise<{ 
         </div>
         <div>
           <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">Pengaturan Toko</h1>
-          <p className="text-sm text-gray-500 mt-0.5">{store.name} · Kelola info, tampilan, dan URL halaman menu Anda</p>
+          <p className="text-sm text-gray-500 mt-0.5">{store.name} · Kelola informasi, lokasi, tampilan, dan pengaturan lainnya</p>
         </div>
       </div>
 
       <section className="space-y-4">
-        <SectionLabel>Informasi Toko</SectionLabel>
+        <SectionLabel>Informasi Dasar</SectionLabel>
         <StoreInfoForm store={store} />
       </section>
 
@@ -64,17 +64,17 @@ export default async function StoreSettingsPage({ params }: { params: Promise<{ 
       </section>
 
       <section className="space-y-4">
+        <SectionLabel>Tampilan Publik</SectionLabel>
+        <StoreAppearanceForm storeId={store.id} storeName={store.name} settings={settings} />
+      </section>
+
+      <section className="space-y-4">
         <SectionLabel>QR Code</SectionLabel>
         <StoreQRCode
           slug={store.slug}
           storeName={store.name}
           appUrl={process.env.NEXT_PUBLIC_APP_URL ?? 'https://mymenu.id'}
         />
-      </section>
-
-      <section className="space-y-4">
-        <SectionLabel>Tampilan Publik</SectionLabel>
-        <StoreAppearanceForm storeId={store.id} storeName={store.name} settings={settings} />
       </section>
 
       <section className="space-y-4">

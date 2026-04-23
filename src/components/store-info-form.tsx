@@ -17,8 +17,6 @@ const schema = z.object({
   slug: z.string().min(1, 'URL toko tidak boleh kosong.').max(60)
     .regex(/^[a-z0-9-]+$/, 'Hanya huruf kecil, angka, dan tanda hubung.'),
   description: z.string().max(150, 'Deskripsi maksimal 150 karakter.').optional(),
-  whatsapp: z.string().regex(/^\d{10,15}$/, 'Nomor WhatsApp harus 10-15 digit angka.').optional().or(z.literal('')),
-  address: z.string().max(300).optional(),
 })
 
 type FormValues = z.infer<typeof schema>
@@ -31,8 +29,6 @@ export function StoreInfoForm({ store }: { store: Tables<'stores'> }) {
       defaultValues: {
         name: store.name, slug: store.slug,
         description: store.description ?? '',
-        whatsapp: store.whatsapp ?? '',
-        address: store.address ?? '',
       },
     })
   const { toasts, addToast, removeToast } = useToast()
@@ -54,8 +50,6 @@ export function StoreInfoForm({ store }: { store: Tables<'stores'> }) {
     const { error } = await updateStore({
       id: store.id, name: values.name.trim(), slug: values.slug,
       description: values.description?.trim() || null,
-      whatsapp: values.whatsapp?.trim() || null,
-      address: values.address?.trim() || null,
     })
     if (error) { setError('root', { message: error }); addToast('Gagal menyimpan informasi toko.', 'error'); return }
     addToast('Informasi toko berhasil disimpan.')
@@ -66,8 +60,8 @@ export function StoreInfoForm({ store }: { store: Tables<'stores'> }) {
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="bg-white rounded-2xl border border-gray-100 p-6 space-y-5">
       <ToastContainer toasts={toasts} onRemove={removeToast} />
       <div>
-        <h2 className="text-base font-bold text-gray-900">Informasi Toko</h2>
-        <p className="text-sm text-gray-500 mt-0.5">Nama usaha, URL halaman publik, dan kontak yang ditampilkan ke pelanggan.</p>
+        <h2 className="text-base font-bold text-gray-900">Informasi Dasar</h2>
+        <p className="text-sm text-gray-500 mt-0.5">Nama toko, URL halaman publik, dan deskripsi singkat.</p>
       </div>
 
       {errors.root && (
@@ -117,22 +111,6 @@ export function StoreInfoForm({ store }: { store: Tables<'stores'> }) {
           <p className="text-xs text-gray-400 mt-1.5">
             Maksimal 150 karakter. Ditampilkan di halaman menu publik Anda.
           </p>
-      </div>
-
-      <div>
-        <label htmlFor="si-wa" className="block text-sm font-semibold text-gray-700 mb-1.5">Nomor WhatsApp</label>
-        <input id="si-wa" type="tel" {...register('whatsapp')}
-          className={`w-full px-3.5 py-3 bg-gray-50 border rounded-xl text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-400 transition-all ${errors.whatsapp ? 'border-red-300 bg-red-50' : 'border-gray-200'}`}
-          placeholder="cth. 628123456789" />
-        {errors.whatsapp ? <p className="text-xs text-red-500 mt-1">{errors.whatsapp.message}</p>
-          : <p className="text-xs text-gray-400 mt-1.5">Format internasional, cth: 628123456789</p>}
-      </div>
-
-      <div>
-        <label htmlFor="si-addr" className="block text-sm font-semibold text-gray-700 mb-1.5">Alamat</label>
-        <textarea id="si-addr" rows={2} {...register('address')}
-          className="w-full px-3.5 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-400 transition-all resize-none"
-          placeholder="Alamat lengkap toko Anda..." />
       </div>
 
       <div className="flex justify-end pt-2 border-t border-gray-100">
