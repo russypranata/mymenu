@@ -12,7 +12,7 @@ function SkeletonBox({ className }: { className: string }) {
 
 export default function ProfileLoading() {
   return (
-    <div className="max-w-2xl space-y-6">
+    <div className="space-y-6">
       {/* Banner placeholder */}
       <div className="h-16 bg-gray-100 rounded-2xl animate-pulse" />
 

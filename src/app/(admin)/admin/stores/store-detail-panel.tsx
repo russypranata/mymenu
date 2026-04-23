@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import type { AdminStoreDetail } from '@/lib/queries/admin'
+import { formatWhatsAppNumber } from '@/lib/utils'
 import { X, ExternalLink, UtensilsCrossed, MapPin, Phone, User, Store } from 'lucide-react'
 
 export function StoreDetailPanel({
@@ -90,7 +91,7 @@ export function StoreDetailPanel({
                 </div>
                 <div>
                   <p className="text-xs text-gray-400">WhatsApp</p>
-                  <p className="text-sm font-semibold text-gray-900">{(store as any).whatsapp}</p>
+                  <p className="text-sm font-semibold text-gray-900">{formatWhatsAppNumber((store as any).whatsapp)}</p>
                 </div>
               </div>
             )}

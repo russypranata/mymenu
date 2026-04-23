@@ -1,6 +1,6 @@
 export default function SettingsLoading() {
   return (
-    <div className="max-w-2xl space-y-6 animate-pulse">
+    <div className="space-y-6 animate-pulse">
       {/* Banner placeholder */}
       <div className="h-16 bg-gray-100 rounded-2xl" />
 

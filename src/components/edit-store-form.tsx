@@ -17,8 +17,7 @@ const schema = z.object({
   slug: z.string().min(1, 'URL toko tidak boleh kosong.').max(60)
     .regex(/^[a-z0-9-]+$/, 'Hanya huruf kecil, angka, dan tanda hubung.'),
   description: z.string().max(500).optional(),
-  whatsapp: z.string().regex(/^\d{10,15}$/, 'Nomor WhatsApp harus 10-15 digit angka.').optional().or(z.literal('')),
-  address: z.string().max(300).optional(),
+  whatsapp: z.string().regex(/^\+?[0-9]{10,15}$/, 'Format nomor tidak valid. Contoh: +628123456789').optional().or(z.literal('')),
 })
 
 type FormValues = z.infer<typeof schema>
@@ -36,7 +35,6 @@ export function EditStoreForm({ store }: { store: Tables<'stores'> }) {
       slug: store.slug,
       description: store.description ?? '',
       whatsapp: store.whatsapp ?? '',
-      address: store.address ?? '',
     },
   })
 
@@ -66,7 +64,6 @@ export function EditStoreForm({ store }: { store: Tables<'stores'> }) {
       slug: values.slug,
       description: values.description?.trim() || null,
       whatsapp: values.whatsapp?.trim() || null,
-      address: values.address?.trim() || null,
     })
 
     if (error) {
@@ -135,23 +132,17 @@ export function EditStoreForm({ store }: { store: Tables<'stores'> }) {
       </div>
 
       <div>
-        <label htmlFor="whatsapp" className="block text-sm font-semibold text-gray-700 mb-1.5">Nomor WhatsApp</label>
+        <label htmlFor="whatsapp" className="block text-sm font-semibold text-gray-700 mb-1.5">
+          Nomor WhatsApp <span className="text-red-400">*</span>
+        </label>
         <input id="whatsapp" type="tel" {...register('whatsapp')}
           className={`w-full px-3.5 py-3 bg-gray-50 border rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-400 transition-all ${errors.whatsapp ? 'border-red-300 bg-red-50' : 'border-gray-200'}`}
-          placeholder="cth. +628123456789"
+          placeholder="+628123456789"
         />
         {errors.whatsapp
           ? <p className="text-xs text-red-500 mt-1">{errors.whatsapp.message}</p>
-          : <p className="text-xs text-gray-400 mt-1.5">Format internasional, cth: +628123456789</p>
+          : <p className="text-xs text-gray-400 mt-1.5">Nomor ini digunakan untuk menerima pesanan dari pelanggan.</p>
         }
-      </div>
-
-      <div>
-        <label htmlFor="address" className="block text-sm font-semibold text-gray-700 mb-1.5">Alamat</label>
-        <textarea id="address" rows={2} {...register('address')}
-          className="w-full px-3.5 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-400 transition-all resize-none"
-          placeholder="Alamat lengkap toko Anda..."
-        />
       </div>
 
       <div className="flex justify-end gap-3 pt-2 border-t border-gray-100">

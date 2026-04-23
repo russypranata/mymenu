@@ -39,11 +39,13 @@ export default async function StoreSettingsPage({ params }: { params: Promise<{ 
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
-        <div className="w-9 h-9 bg-green-50 rounded-xl flex items-center justify-center flex-shrink-0">
-          <Settings className="w-5 h-5 text-green-500" />
-        </div>
         <div>
-          <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">Pengaturan Toko</h1>
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">Pengaturan Toko</h1>
+            <div className="w-7 h-7 bg-green-50 rounded-lg flex items-center justify-center flex-shrink-0">
+              <Settings className="w-4 h-4 text-green-500" />
+            </div>
+          </div>
           <p className="text-sm text-gray-500 mt-0.5">{store.name} · Kelola informasi, lokasi, tampilan, dan pengaturan lainnya</p>
         </div>
       </div>
@@ -65,7 +67,14 @@ export default async function StoreSettingsPage({ params }: { params: Promise<{ 
 
       <section className="space-y-4">
         <SectionLabel>Tampilan Publik</SectionLabel>
-        <StoreAppearanceForm storeId={store.id} storeName={store.name} settings={settings} />
+        <StoreAppearanceForm 
+          storeId={store.id} 
+          storeName={store.name} 
+          storeSlug={store.slug}
+          storeDescription={store.description}
+          storeWhatsapp={store.whatsapp}
+          settings={settings} 
+        />
       </section>
 
       <section className="space-y-4">

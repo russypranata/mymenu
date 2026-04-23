@@ -34,7 +34,15 @@ export function formatWhatsAppMessage(storeName: string, menuItems: { name: stri
 }
 
 export function getWhatsAppLink(whatsappNumber: string, message: string): string {
-  // Remove any non-digit characters from the beginning
-  const cleanNumber = whatsappNumber.replace(/^\D+/, '')
+  // Remove all non-digit characters except leading +
+  const cleanNumber = whatsappNumber.replace(/[^\d+]/g, '').replace(/\++/g, '+')
   return `https://wa.me/${cleanNumber}?text=${encodeURIComponent(message)}`
+}
+
+export function formatWhatsAppNumber(phone: string): string {
+  // Ensure number starts with + if it doesn't already
+  if (!phone.startsWith('+')) {
+    return `+${phone}`
+  }
+  return phone
 }

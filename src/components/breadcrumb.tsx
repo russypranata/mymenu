@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Store, UtensilsCrossed, User, Settings, Plus, Pencil, LucideIcon, CreditCard } from 'lucide-react'
+import { LayoutDashboard, Store, UtensilsCrossed, User, Settings, Plus, Pencil, LucideIcon, CreditCard, BookOpen } from 'lucide-react'
 
 const SEGMENT_LABELS: Record<string, string> = {
   dashboard: 'Dashboard',
@@ -12,6 +12,7 @@ const SEGMENT_LABELS: Record<string, string> = {
   edit: 'Edit',
   settings: 'Pengaturan',
   profile: 'Profil',
+  guide: 'Panduan',
   admin: 'Admin',
   users: 'Users',
   subscriptions: 'Subscriptions',
@@ -26,6 +27,7 @@ const SEGMENT_ICONS: Record<string, LucideIcon> = {
   edit: Pencil,
   settings: Settings,
   profile: User,
+  guide: BookOpen,
   admin: LayoutDashboard,
   users: User,
   subscriptions: CreditCard,

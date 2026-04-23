@@ -7,11 +7,6 @@ const supabaseHostname = 'qdvfaypmvtnufgwfksvm.supabase.co'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverActions: {
-      bodySizeLimit: '3mb',
-    },
-  },
   turbopack: {
     root: __dirname,
   },
@@ -45,27 +40,10 @@ const nextConfig = {
           { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
           // Prevent MIME type sniffing
           { key: 'X-Content-Type-Options', value: 'nosniff' },
-          // Force HTTPS
-          { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
           // Limit referrer info
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
           // Disable browser features not needed
           { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
-          // Content Security Policy
-          {
-            key: 'Content-Security-Policy',
-            value: [
-              `default-src 'self'`,
-              `script-src 'self' 'unsafe-inline' 'unsafe-eval'`, // unsafe-eval needed by Next.js dev
-              `style-src 'self' 'unsafe-inline'`,
-              `img-src 'self' data: blob: https://*.supabase.co https://images.unsplash.com https://picsum.photos https://fastly.picsum.photos`,
-              `font-src 'self' data:`,
-              `connect-src 'self' https://${supabaseHostname} wss://${supabaseHostname}`,
-              `frame-ancestors 'self'`,
-              `base-uri 'self'`,
-              `form-action 'self'`,
-            ].join('; '),
-          },
         ],
       },
     ]

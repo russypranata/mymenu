@@ -179,9 +179,9 @@ export type Database = {
           opening_hours: string | null
           whatsapp_button_text: string | null
           show_price: boolean | null
+          enable_ordering: boolean | null
           font: string | null
           menu_layout: string | null
-          phone: string | null
           instagram: string | null
           facebook: string | null
           tiktok: string | null
@@ -197,9 +197,9 @@ export type Database = {
           opening_hours?: string | null
           whatsapp_button_text?: string | null
           show_price?: boolean | null
+          enable_ordering?: boolean | null
           font?: string | null
           menu_layout?: string | null
-          phone?: string | null
           instagram?: string | null
           facebook?: string | null
           tiktok?: string | null
@@ -215,9 +215,9 @@ export type Database = {
           opening_hours?: string | null
           whatsapp_button_text?: string | null
           show_price?: boolean | null
+          enable_ordering?: boolean | null
           font?: string | null
           menu_layout?: string | null
-          phone?: string | null
           instagram?: string | null
           facebook?: string | null
           tiktok?: string | null
@@ -259,7 +259,6 @@ export type Database = {
           name: string
           address: string
           opening_hours: string | null
-          whatsapp: string | null
           is_primary: boolean
           created_at: string
           updated_at: string
@@ -270,7 +269,6 @@ export type Database = {
           name: string
           address: string
           opening_hours?: string | null
-          whatsapp?: string | null
           is_primary?: boolean
           created_at?: string
           updated_at?: string
@@ -281,7 +279,6 @@ export type Database = {
           name?: string
           address?: string
           opening_hours?: string | null
-          whatsapp?: string | null
           is_primary?: boolean
           created_at?: string
           updated_at?: string

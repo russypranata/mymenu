@@ -24,11 +24,13 @@ export default async function NewStoreMenuPage({ params }: { params: Promise<{ i
   return (
     <div className="max-w-2xl space-y-6">
       <div className="flex items-center gap-3">
-        <div className="w-9 h-9 bg-green-50 rounded-xl flex items-center justify-center flex-shrink-0">
-          <UtensilsCrossed className="w-5 h-5 text-green-500" />
-        </div>
         <div>
-          <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">Tambah Menu Baru</h1>
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">Tambah Menu Baru</h1>
+            <div className="w-7 h-7 bg-green-50 rounded-lg flex items-center justify-center flex-shrink-0">
+              <UtensilsCrossed className="w-4 h-4 text-green-500" />
+            </div>
+          </div>
           <p className="text-sm text-gray-500 mt-0.5">{store.name}</p>
         </div>
       </div>

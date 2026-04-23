@@ -31,11 +31,13 @@ export default function GuidePage() {
     <div className="space-y-8">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="w-9 h-9 bg-green-50 rounded-xl flex items-center justify-center flex-shrink-0">
-          <BookOpen className="w-5 h-5 text-green-500" />
-        </div>
         <div>
-          <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">Panduan Penggunaan</h1>
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">Panduan Penggunaan</h1>
+            <div className="w-7 h-7 bg-green-50 rounded-lg flex items-center justify-center flex-shrink-0">
+              <BookOpen className="w-4 h-4 text-green-500" />
+            </div>
+          </div>
           <p className="text-sm text-gray-500 mt-0.5">
             Pelajari cara mengelola halaman menu digital Anda di MyMenu — dari setup awal sampai siap dibagikan ke pelanggan.
           </p>
@@ -317,16 +319,27 @@ export default function GuidePage() {
       </section>
 
       {/* CTA */}
-      <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-6 text-white">
-        <p className="text-lg font-extrabold mb-1">Siap mulai?</p>
-        <p className="text-sm text-green-100 mb-4">Buat toko pertama Anda dan mulai kelola menu digital sekarang.</p>
-        <Link
-          href="/store/new"
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-green-500 text-sm font-bold rounded-xl hover:bg-green-50 transition-colors"
-        >
-          <Store className="w-4 h-4" />
-          Buat Toko Sekarang
-        </Link>
+      <div className="relative bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-6 text-white overflow-hidden">
+        {/* Decorative icons */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <Store className="absolute top-2 left-4 w-16 h-16 text-white/10 rotate-12" />
+          <UtensilsCrossed className="absolute top-1/2 -translate-y-1/2 right-8 w-20 h-20 text-white/10 -rotate-12" />
+          <QrCode className="absolute bottom-2 left-1/2 -translate-x-1/2 w-14 h-14 text-white/10 rotate-45" />
+          <BookOpen className="absolute top-4 right-1/4 w-12 h-12 text-white/10 -rotate-6" />
+        </div>
+        
+        {/* Content */}
+        <div className="relative z-10">
+          <p className="text-lg font-extrabold mb-1">Siap mulai?</p>
+          <p className="text-sm text-green-100 mb-4">Buat toko pertama Anda dan mulai kelola menu digital sekarang.</p>
+          <Link
+            href="/store/new"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-green-500 text-sm font-bold rounded-xl hover:bg-green-50 transition-colors"
+          >
+            <Store className="w-4 h-4" />
+            Buat Toko Sekarang
+          </Link>
+        </div>
       </div>
     </div>
   )

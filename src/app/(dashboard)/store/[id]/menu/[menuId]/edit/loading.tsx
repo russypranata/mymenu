@@ -1,6 +1,6 @@
 export default function EditMenuLoading() {
   return (
-    <div className="max-w-2xl space-y-6 animate-pulse">
+    <div className="space-y-6 animate-pulse">
       <div className="h-16 bg-gray-100 rounded-2xl" />
       <div className="space-y-2">
         <div className="h-7 w-32 bg-gray-200 rounded-lg" />

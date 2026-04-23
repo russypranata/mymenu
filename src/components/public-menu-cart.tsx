@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import { CartDrawer } from './cart-drawer'
 import type { Tables } from '@/types/database.types'
 
@@ -27,12 +26,8 @@ export function PublicMenuCart({
   buttonText,
   showPrice,
 }: PublicMenuCartProps) {
-  const [selectedLocation] = useState<StoreLocation>(
-    locations.find(loc => loc.is_primary) || locations[0]
-  )
-
-  // Use selected location's WhatsApp, fallback to store WhatsApp
-  const whatsapp = selectedLocation?.whatsapp || storeWhatsapp
+  // Use store WhatsApp for all orders (locations are info only)
+  const whatsapp = storeWhatsapp
 
   if (!whatsapp) return null
 

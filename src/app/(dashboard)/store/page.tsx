@@ -24,19 +24,21 @@ export default async function StorePage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 bg-green-50 rounded-xl flex items-center justify-center flex-shrink-0">
-            <Store className="w-5 h-5 text-green-500" />
-          </div>
-          <div>
+      <div className="flex items-center gap-3">
+        <div>
+          <div className="flex items-center gap-2">
             <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">Toko Saya</h1>
-            <p className="text-sm text-gray-500 mt-0.5">
-              {stores.length === 0
-                ? 'Buat halaman menu digital yang bisa dibagikan via link & QR code'
-                : 'Halaman menu digital Anda yang bisa dibagikan via link & QR code'}
-            </p>
+            <div className="w-7 h-7 bg-green-50 rounded-lg flex items-center justify-center flex-shrink-0">
+              <Store className="w-4 h-4 text-green-500" />
+            </div>
           </div>
+          <p className="text-sm text-gray-500 mt-0.5">
+            {stores.length === 0
+              ? 'Buat halaman menu digital yang bisa dibagikan via link & QR code'
+              : 'Halaman menu digital Anda yang bisa dibagikan via link & QR code'}
+          </p>
         </div>
+      </div>
         {stores.length === 0 && (
           <Link
             href="/store/new"

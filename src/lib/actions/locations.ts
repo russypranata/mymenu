@@ -8,7 +8,6 @@ const locationSchema = z.object({
   name: z.string().min(1, 'Nama lokasi wajib diisi').max(255),
   address: z.string().min(1, 'Alamat wajib diisi'),
   opening_hours: z.string().optional(),
-  whatsapp: z.string().optional(),
   is_primary: z.boolean().optional(),
 })
 
@@ -19,13 +18,12 @@ export async function createLocation(storeId: string, formData: FormData) {
     name: formData.get('name') as string,
     address: formData.get('address') as string,
     opening_hours: formData.get('opening_hours') as string || null,
-    whatsapp: formData.get('whatsapp') as string || null,
     is_primary: formData.get('is_primary') === 'true',
   }
   
   const validation = locationSchema.safeParse(data)
   if (!validation.success) {
-    return { error: validation.error.errors[0].message }
+    return { error: validation.error.issues[0].message }
   }
   
   // Verify store ownership
@@ -66,13 +64,12 @@ export async function updateLocation(locationId: string, formData: FormData) {
     name: formData.get('name') as string,
     address: formData.get('address') as string,
     opening_hours: formData.get('opening_hours') as string || null,
-    whatsapp: formData.get('whatsapp') as string || null,
     is_primary: formData.get('is_primary') === 'true',
   }
   
   const validation = locationSchema.safeParse(data)
   if (!validation.success) {
-    return { error: validation.error.errors[0].message }
+    return { error: validation.error.issues[0].message }
   }
   
   // Verify ownership

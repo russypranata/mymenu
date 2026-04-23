@@ -70,6 +70,8 @@ export default async function PublicMenuPage({ params }: PageProps) {
   const font = store.store_settings?.font ?? 'sans'
   const menuLayout = store.store_settings?.menu_layout ?? 'list'
   const showPrice = store.store_settings?.show_price ?? true
+  // Only enable ordering if both setting is ON and WhatsApp is filled
+  const enableOrdering = (store.store_settings?.enable_ordering ?? true) && !!store.whatsapp
   const isDark = theme === 'dark'
 
   const fontClass =
@@ -150,6 +152,7 @@ export default async function PublicMenuPage({ params }: PageProps) {
             categories={categories}
             menuLayout={menuLayout}
             showPrice={showPrice}
+            enableOrdering={enableOrdering}
             primaryColor={primaryColor}
             isDark={isDark}
             storeId={store.id}
@@ -157,16 +160,18 @@ export default async function PublicMenuPage({ params }: PageProps) {
         </section>
 
         {/* ── WhatsApp floating ── */}
-        <PublicMenuCart
-          storeId={store.id}
-          storeName={store.name}
-          locations={locations}
-          storeWhatsapp={store.whatsapp}
-          primaryColor={primaryColor}
-          isDark={isDark}
-          buttonText={store.store_settings?.whatsapp_button_text}
-          showPrice={showPrice}
-        />
+        {enableOrdering && (
+          <PublicMenuCart
+            storeId={store.id}
+            storeName={store.name}
+            locations={locations}
+            storeWhatsapp={store.whatsapp}
+            primaryColor={primaryColor}
+            isDark={isDark}
+            buttonText={store.store_settings?.whatsapp_button_text}
+            showPrice={showPrice}
+          />
+        )}
 
         {/* ── Footer ── */}
         <PublicMenuFooter

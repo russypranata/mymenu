@@ -72,6 +72,7 @@ export interface UpdateStoreInput {
   name: string
   slug: string
   description?: string | null
+  whatsapp?: string | null
 }
 
 export async function updateStore(input: UpdateStoreInput): Promise<{ error: string | null }> {
@@ -91,6 +92,7 @@ export async function updateStore(input: UpdateStoreInput): Promise<{ error: str
     name: input.name,
     slug: input.slug,
     description: input.description ?? null,
+    whatsapp: input.whatsapp ?? null,
   }).eq('id', input.id)
 
   if (error) return { error: error.message }
@@ -153,9 +155,9 @@ export interface UpdateStoreSettingsInput {
   openingHours?: string | null
   whatsappButtonText?: string | null
   showPrice?: boolean | null
+  enableOrdering?: boolean | null
   font?: string | null
   menuLayout?: string | null
-  phone?: string | null
   instagram?: string | null
   facebook?: string | null
   tiktok?: string | null
@@ -169,8 +171,16 @@ export async function updateStoreSettings(
   if (!user) return { error: 'Tidak terautentikasi.' }
 
   const { data: store } = await supabase
-    .from('stores').select('id').eq('id', input.storeId).eq('user_id', user.id).single()
+    .from('stores').select('id, whatsapp').eq('id', input.storeId).eq('user_id', user.id).single()
   if (!store) return { error: 'Toko tidak ditemukan atau akses ditolak.' }
+
+  // Auto-disable ordering if WhatsApp is empty
+  let finalEnableOrdering = input.enableOrdering
+  if (input.enableOrdering !== undefined && input.enableOrdering === true) {
+    if (!store.whatsapp || store.whatsapp.trim() === '') {
+      finalEnableOrdering = false
+    }
+  }
 
   const { error } = await supabase.from('store_settings').upsert({
     store_id: input.storeId,
@@ -181,9 +191,9 @@ export async function updateStoreSettings(
     ...(input.openingHours !== undefined && { opening_hours: input.openingHours }),
     ...(input.whatsappButtonText !== undefined && { whatsapp_button_text: input.whatsappButtonText }),
     ...(input.showPrice !== undefined && { show_price: input.showPrice }),
+    ...(finalEnableOrdering !== undefined && { enable_ordering: finalEnableOrdering }),
     ...(input.font !== undefined && { font: input.font }),
     ...(input.menuLayout !== undefined && { menu_layout: input.menuLayout }),
-    ...(input.phone !== undefined && { phone: input.phone }),
     ...(input.instagram !== undefined && { instagram: input.instagram }),
     ...(input.facebook !== undefined && { facebook: input.facebook }),
     ...(input.tiktok !== undefined && { tiktok: input.tiktok }),

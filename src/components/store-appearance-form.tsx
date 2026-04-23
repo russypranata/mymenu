@@ -2,12 +2,13 @@
 
 import { useState, useRef } from 'react'
 import Image from 'next/image'
-import { Palette, ImageIcon, AlertCircle, Save, X, Clock, LayoutList, LayoutGrid, Type, Phone } from 'lucide-react'
+import { Palette, ImageIcon, AlertCircle, Save, X, Clock, LayoutList, LayoutGrid, Type } from 'lucide-react'
 import { Spinner } from '@/components/spinner'
 import { uploadStoreAsset, updateStoreSettings } from '@/lib/actions/store'
 import type { Tables } from '@/types/database.types'
 import { useToast, ToastContainer } from '@/components/toast'
 import { ImageCropModal } from '@/components/image-crop-modal'
+import { StorePreviewButton } from '@/components/store-preview-button'
 
 // ── Opening Hours Picker ──
 const DAYS_SHORT = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min']
@@ -101,10 +102,13 @@ const FONTS = [
 interface Props {
   storeId: string
   storeName: string
+  storeSlug: string
+  storeDescription?: string | null
+  storeWhatsapp?: string | null
   settings: Tables<'store_settings'> | null
 }
 
-export function StoreAppearanceForm({ storeId, storeName, settings }: Props) {
+export function StoreAppearanceForm({ storeId, storeName, storeSlug, storeDescription, storeWhatsapp, settings }: Props) {
   const [logoPreview, setLogoPreview] = useState<string | null>(settings?.logo_url ?? null)
   const [bannerPreview, setBannerPreview] = useState<string | null>(settings?.banner_url ?? null)
   const [logoFile, setLogoFile] = useState<File | null>(null)
@@ -116,9 +120,9 @@ export function StoreAppearanceForm({ storeId, storeName, settings }: Props) {
   const [openingHours, setOpeningHours] = useState(settings?.opening_hours ?? '')
   const [waButtonText, setWaButtonText] = useState(settings?.whatsapp_button_text ?? 'Pesan via WhatsApp')
   const [showPrice, setShowPrice] = useState(settings?.show_price ?? true)
+  const [enableOrdering, setEnableOrdering] = useState(settings?.enable_ordering ?? true)
   const [font, setFont] = useState(settings?.font ?? 'sans')
   const [menuLayout, setMenuLayout] = useState(settings?.menu_layout ?? 'list')
-  const [phone, setPhone] = useState(settings?.phone ?? '')
   const [instagram, setInstagram] = useState(settings?.instagram ?? '')
   const [facebook, setFacebook] = useState(settings?.facebook ?? '')
   const [tiktok, setTiktok] = useState(settings?.tiktok ?? '')
@@ -188,8 +192,7 @@ export function StoreAppearanceForm({ storeId, storeName, settings }: Props) {
       storeId, logoUrl, bannerUrl, primaryColor, theme,
       openingHours: openingHours.trim() || null,
       whatsappButtonText: waButtonText.trim() || 'Pesan via WhatsApp',
-      showPrice, font, menuLayout,
-      phone: phone.trim() || null,
+      showPrice, enableOrdering, font, menuLayout,
       instagram: instagram.trim() || null,
       facebook: facebook.trim() || null,
       tiktok: tiktok.trim() || null,
@@ -225,29 +228,7 @@ export function StoreAppearanceForm({ storeId, storeName, settings }: Props) {
       )}
 
       {/* Live preview */}
-      <div className="rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
-        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-4 pt-3 pb-2">Preview</p>
-        <div className="h-24 relative" style={{ backgroundColor: primaryColor }}>
-          {bannerPreview && (
-            <Image src={bannerPreview} alt="Banner preview" fill sizes="(max-width: 640px) 100vw, 672px" className="object-cover" quality={90} />
-          )}
-          <div className="absolute inset-0 bg-black/20" />
-          <div className="absolute -bottom-8 left-1/2 -translate-x-1/2">
-            <div className="relative w-16 h-16 rounded-xl bg-white border border-gray-100 shadow flex items-center justify-center overflow-hidden">
-              {logoPreview
-                ? <Image src={logoPreview} alt="Logo preview" fill sizes="64px" className="object-cover" quality={90} />
-                : <span className="text-xl font-bold text-gray-400">{storeName?.[0]?.toUpperCase()}</span>}
-            </div>
-          </div>
-        </div>
-        <div className="bg-gray-50 pt-10 pb-4 text-center">
-          <p className={`text-sm font-bold text-gray-800 ${font === 'serif' ? 'font-serif' : font === 'mono' ? 'font-mono' : 'font-sans'}`}>{storeName}</p>
-          <div className="mt-1 flex items-center justify-center gap-1.5">
-            <span className="w-2 h-2 rounded-full" style={{ backgroundColor: primaryColor }} />
-            <span className="text-xs text-gray-400 capitalize">{theme} · {font} · {menuLayout}</span>
-          </div>
-        </div>
-      </div>
+      <StorePreviewButton storeSlug={storeSlug} />
 
       {/* Logo */}
       <div>
@@ -386,6 +367,35 @@ export function StoreAppearanceForm({ storeId, storeName, settings }: Props) {
         </button>
       </div>
 
+      {/* Enable ordering toggle */}
+      <div className="flex items-center justify-between py-3 border-t border-gray-100">
+        <div className="flex-1">
+          <p className="text-sm font-semibold text-gray-700">Aktifkan Fitur Pemesanan</p>
+          <p className="text-xs text-gray-400 mt-0.5">Izinkan pelanggan menambahkan menu ke keranjang dan memesan via WhatsApp</p>
+          {!storeWhatsapp && (
+            <div className="flex items-start gap-2 mt-2 px-3 py-2 bg-amber-50 border border-amber-200 rounded-lg">
+              <AlertCircle className="w-3.5 h-3.5 text-amber-600 flex-shrink-0 mt-0.5" />
+              <p className="text-xs text-amber-700">Isi nomor WhatsApp di tab <strong>Informasi Dasar</strong> terlebih dahulu untuk mengaktifkan fitur pemesanan.</p>
+            </div>
+          )}
+        </div>
+        <button 
+          type="button" 
+          onClick={() => storeWhatsapp && setEnableOrdering(v => !v)}
+          disabled={!storeWhatsapp}
+          className={`relative w-11 h-6 rounded-full transition-colors flex-shrink-0 ml-4 ${
+            !storeWhatsapp 
+              ? 'bg-gray-200 cursor-not-allowed opacity-50' 
+              : enableOrdering ? 'bg-green-500' : 'bg-gray-200'
+          }`}
+          role="switch" 
+          aria-checked={enableOrdering}
+          title={!storeWhatsapp ? 'Isi nomor WhatsApp terlebih dahulu' : undefined}
+        >
+          <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${enableOrdering && storeWhatsapp ? 'translate-x-5' : 'translate-x-0'}`} />
+        </button>
+      </div>
+
       {/* Opening hours */}
       <div>
         <label className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-1.5">
@@ -409,20 +419,8 @@ export function StoreAppearanceForm({ storeId, storeName, settings }: Props) {
       {/* ── Kontak & Sosial Media ── */}
       <div className="pt-2 border-t border-gray-100 space-y-4">
         <div>
-          <h3 className="text-sm font-bold text-gray-900 mb-0.5">Kontak & Sosial Media</h3>
+          <h3 className="text-sm font-bold text-gray-900 mb-0.5">Sosial Media</h3>
           <p className="text-xs text-gray-400">Ditampilkan di footer halaman menu publik.</p>
-        </div>
-
-        {/* Phone */}
-        <div>
-          <label htmlFor="sa-phone" className="block text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-1.5">
-            <Phone className="w-3.5 h-3.5 text-gray-400" />Nomor Telepon
-          </label>
-          <input id="sa-phone" type="tel" value={phone}
-            onChange={e => setPhone(e.target.value)}
-            className="w-full px-3.5 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-400 transition-all"
-            placeholder="cth. 08123456789" />
-          <p className="text-xs text-gray-400 mt-1">Nomor yang bisa dihubungi pelanggan (bukan untuk order).</p>
         </div>
 
         {/* Instagram */}

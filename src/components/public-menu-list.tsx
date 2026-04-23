@@ -16,6 +16,7 @@ interface Props {
   categories?: Category[]
   menuLayout: string
   showPrice: boolean
+  enableOrdering: boolean
   primaryColor: string
   isDark: boolean
   storeId: string
@@ -28,12 +29,13 @@ interface CardListProps {
   menuDescColor: string
   menuImageBg: string
   showPrice: boolean
+  enableOrdering: boolean
   primaryColor: string
   isDark: boolean
   onSelect: (menu: Menu) => void
 }
 
-function MenuCardList({ items, cardBg, menuNameColor, menuDescColor, menuImageBg, showPrice, primaryColor, isDark, onSelect }: CardListProps) {
+function MenuCardList({ items, cardBg, menuNameColor, menuDescColor, menuImageBg, showPrice, enableOrdering, primaryColor, isDark, onSelect }: CardListProps) {
   const { add, increment, decrement, items: cartItems } = useCart()
 
   return (
@@ -42,9 +44,9 @@ function MenuCardList({ items, cardBg, menuNameColor, menuDescColor, menuImageBg
         const cartItem = cartItems.find(i => i.menu.id === menu.id)
         const qty = cartItem?.qty ?? 0
         return (
-          <li key={menu.id}>
+          <li key={menu.id} className="flex">
             <div
-              className={`rounded-[1.5rem] border overflow-hidden flex flex-col h-full transition-all duration-300 ${cardBg}`}
+              className={`rounded-[1.5rem] border overflow-hidden flex flex-col w-full transition-all duration-300 ${cardBg}`}
             >
               {/* Image */}
               <button
@@ -78,9 +80,16 @@ function MenuCardList({ items, cardBg, menuNameColor, menuDescColor, menuImageBg
 
               {/* Info */}
               <div className="flex flex-col flex-1 p-4 sm:p-5">
-                <button type="button" onClick={() => onSelect(menu)} className="text-left flex-1 mb-3">
+                <button type="button" onClick={() => onSelect(menu)} className="text-left mb-3">
                   <div className="flex items-start justify-between gap-2 mb-1.5">
-                    <h3 className={`font-extrabold text-sm sm:text-base leading-snug line-clamp-2 ${menuNameColor}`}>{menu.name}</h3>
+                    <h3 className={`font-extrabold text-sm sm:text-base leading-snug ${menuNameColor}`} style={{
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      minHeight: '2.5rem'
+                    }}>{menu.name}</h3>
                     {showPrice && (
                       <span className="text-sm font-extrabold flex-shrink-0" style={{ color: primaryColor }}>
                         {formatCurrency(menu.price)}
@@ -88,12 +97,19 @@ function MenuCardList({ items, cardBg, menuNameColor, menuDescColor, menuImageBg
                     )}
                   </div>
                   {menu.description && (
-                    <p className={`text-xs leading-relaxed line-clamp-2 ${menuDescColor}`}>{menu.description}</p>
+                    <p className={`text-xs leading-relaxed ${menuDescColor}`} style={{
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      minHeight: '2.25rem'
+                    }}>{menu.description}</p>
                   )}
                 </button>
 
                 {/* Add to cart */}
-                {menu.is_active && (
+                {menu.is_active && enableOrdering && (
                   <div className="mt-auto">
                     {qty === 0 ? (
                       <button
@@ -145,7 +161,7 @@ function MenuCardList({ items, cardBg, menuNameColor, menuDescColor, menuImageBg
 }
 
 // ── Main export ──
-export function PublicMenuList({ menus, categories = [], menuLayout, showPrice, primaryColor, isDark, storeId }: Props) {
+export function PublicMenuList({ menus, categories = [], menuLayout, showPrice, enableOrdering, primaryColor, isDark, storeId }: Props) {
   const [selected, setSelected] = useState<Menu | null>(null)
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
@@ -166,7 +182,7 @@ export function PublicMenuList({ menus, categories = [], menuLayout, showPrice, 
     ? 'bg-slate-800 border-slate-700 text-white placeholder-slate-500'
     : 'bg-white border-slate-200 text-slate-900 placeholder-slate-400'
 
-  const sharedProps = { cardBg, menuNameColor, menuDescColor, menuImageBg, showPrice, primaryColor, isDark, onSelect: setSelected }
+  const sharedProps = { cardBg, menuNameColor, menuDescColor, menuImageBg, showPrice, enableOrdering, primaryColor, isDark, onSelect: setSelected }
 
   return (
     <>

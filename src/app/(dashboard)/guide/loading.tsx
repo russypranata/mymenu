@@ -1,6 +1,6 @@
 export default function GuideLoading() {
   return (
-    <div className="max-w-3xl space-y-8 animate-pulse">
+    <div className="space-y-8 animate-pulse">
       {/* Banner placeholder */}
       <div className="h-16 bg-gray-100 rounded-2xl" />
 

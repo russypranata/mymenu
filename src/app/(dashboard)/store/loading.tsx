@@ -1,6 +1,6 @@
 export default function StoreLoading() {
   return (
-    <div className="space-y-6 max-w-4xl animate-pulse">
+    <div className="space-y-6 animate-pulse">
       {/* Banner placeholder */}
       <div className="h-16 bg-gray-100 rounded-2xl" />
 
