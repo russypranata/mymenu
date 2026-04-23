@@ -71,7 +71,7 @@ export function StoreLocationsManager({ storeId, initialLocations }: StoreLocati
         <div>
           <h2 className="text-base font-bold text-gray-900">Lokasi Toko</h2>
           <p className="text-sm text-gray-500 mt-0.5">
-            Kelola lokasi toko Anda. Jika memiliki lebih dari 1 lokasi, pengunjung dapat memilih lokasi yang ingin dikunjungi.
+            Kelola alamat, jam buka, dan kontak per lokasi. Tambahkan lebih dari 1 lokasi jika memiliki cabang.
           </p>
         </div>
         {!isAdding && (
