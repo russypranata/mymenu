@@ -22,7 +22,7 @@ export default async function StorePage() {
   const stores = await getStoresByUser(user.id)
 
   return (
-    <div className="space-y-6 max-w-4xl">
+    <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 bg-green-50 rounded-xl flex items-center justify-center flex-shrink-0">

@@ -37,7 +37,7 @@ export default async function StoreSettingsPage({ params }: { params: Promise<{ 
   const settings = settingsResult.data as StoreSettings | null
 
   return (
-    <div className="max-w-2xl space-y-6">
+    <div className="space-y-6">
       <div className="flex items-center gap-3">
         <div className="w-9 h-9 bg-green-50 rounded-xl flex items-center justify-center flex-shrink-0">
           <Settings className="w-5 h-5 text-green-500" />
