@@ -54,7 +54,7 @@ export default async function StoreSettingsPage({ params }: { params: Promise<{ 
       </section>
 
       <section className="space-y-4">
-        <SectionLabel>Lokasi Cabang</SectionLabel>
+        <SectionLabel>Lokasi Toko</SectionLabel>
         <StoreLocationsManager storeId={store.id} initialLocations={locations} />
       </section>
 
