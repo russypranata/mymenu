@@ -252,6 +252,50 @@ export type Database = {
         }
         Relationships: []
       }
+      store_locations: {
+        Row: {
+          id: string
+          store_id: string
+          name: string
+          address: string
+          opening_hours: string | null
+          whatsapp: string | null
+          is_primary: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          store_id: string
+          name: string
+          address: string
+          opening_hours?: string | null
+          whatsapp?: string | null
+          is_primary?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          store_id?: string
+          name?: string
+          address?: string
+          opening_hours?: string | null
+          whatsapp?: string | null
+          is_primary?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "store_locations_store_id_fkey"
+            columns: ["store_id"]
+            isOneToOne: false
+            referencedRelation: "stores"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
     }
     Views: {
       [_ in never]: never
