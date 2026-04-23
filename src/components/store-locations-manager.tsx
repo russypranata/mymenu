@@ -69,8 +69,8 @@ export function StoreLocationsManager({ storeId, initialLocations }: StoreLocati
     <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-semibold text-gray-900">Lokasi Toko</h3>
-          <p className="text-xs text-gray-500 mt-0.5">
+          <h2 className="text-base font-bold text-gray-900">Lokasi Toko</h2>
+          <p className="text-sm text-gray-500 mt-0.5">
             Kelola lokasi toko Anda. Jika memiliki lebih dari 1 lokasi, pengunjung dapat memilih lokasi yang ingin dikunjungi.
           </p>
         </div>
