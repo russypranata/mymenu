@@ -185,6 +185,12 @@ export type Database = {
           instagram: string | null
           facebook: string | null
           tiktok: string | null
+          dark_mode_enabled: boolean | null
+          accent_color: string | null
+          border_radius: string | null
+          card_style: string | null
+          text_size: string | null
+          background_pattern: string | null
           created_at: string
         }
         Insert: {
@@ -203,6 +209,12 @@ export type Database = {
           instagram?: string | null
           facebook?: string | null
           tiktok?: string | null
+          dark_mode_enabled?: boolean | null
+          accent_color?: string | null
+          border_radius?: string | null
+          card_style?: string | null
+          text_size?: string | null
+          background_pattern?: string | null
           created_at?: string
         }
         Update: {
@@ -221,6 +233,12 @@ export type Database = {
           instagram?: string | null
           facebook?: string | null
           tiktok?: string | null
+          dark_mode_enabled?: boolean | null
+          accent_color?: string | null
+          border_radius?: string | null
+          card_style?: string | null
+          text_size?: string | null
+          background_pattern?: string | null
           created_at?: string
         }
         Relationships: []

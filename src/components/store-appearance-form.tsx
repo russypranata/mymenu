@@ -79,13 +79,38 @@ function OpeningHoursPicker({ value, onChange }: { value: string; onChange: (v: 
 }
 
 const THEMES = [
-  { value: 'default', label: 'Default', bg: 'bg-green-500', color: '#16a34a' },
-  { value: 'warm', label: 'Warm', bg: 'bg-amber-500', color: '#f59e0b' },
-  { value: 'fresh', label: 'Fresh', bg: 'bg-green-500', color: '#22c55e' },
-  { value: 'ocean', label: 'Ocean', bg: 'bg-blue-500', color: '#3b82f6' },
-  { value: 'purple', label: 'Purple', bg: 'bg-purple-500', color: '#a855f7' },
-  { value: 'rose', label: 'Rose', bg: 'bg-rose-500', color: '#f43f5e' },
-  { value: 'dark', label: 'Dark', bg: 'bg-gray-800', color: '#1f2937' },
+  { value: 'default', label: 'Default', bg: 'bg-green-500', color: '#16a34a', accent: '#10b981' },
+  { value: 'warm', label: 'Warm', bg: 'bg-amber-500', color: '#f59e0b', accent: '#fb923c' },
+  { value: 'fresh', label: 'Fresh', bg: 'bg-green-500', color: '#22c55e', accent: '#4ade80' },
+  { value: 'ocean', label: 'Ocean', bg: 'bg-blue-500', color: '#3b82f6', accent: '#60a5fa' },
+  { value: 'purple', label: 'Purple', bg: 'bg-purple-500', color: '#a855f7', accent: '#c084fc' },
+  { value: 'rose', label: 'Rose', bg: 'bg-rose-500', color: '#f43f5e', accent: '#fb7185' },
+  { value: 'dark', label: 'Dark', bg: 'bg-gray-800', color: '#1f2937', accent: '#374151' },
+]
+
+const BORDER_RADIUS_OPTIONS = [
+  { value: 'sharp', label: 'Sharp', preview: 'rounded-none', desc: 'Sudut tajam' },
+  { value: 'rounded', label: 'Rounded', preview: 'rounded-xl', desc: 'Sudut melengkung' },
+  { value: 'pill', label: 'Pill', preview: 'rounded-full', desc: 'Sangat melengkung' },
+]
+
+const CARD_STYLE_OPTIONS = [
+  { value: 'minimal', label: 'Minimal', desc: 'Tanpa border, flat' },
+  { value: 'card', label: 'Card', desc: 'Dengan border & shadow ringan' },
+  { value: 'elevated', label: 'Elevated', desc: 'Shadow tebal, menonjol' },
+]
+
+const TEXT_SIZE_OPTIONS = [
+  { value: 'sm', label: 'Small', desc: 'Teks kecil & compact' },
+  { value: 'md', label: 'Medium', desc: 'Ukuran standar' },
+  { value: 'lg', label: 'Large', desc: 'Teks besar & mudah dibaca' },
+]
+
+const BACKGROUND_PATTERNS = [
+  { value: 'none', label: 'None', desc: 'Tanpa pattern' },
+  { value: 'dots', label: 'Dots', desc: 'Titik-titik halus' },
+  { value: 'grid', label: 'Grid', desc: 'Garis grid' },
+  { value: 'waves', label: 'Waves', desc: 'Gelombang subtle' },
 ]
 
 const FONTS = [
@@ -116,6 +141,7 @@ export function StoreAppearanceForm({ storeId, storeName, storeSlug, storeDescri
   const [removeLogo, setRemoveLogo] = useState(false)
   const [removeBanner, setRemoveBanner] = useState(false)
   const [primaryColor, setPrimaryColor] = useState(settings?.primary_color ?? '#16a34a')
+  const [accentColor, setAccentColor] = useState(settings?.accent_color ?? '#10b981')
   const [theme, setTheme] = useState(settings?.theme ?? 'default')
   const [openingHours, setOpeningHours] = useState(settings?.opening_hours ?? '')
   const [waButtonText, setWaButtonText] = useState(settings?.whatsapp_button_text ?? 'Pesan via WhatsApp')
@@ -123,6 +149,11 @@ export function StoreAppearanceForm({ storeId, storeName, storeSlug, storeDescri
   const [enableOrdering, setEnableOrdering] = useState(settings?.enable_ordering ?? true)
   const [font, setFont] = useState(settings?.font ?? 'sans')
   const [menuLayout, setMenuLayout] = useState(settings?.menu_layout ?? 'list')
+  const [darkModeEnabled, setDarkModeEnabled] = useState(settings?.dark_mode_enabled ?? false)
+  const [borderRadius, setBorderRadius] = useState(settings?.border_radius ?? 'rounded')
+  const [cardStyle, setCardStyle] = useState(settings?.card_style ?? 'card')
+  const [textSize, setTextSize] = useState(settings?.text_size ?? 'md')
+  const [backgroundPattern, setBackgroundPattern] = useState(settings?.background_pattern ?? 'none')
   const [instagram, setInstagram] = useState(settings?.instagram ?? '')
   const [facebook, setFacebook] = useState(settings?.facebook ?? '')
   const [tiktok, setTiktok] = useState(settings?.tiktok ?? '')
@@ -167,6 +198,7 @@ export function StoreAppearanceForm({ storeId, storeName, storeSlug, storeDescri
   const handleThemeSelect = (t: typeof THEMES[0]) => {
     setTheme(t.value)
     setPrimaryColor(t.color)
+    setAccentColor(t.accent)
   }
 
   const handleSave = async () => {
@@ -196,6 +228,12 @@ export function StoreAppearanceForm({ storeId, storeName, storeSlug, storeDescri
       instagram: instagram.trim() || null,
       facebook: facebook.trim() || null,
       tiktok: tiktok.trim() || null,
+      darkModeEnabled,
+      accentColor,
+      borderRadius,
+      cardStyle,
+      textSize,
+      backgroundPattern,
     })
     setIsPending(false)
     if (error) { setError(error); addToast('Gagal menyimpan tampilan toko.', 'error'); return }
@@ -311,6 +349,120 @@ export function StoreAppearanceForm({ storeId, storeName, storeSlug, storeDescri
           </div>
         </div>
         <p className="text-xs text-gray-400 mt-1.5">Pilih warna kustom akan mengganti tema preset.</p>
+      </div>
+
+      {/* Accent color */}
+      <div>
+        <p className="text-sm font-semibold text-gray-700 mb-2">Warna Aksen</p>
+        <div className="flex items-center gap-3">
+          <input type="color" value={accentColor}
+            onChange={(e) => setAccentColor(e.target.value)}
+            className="w-10 h-10 rounded-xl border border-gray-200 cursor-pointer p-0.5 bg-white" />
+          <div className="flex items-center gap-2 px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl flex-1">
+            <Palette className="w-4 h-4 text-gray-400" />
+            <span className="text-sm font-mono text-gray-700">{accentColor}</span>
+          </div>
+        </div>
+        <p className="text-xs text-gray-400 mt-1.5">Warna sekunder untuk tombol, badge, dan elemen aksen lainnya.</p>
+      </div>
+
+      {/* Dark mode toggle */}
+      <div className="flex items-center justify-between py-3 border-t border-gray-100">
+        <div>
+          <p className="text-sm font-semibold text-gray-700">Dark Mode untuk Pelanggan</p>
+          <p className="text-xs text-gray-400 mt-0.5">Izinkan pelanggan beralih antara tema terang dan gelap</p>
+        </div>
+        <button type="button" onClick={() => setDarkModeEnabled(v => !v)}
+          className={`relative w-11 h-6 rounded-full transition-colors ${darkModeEnabled ? 'bg-green-500' : 'bg-gray-200'}`}
+          role="switch" aria-checked={darkModeEnabled}>
+          <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${darkModeEnabled ? 'translate-x-5' : 'translate-x-0'}`} />
+        </button>
+      </div>
+
+      {/* Border radius */}
+      <div>
+        <p className="text-sm font-semibold text-gray-700 mb-2">Gaya Sudut</p>
+        <div className="grid grid-cols-3 gap-3">
+          {BORDER_RADIUS_OPTIONS.map(opt => (
+            <button key={opt.value} type="button" onClick={() => setBorderRadius(opt.value)}
+              className={`flex flex-col items-center gap-2 p-4 rounded-xl border transition-all ${
+                borderRadius === opt.value ? 'border-green-400 bg-green-50' : 'border-gray-200 hover:border-gray-300'
+              }`}>
+              <div className={`w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 ${opt.preview}`} />
+              <div className="text-center">
+                <span className={`text-xs font-semibold block ${borderRadius === opt.value ? 'text-green-600' : 'text-gray-700'}`}>{opt.label}</span>
+                <span className="text-xs text-gray-400">{opt.desc}</span>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Card style */}
+      <div>
+        <p className="text-sm font-semibold text-gray-700 mb-2">Gaya Kartu Menu</p>
+        <div className="grid grid-cols-3 gap-3">
+          {CARD_STYLE_OPTIONS.map(opt => (
+            <button key={opt.value} type="button" onClick={() => setCardStyle(opt.value)}
+              className={`flex flex-col items-center gap-2 p-4 rounded-xl border transition-all ${
+                cardStyle === opt.value ? 'border-green-400 bg-green-50' : 'border-gray-200 hover:border-gray-300'
+              }`}>
+              <div className={`w-full h-16 bg-white rounded-lg flex items-center justify-center ${
+                opt.value === 'minimal' ? '' : opt.value === 'card' ? 'border border-gray-200 shadow-sm' : 'shadow-lg'
+              }`}>
+                <div className="w-8 h-8 bg-gray-100 rounded" />
+              </div>
+              <div className="text-center">
+                <span className={`text-xs font-semibold block ${cardStyle === opt.value ? 'text-green-600' : 'text-gray-700'}`}>{opt.label}</span>
+                <span className="text-xs text-gray-400">{opt.desc}</span>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Text size */}
+      <div>
+        <p className="text-sm font-semibold text-gray-700 mb-2">Ukuran Teks</p>
+        <div className="grid grid-cols-3 gap-3">
+          {TEXT_SIZE_OPTIONS.map(opt => (
+            <button key={opt.value} type="button" onClick={() => setTextSize(opt.value)}
+              className={`flex flex-col items-center gap-2 p-4 rounded-xl border transition-all ${
+                textSize === opt.value ? 'border-green-400 bg-green-50' : 'border-gray-200 hover:border-gray-300'
+              }`}>
+              <span className={`font-bold ${
+                opt.value === 'sm' ? 'text-sm' : opt.value === 'md' ? 'text-base' : 'text-lg'
+              } ${textSize === opt.value ? 'text-green-600' : 'text-gray-700'}`}>Aa</span>
+              <div className="text-center">
+                <span className={`text-xs font-semibold block ${textSize === opt.value ? 'text-green-600' : 'text-gray-700'}`}>{opt.label}</span>
+                <span className="text-xs text-gray-400">{opt.desc}</span>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Background pattern */}
+      <div>
+        <p className="text-sm font-semibold text-gray-700 mb-2">Pattern Background</p>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {BACKGROUND_PATTERNS.map(opt => (
+            <button key={opt.value} type="button" onClick={() => setBackgroundPattern(opt.value)}
+              className={`flex flex-col items-center gap-2 p-4 rounded-xl border transition-all ${
+                backgroundPattern === opt.value ? 'border-green-400 bg-green-50' : 'border-gray-200 hover:border-gray-300'
+              }`}>
+              <div className={`w-full h-12 bg-gray-50 rounded-lg overflow-hidden relative ${
+                opt.value === 'dots' ? 'bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]' :
+                opt.value === 'grid' ? 'bg-[linear-gradient(#e5e7eb_1px,transparent_1px),linear-gradient(90deg,#e5e7eb_1px,transparent_1px)] [background-size:20px_20px]' :
+                opt.value === 'waves' ? 'bg-[url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 30c10 0 10-10 20-10s10 10 20 10 10-10 20-10 10 10 20 10v10H0z\' fill=\'%23e5e7eb\' fill-opacity=\'0.4\'/%3E%3C/svg%3E")]' : ''
+              }`} />
+              <div className="text-center">
+                <span className={`text-xs font-semibold block ${backgroundPattern === opt.value ? 'text-green-600' : 'text-gray-700'}`}>{opt.label}</span>
+                <span className="text-xs text-gray-400">{opt.desc}</span>
+              </div>
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Font */}

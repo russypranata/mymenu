@@ -161,6 +161,12 @@ export interface UpdateStoreSettingsInput {
   instagram?: string | null
   facebook?: string | null
   tiktok?: string | null
+  darkModeEnabled?: boolean | null
+  accentColor?: string | null
+  borderRadius?: string | null
+  cardStyle?: string | null
+  textSize?: string | null
+  backgroundPattern?: string | null
 }
 
 export async function updateStoreSettings(
@@ -197,6 +203,12 @@ export async function updateStoreSettings(
     ...(input.instagram !== undefined && { instagram: input.instagram }),
     ...(input.facebook !== undefined && { facebook: input.facebook }),
     ...(input.tiktok !== undefined && { tiktok: input.tiktok }),
+    ...(input.darkModeEnabled !== undefined && { dark_mode_enabled: input.darkModeEnabled }),
+    ...(input.accentColor !== undefined && { accent_color: input.accentColor }),
+    ...(input.borderRadius !== undefined && { border_radius: input.borderRadius }),
+    ...(input.cardStyle !== undefined && { card_style: input.cardStyle }),
+    ...(input.textSize !== undefined && { text_size: input.textSize }),
+    ...(input.backgroundPattern !== undefined && { background_pattern: input.backgroundPattern }),
   }, { onConflict: 'store_id' })
 
   if (error) return { error: error.message }
