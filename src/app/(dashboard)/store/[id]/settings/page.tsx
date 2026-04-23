@@ -5,7 +5,9 @@ import { StoreAppearanceForm } from '@/components/store-appearance-form'
 import { StoreDeleteSection } from '@/components/store-delete-section'
 import { CategoryManager } from '@/components/category-manager'
 import { StoreQRCode } from '@/components/store-qr-code'
+import { StoreLocationsManager } from '@/components/store-locations-manager'
 import { getCategoriesByStore } from '@/lib/queries/menu'
+import { getStoreLocations } from '@/lib/queries/locations'
 import { Settings } from 'lucide-react'
 import type { Database } from '@/types/database.types'
 import type { Metadata } from 'next'
@@ -27,9 +29,10 @@ export default async function StoreSettingsPage({ params }: { params: Promise<{ 
     .from('stores').select('*').eq('id', id).eq('user_id', user.id).maybeSingle()
   if (!store) notFound()
 
-  const [settingsResult, categories] = await Promise.all([
+  const [settingsResult, categories, locations] = await Promise.all([
     supabase.from('store_settings').select('*').eq('store_id', id).maybeSingle(),
     getCategoriesByStore(id),
+    getStoreLocations(id),
   ])
   const settings = settingsResult.data as StoreSettings | null
 
@@ -48,6 +51,11 @@ export default async function StoreSettingsPage({ params }: { params: Promise<{ 
       <section className="space-y-4">
         <SectionLabel>Informasi Toko</SectionLabel>
         <StoreInfoForm store={store} />
+      </section>
+
+      <section className="space-y-4">
+        <SectionLabel>Lokasi Cabang</SectionLabel>
+        <StoreLocationsManager storeId={store.id} initialLocations={locations} />
       </section>
 
       <section className="space-y-4">

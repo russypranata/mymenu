@@ -86,14 +86,15 @@ CREATE TRIGGER trigger_ensure_single_primary_location
 -- Create primary location for each existing store
 INSERT INTO store_locations (store_id, name, address, opening_hours, whatsapp, is_primary)
 SELECT 
-  id,
+  s.id,
   'Lokasi Utama',
-  COALESCE(address, ''),
-  store_settings->>'opening_hours',
-  whatsapp,
+  COALESCE(s.address, ''),
+  ss.opening_hours,
+  s.whatsapp,
   true
-FROM stores
-WHERE address IS NOT NULL OR whatsapp IS NOT NULL
+FROM stores s
+LEFT JOIN store_settings ss ON ss.store_id = s.id
+WHERE s.address IS NOT NULL OR s.whatsapp IS NOT NULL
 ON CONFLICT DO NOTHING;
 
 -- Add comment
