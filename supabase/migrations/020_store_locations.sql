@@ -1,15 +1,26 @@
--- Create store_locations table
+-- Create store_locations table if not exists
 CREATE TABLE IF NOT EXISTS store_locations (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   store_id UUID NOT NULL REFERENCES stores(id) ON DELETE CASCADE,
   name VARCHAR(255) NOT NULL,
   address TEXT NOT NULL,
   opening_hours TEXT,
-  whatsapp VARCHAR(20),
   is_primary BOOLEAN DEFAULT false,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- Add whatsapp column if it doesn't exist
+DO $$ 
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns 
+    WHERE table_name = 'store_locations' 
+    AND column_name = 'whatsapp'
+  ) THEN
+    ALTER TABLE store_locations ADD COLUMN whatsapp VARCHAR(20);
+  END IF;
+END $$;
 
 -- Add index for faster queries
 CREATE INDEX IF NOT EXISTS idx_store_locations_store_id ON store_locations(store_id);
@@ -93,7 +104,7 @@ CREATE TRIGGER trigger_ensure_single_primary_location
   EXECUTE FUNCTION ensure_single_primary_location();
 
 -- Migrate existing store data to locations
--- Create primary location for each existing store
+-- Create primary location for each existing store that doesn't have one yet
 INSERT INTO store_locations (store_id, name, address, opening_hours, whatsapp, is_primary)
 SELECT 
   s.id,
@@ -104,7 +115,11 @@ SELECT
   true
 FROM stores s
 LEFT JOIN store_settings ss ON ss.store_id = s.id
-WHERE s.address IS NOT NULL OR s.whatsapp IS NOT NULL
+WHERE (s.address IS NOT NULL OR s.whatsapp IS NOT NULL)
+  AND NOT EXISTS (
+    SELECT 1 FROM store_locations sl 
+    WHERE sl.store_id = s.id
+  )
 ON CONFLICT DO NOTHING;
 
 -- Add comment
