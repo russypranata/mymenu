@@ -12,11 +12,17 @@ CREATE TABLE IF NOT EXISTS store_locations (
 );
 
 -- Add index for faster queries
-CREATE INDEX idx_store_locations_store_id ON store_locations(store_id);
-CREATE INDEX idx_store_locations_is_primary ON store_locations(is_primary);
+CREATE INDEX IF NOT EXISTS idx_store_locations_store_id ON store_locations(store_id);
+CREATE INDEX IF NOT EXISTS idx_store_locations_is_primary ON store_locations(is_primary);
 
 -- Enable RLS
 ALTER TABLE store_locations ENABLE ROW LEVEL SECURITY;
+
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "Anyone can view store locations" ON store_locations;
+DROP POLICY IF EXISTS "Store owner can insert locations" ON store_locations;
+DROP POLICY IF EXISTS "Store owner can update locations" ON store_locations;
+DROP POLICY IF EXISTS "Store owner can delete locations" ON store_locations;
 
 -- RLS Policies
 -- Users can view locations of any store (public)
@@ -60,6 +66,10 @@ CREATE POLICY "Store owner can delete locations"
       AND stores.user_id = auth.uid()
     )
   );
+
+-- Drop existing trigger and function if they exist
+DROP TRIGGER IF EXISTS trigger_ensure_single_primary_location ON store_locations;
+DROP FUNCTION IF EXISTS ensure_single_primary_location();
 
 -- Function to ensure only one primary location per store
 CREATE OR REPLACE FUNCTION ensure_single_primary_location()
