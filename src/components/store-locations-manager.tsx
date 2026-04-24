@@ -193,7 +193,7 @@ function LocationForm({ location, onSubmit, onCancel, loading }: LocationFormPro
           id="is_primary"
           name="is_primary"
           value="true"
-          defaultChecked={location?.is_primary}
+          defaultChecked={location?.is_primary ?? false}
           className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
         />
         <label htmlFor="is_primary" className="text-xs font-medium text-gray-700 flex items-center gap-1">
