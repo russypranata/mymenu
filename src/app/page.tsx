@@ -809,27 +809,27 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="max-w-4xl mx-auto">
-              <div className="bg-white rounded-3xl border-2 border-green-500 p-8 sm:p-10 shadow-xl relative overflow-hidden">
+            <div className="max-w-2xl mx-auto">
+              <div className="bg-white rounded-3xl border-2 border-green-500 p-6 sm:p-8 shadow-xl relative overflow-hidden">
                 {/* Badge */}
-                <div className="absolute top-6 right-6">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-yellow-400 text-gray-900 text-xs font-bold rounded-full">
+                <div className="absolute top-4 right-4">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-yellow-400 text-gray-900 text-xs font-bold rounded-full shadow-sm">
                     ⭐ Paling Populer
                   </span>
                 </div>
 
-                <div className="mb-8">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">Paket Bulanan</h3>
-                  <div className="flex items-baseline gap-2 mb-4">
-                    <span className="text-5xl font-bold text-green-500">Rp20.000</span>
-                    <span className="text-gray-500 text-lg">/bulan</span>
+                <div className="mb-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">Paket Bulanan</h3>
+                  <div className="flex items-baseline gap-2 mb-3">
+                    <span className="text-4xl font-bold text-green-500">Rp20.000</span>
+                    <span className="text-gray-500 text-base">/bulan</span>
                   </div>
                   <p className="text-gray-600 text-sm">Gratis 7 hari pertama. Tanpa kartu kredit.</p>
                 </div>
 
-                <div className="space-y-4 mb-8">
-                  <h4 className="font-semibold text-gray-900 text-sm uppercase tracking-wider">Semua Fitur Termasuk:</h4>
-                  <ul className="space-y-3">
+                <div className="space-y-3 mb-6">
+                  <h4 className="font-semibold text-gray-900 text-xs uppercase tracking-wider">Semua Fitur Termasuk:</h4>
+                  <ul className="space-y-2.5">
                     {[
                       "1 Toko dengan URL unik (mymenu.id/namatoko)",
                       "Unlimited menu items dengan foto",
@@ -842,9 +842,9 @@ export default function Home() {
                       "Support via WhatsApp",
                       "Update & fitur baru gratis",
                     ].map((feature, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700 text-sm">{feature}</span>
+                      <li key={i} className="flex items-start gap-2.5">
+                        <CheckCircle2 className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
+                        <span className="text-gray-700 text-sm leading-relaxed">{feature}</span>
                       </li>
                     ))}
                   </ul>
@@ -852,7 +852,7 @@ export default function Home() {
 
                 <Link
                   href="/register"
-                  className="w-full flex items-center justify-center gap-2 px-8 py-4 bg-green-500 text-white text-base font-semibold rounded-xl hover:bg-green-600 transition-colors"
+                  className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-green-500 text-white text-base font-semibold rounded-xl hover:bg-green-600 transition-colors shadow-sm"
                 >
                   <Rocket className="w-5 h-5" />
                   Mulai Gratis 7 Hari
@@ -864,25 +864,40 @@ export default function Home() {
               </div>
 
               {/* Comparison */}
-              <div className="mt-12 bg-yellow-50 rounded-2xl border border-yellow-200 p-6">
-                <h4 className="font-bold text-gray-900 mb-4 text-center">💡 Bandingkan dengan solusi lain:</h4>
-                <div className="grid md:grid-cols-3 gap-4 text-sm">
-                  <div className="text-center">
-                    <p className="font-semibold text-gray-900 mb-1">Menu Kertas</p>
-                    <p className="text-gray-600">Cetak ulang: Rp50.000-100.000 per kali</p>
-                    <p className="text-red-600 font-medium mt-1">~Rp200.000/tahun</p>
+              <div className="mt-10 bg-gradient-to-br from-yellow-50 to-amber-50 rounded-2xl border-2 border-yellow-200 p-6 shadow-sm">
+                <div className="flex items-center justify-center gap-2 mb-5">
+                  <span className="text-2xl">💡</span>
+                  <h4 className="font-bold text-gray-900 text-base">Bandingkan dengan solusi lain</h4>
+                </div>
+                <div className="grid md:grid-cols-3 gap-4">
+                  <div className="bg-white rounded-xl p-4 border border-gray-200 text-center">
+                    <p className="font-bold text-gray-900 mb-2 text-sm">Menu Kertas</p>
+                    <p className="text-gray-600 text-xs mb-2 leading-relaxed">Cetak ulang: Rp50.000-100.000 per kali</p>
+                    <div className="pt-2 border-t border-gray-100">
+                      <p className="text-red-600 font-bold text-base">~Rp200.000<span className="text-xs font-normal">/tahun</span></p>
+                    </div>
                   </div>
-                  <div className="text-center">
-                    <p className="font-semibold text-gray-900 mb-1">Aplikasi Kasir/POS</p>
-                    <p className="text-gray-600">Langganan: Rp200.000-500.000/bulan</p>
-                    <p className="text-red-600 font-medium mt-1">~Rp2.400.000/tahun</p>
+                  <div className="bg-white rounded-xl p-4 border border-gray-200 text-center">
+                    <p className="font-bold text-gray-900 mb-2 text-sm">Aplikasi Kasir/POS</p>
+                    <p className="text-gray-600 text-xs mb-2 leading-relaxed">Langganan: Rp200.000-500.000/bulan</p>
+                    <div className="pt-2 border-t border-gray-100">
+                      <p className="text-red-600 font-bold text-base">~Rp2.400.000<span className="text-xs font-normal">/tahun</span></p>
+                    </div>
                   </div>
-                  <div className="text-center bg-green-100 rounded-xl p-3 border-2 border-green-500">
-                    <p className="font-semibold text-gray-900 mb-1">MyMenu</p>
-                    <p className="text-gray-600">Rp20.000/bulan</p>
-                    <p className="text-green-600 font-bold mt-1">Rp240.000/tahun ✨</p>
+                  <div className="bg-gradient-to-br from-green-100 to-green-50 rounded-xl p-4 border-2 border-green-500 text-center shadow-md relative">
+                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                      <span className="text-white text-xs font-bold">✓</span>
+                    </div>
+                    <p className="font-bold text-gray-900 mb-2 text-sm">MyMenu</p>
+                    <p className="text-gray-700 text-xs mb-2 leading-relaxed font-medium">Rp20.000/bulan</p>
+                    <div className="pt-2 border-t border-green-200">
+                      <p className="text-green-600 font-bold text-base">Rp240.000<span className="text-xs font-normal">/tahun</span> ✨</p>
+                    </div>
                   </div>
                 </div>
+                <p className="text-center text-xs text-gray-600 mt-4 font-medium">
+                  💰 Hemat hingga <span className="text-green-600 font-bold">Rp2.160.000/tahun</span> dibanding aplikasi kasir!
+                </p>
               </div>
             </div>
           </div>
