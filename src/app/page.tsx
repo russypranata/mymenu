@@ -64,12 +64,6 @@ export default function Home() {
             {/* Nav Actions */}
             <div className="flex items-center gap-2.5">
               <Link
-                href="/#harga"
-                className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 hover:text-green-500 hover:bg-green-50 rounded-lg transition-all"
-              >
-                Harga
-              </Link>
-              <Link
                 href="/login"
                 className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 hover:text-green-500 hover:bg-green-50 rounded-lg transition-all"
               >
@@ -801,11 +795,11 @@ export default function Home() {
                 Harga
               </p>
               <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 tracking-tight leading-[1.15]">
-                Satu harga,<br />
-                <span className="text-green-500">semua fitur</span>
+                Satu harga untuk semua,<br />
+                <span className="text-green-500">tanpa biaya tersembunyi</span>
               </h2>
               <p className="text-gray-500 text-lg mt-5 leading-relaxed">
-                Tidak ada paket-paketan membingungkan. Bayar satu harga, dapat semua fitur.
+                Tidak ada paket-paketan membingungkan. Bayar satu harga, dapat semua fitur. Tidak ada kontrak jangka panjang.
               </p>
             </div>
 
@@ -1041,22 +1035,23 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Product links */}
+            {/* Platform links */}
             <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-stone-500 mb-4">Produk</p>
+              <p className="text-xs font-semibold uppercase tracking-widest text-stone-500 mb-4">Platform</p>
               <ul className="space-y-2.5 text-sm">
                 <li><Link href="#fitur" className="hover:text-white transition-colors">Fitur</Link></li>
                 <li><Link href="#harga" className="hover:text-white transition-colors">Harga</Link></li>
-                <li><Link href="/demo-kedai-kopi" className="hover:text-white transition-colors">Demo</Link></li>
-                <li><Link href="/register" className="hover:text-white transition-colors">Coba Gratis</Link></li>
-                <li><Link href="/login" className="hover:text-white transition-colors">Masuk</Link></li>
+                <li><Link href="/demo-kedai-kopi" className="hover:text-white transition-colors">Lihat Demo</Link></li>
+                <li><Link href="/bantuan" className="hover:text-white transition-colors">Bantuan</Link></li>
               </ul>
             </div>
 
-            {/* Legal */}
+            {/* Account & Legal */}
             <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-stone-500 mb-4">Legal</p>
+              <p className="text-xs font-semibold uppercase tracking-widest text-stone-500 mb-4">Akun & Legal</p>
               <ul className="space-y-2.5 text-sm">
+                <li><Link href="/register" className="hover:text-white transition-colors">Daftar</Link></li>
+                <li><Link href="/login" className="hover:text-white transition-colors">Masuk</Link></li>
                 <li><Link href="/syarat" className="hover:text-white transition-colors">Syarat & Ketentuan</Link></li>
                 <li><Link href="/privasi" className="hover:text-white transition-colors">Kebijakan Privasi</Link></li>
               </ul>
