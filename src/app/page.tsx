@@ -25,6 +25,13 @@ import {
   BadgeCheck,
   Palette,
   LayoutTemplate,
+  BarChart3,
+  HelpCircle,
+  DollarSign,
+  Users,
+  Store,
+  ChefHat,
+  IceCream,
 } from "lucide-react";
 
 // Color Palette: Green + Dark + White
@@ -515,8 +522,8 @@ export default function Home() {
                     <div className="w-10 h-10 bg-violet-100 rounded-xl flex items-center justify-center mb-5">
                       <Palette className="w-5 h-5 text-violet-600" strokeWidth={2} />
                     </div>
-                    <h4 className="font-bold text-gray-900 text-lg mb-2">Custom Tema</h4>
-                    <p className="text-sm text-gray-500 leading-relaxed">Pilih warna dan gaya tampilan halaman menu sesuai identitas toko Anda.</p>
+                    <h4 className="font-bold text-gray-900 text-lg mb-2">Kustomisasi Tampilan</h4>
+                    <p className="text-sm text-gray-500 leading-relaxed">Pilih warna brand, upload logo & banner, atur tema halaman menu sesuai identitas toko Anda. Tampil profesional tanpa perlu desainer.</p>
                   </div>
                 </div>
 
@@ -528,6 +535,20 @@ export default function Home() {
                   <div>
                     <h4 className="font-bold text-gray-900 text-lg mb-1">Banner & Profil Toko</h4>
                     <p className="text-sm text-gray-500 leading-relaxed">Upload foto banner dan logo toko. Halaman menu Anda tampil seperti landing page yang profesional — bukan sekadar daftar harga.</p>
+                  </div>
+                </div>
+
+                {/* Analytics — NEW */}
+                <div className="md:col-span-12 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-3xl p-7 border border-indigo-100 flex flex-col sm:flex-row gap-5 items-start sm:items-center">
+                  <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <BarChart3 className="w-5 h-5 text-indigo-600" strokeWidth={2} />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-bold text-gray-900 text-lg mb-1">Statistik Pengunjung</h4>
+                    <p className="text-sm text-gray-600 leading-relaxed">Lihat berapa banyak orang yang mengunjungi menu Anda. Data real-time untuk membantu Anda memahami performa menu digital.</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs bg-indigo-100 text-indigo-700 px-3 py-1.5 rounded-full font-medium">Coming Soon</span>
                   </div>
                 </div>
 
@@ -627,6 +648,246 @@ export default function Home() {
           </div>
         </section>
 
+        {/* --- UNTUK SIAPA SECTION --- NEW */}
+        <section className="py-24 bg-gray-50">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <p className="inline-flex items-center gap-2 text-yellow-700 font-semibold text-sm uppercase tracking-widest mb-4 bg-yellow-100 px-3 py-1 rounded-full border border-yellow-200">
+                <span className="w-1.5 h-1.5 rounded-full bg-yellow-500" />
+                Untuk Siapa?
+              </p>
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 tracking-tight leading-[1.15]">
+                Cocok untuk<br />
+                <span className="text-green-500">semua jenis usaha</span>
+              </h2>
+              <p className="text-gray-500 text-lg mt-5 leading-relaxed">
+                Dari warung kecil hingga restoran, MyMenu membantu UMKM Indonesia tampil profesional dengan menu digital.
+              </p>
+            </div>
+
+            <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[
+                {
+                  icon: <Coffee className="w-6 h-6" />,
+                  title: "Warung Kopi & Kafe",
+                  desc: "Tampilkan menu kopi dan minuman dengan foto menarik. Pelanggan bisa lihat menu sebelum datang.",
+                  color: "bg-amber-50 border-amber-100 text-amber-600",
+                },
+                {
+                  icon: <UtensilsCrossed className="w-6 h-6" />,
+                  title: "Rumah Makan & Restoran",
+                  desc: "Menu digital yang rapi dengan kategori. Pelanggan bisa browse menu dari HP mereka.",
+                  color: "bg-green-50 border-green-100 text-green-600",
+                },
+                {
+                  icon: <Store className="w-6 h-6" />,
+                  title: "Toko Kelontong",
+                  desc: "Jual makanan & minuman? Buat katalog digital yang mudah dibagikan ke pelanggan.",
+                  color: "bg-blue-50 border-blue-100 text-blue-600",
+                },
+                {
+                  icon: <ChefHat className="w-6 h-6" />,
+                  title: "Cloud Kitchen & Katering",
+                  desc: "Fokus masak, biarkan menu digital yang promosikan produk Anda ke pelanggan.",
+                  color: "bg-purple-50 border-purple-100 text-purple-600",
+                },
+                {
+                  icon: <IceCream className="w-6 h-6" />,
+                  title: "Dessert & Bakery",
+                  desc: "Pamer kue dan dessert dengan foto yang menggugah selera. Tingkatkan order online.",
+                  color: "bg-pink-50 border-pink-100 text-pink-600",
+                },
+                {
+                  icon: <Wine className="w-6 h-6" />,
+                  title: "Juice Bar & Minuman",
+                  desc: "Menu minuman segar dengan visual menarik. Mudah update promo dan menu seasonal.",
+                  color: "bg-orange-50 border-orange-100 text-orange-600",
+                },
+              ].map((item, i) => (
+                <div key={i} className={`rounded-2xl border-2 ${item.color} p-6 hover:shadow-lg transition-all`}>
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${item.color}`}>
+                    {item.icon}
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">{item.title}</h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* --- FAQ SECTION --- NEW */}
+        <section className="py-24 bg-white">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <p className="inline-flex items-center gap-2 text-yellow-700 font-semibold text-sm uppercase tracking-widest mb-4 bg-yellow-100 px-3 py-1 rounded-full border border-yellow-200">
+                <span className="w-1.5 h-1.5 rounded-full bg-yellow-500" />
+                FAQ
+              </p>
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 tracking-tight leading-[1.15]">
+                Pertanyaan yang<br />
+                <span className="text-green-500">sering ditanya</span>
+              </h2>
+            </div>
+
+            <div className="max-w-3xl mx-auto space-y-4">
+              {[
+                {
+                  q: "Apakah benar gratis 7 hari?",
+                  a: "Ya! Anda bisa coba semua fitur MyMenu gratis selama 7 hari. Tidak perlu kartu kredit untuk daftar. Setelah trial berakhir, Anda bisa lanjut berlangganan Rp20.000/bulan atau berhenti tanpa biaya apapun.",
+                },
+                {
+                  q: "Bagaimana cara pembayaran setelah trial?",
+                  a: "Setelah trial 7 hari, Anda bisa bayar via transfer bank atau e-wallet. Kami akan kirim instruksi pembayaran via email dan WhatsApp. Pembayaran per bulan, tanpa kontrak jangka panjang.",
+                },
+                {
+                  q: "Bisakah saya punya lebih dari 1 toko?",
+                  a: "Saat ini, 1 akun hanya bisa mengelola 1 toko. Ini untuk menjaga kesederhanaan dan fokus pada UMKM kecil. Jika Anda punya beberapa cabang, hubungi kami untuk solusi khusus.",
+                },
+                {
+                  q: "Apakah bisa ganti nama atau URL toko?",
+                  a: "Ya, Anda bisa ganti nama toko kapan saja dari dashboard. Untuk URL (slug), saat ini belum bisa diganti setelah dibuat. Pastikan pilih URL yang tepat saat pertama kali setup.",
+                },
+                {
+                  q: "Bagaimana cara cancel subscription?",
+                  a: "Anda bisa cancel kapan saja dari dashboard atau hubungi kami via WhatsApp. Tidak ada biaya pembatalan. Menu Anda akan tetap aktif sampai akhir periode yang sudah dibayar.",
+                },
+                {
+                  q: "Apakah data saya aman?",
+                  a: "Sangat aman. Data Anda disimpan di server terenkripsi dengan backup rutin. Kami tidak pernah membagikan data Anda ke pihak ketiga. Privacy Anda adalah prioritas kami.",
+                },
+                {
+                  q: "Berapa lama proses setup?",
+                  a: "Rata-rata pengguna baru selesai setup dalam 5-8 menit. Anda hanya perlu: (1) Daftar akun, (2) Isi profil toko, (3) Tambah menu, (4) Bagikan link. Sesimpel itu!",
+                },
+                {
+                  q: "Apakah ada biaya tambahan?",
+                  a: "Tidak ada biaya tersembunyi. Rp20.000/bulan sudah termasuk semua fitur: unlimited menu, foto, QR code, custom tema, dan support. Tidak ada biaya setup atau biaya transaksi.",
+                },
+              ].map((item, i) => (
+                <details key={i} className="group bg-gray-50 rounded-2xl border border-gray-100 overflow-hidden hover:border-green-200 transition-all">
+                  <summary className="flex items-center justify-between px-6 py-5 cursor-pointer list-none">
+                    <span className="font-semibold text-gray-900 pr-4">{item.q}</span>
+                    <HelpCircle className="w-5 h-5 text-gray-400 group-open:text-green-500 flex-shrink-0 transition-colors" />
+                  </summary>
+                  <div className="px-6 pb-5 pt-2">
+                    <p className="text-sm text-gray-600 leading-relaxed">{item.a}</p>
+                  </div>
+                </details>
+              ))}
+            </div>
+
+            <div className="mt-12 text-center">
+              <p className="text-gray-500 text-sm mb-4">Masih ada pertanyaan?</p>
+              <a
+                href={`https://wa.me/${process.env.NEXT_PUBLIC_ADMIN_WHATSAPP || '62895338170582'}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-green-500 text-white text-sm font-semibold rounded-xl hover:bg-green-600 transition-colors"
+              >
+                <MessageCircle className="w-4 h-4" />
+                Hubungi Kami via WhatsApp
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* --- HARGA SECTION --- NEW */}
+        <section className="py-24 bg-gray-50">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <p className="inline-flex items-center gap-2 text-yellow-700 font-semibold text-sm uppercase tracking-widest mb-4 bg-yellow-100 px-3 py-1 rounded-full border border-yellow-200">
+                <span className="w-1.5 h-1.5 rounded-full bg-yellow-500" />
+                Harga
+              </p>
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 tracking-tight leading-[1.15]">
+                Harga yang<br />
+                <span className="text-green-500">masuk akal</span>
+              </h2>
+              <p className="text-gray-500 text-lg mt-5 leading-relaxed">
+                Tidak ada biaya tersembunyi. Tidak ada kontrak jangka panjang. Cancel kapan saja.
+              </p>
+            </div>
+
+            <div className="max-w-4xl mx-auto">
+              <div className="bg-white rounded-3xl border-2 border-green-500 p-8 sm:p-10 shadow-xl relative overflow-hidden">
+                {/* Badge */}
+                <div className="absolute top-6 right-6">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-yellow-400 text-gray-900 text-xs font-bold rounded-full">
+                    ⭐ Paling Populer
+                  </span>
+                </div>
+
+                <div className="mb-8">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">Paket Bulanan</h3>
+                  <div className="flex items-baseline gap-2 mb-4">
+                    <span className="text-5xl font-bold text-green-500">Rp20.000</span>
+                    <span className="text-gray-500 text-lg">/bulan</span>
+                  </div>
+                  <p className="text-gray-600 text-sm">Gratis 7 hari pertama. Tanpa kartu kredit.</p>
+                </div>
+
+                <div className="space-y-4 mb-8">
+                  <h4 className="font-semibold text-gray-900 text-sm uppercase tracking-wider">Semua Fitur Termasuk:</h4>
+                  <ul className="space-y-3">
+                    {[
+                      "1 Toko dengan URL unik (mymenu.id/namatoko)",
+                      "Unlimited menu items dengan foto",
+                      "Kategori menu (Makanan, Minuman, dll)",
+                      "QR Code siap cetak untuk meja",
+                      "Custom warna & tema",
+                      "Upload logo & banner toko",
+                      "Aktif/nonaktifkan menu real-time",
+                      "Statistik pengunjung (coming soon)",
+                      "Support via WhatsApp",
+                      "Update & fitur baru gratis",
+                    ].map((feature, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                        <span className="text-gray-700 text-sm">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <Link
+                  href="/register"
+                  className="w-full flex items-center justify-center gap-2 px-8 py-4 bg-green-500 text-white text-base font-semibold rounded-xl hover:bg-green-600 transition-colors"
+                >
+                  <Rocket className="w-5 h-5" />
+                  Mulai Gratis 7 Hari
+                </Link>
+
+                <p className="text-center text-xs text-gray-500 mt-4">
+                  Tidak perlu kartu kredit • Batal kapan saja • Tidak ada biaya tersembunyi
+                </p>
+              </div>
+
+              {/* Comparison */}
+              <div className="mt-12 bg-yellow-50 rounded-2xl border border-yellow-200 p-6">
+                <h4 className="font-bold text-gray-900 mb-4 text-center">💡 Bandingkan dengan solusi lain:</h4>
+                <div className="grid md:grid-cols-3 gap-4 text-sm">
+                  <div className="text-center">
+                    <p className="font-semibold text-gray-900 mb-1">Menu Kertas</p>
+                    <p className="text-gray-600">Cetak ulang: Rp50.000-100.000 per kali</p>
+                    <p className="text-red-600 font-medium mt-1">~Rp200.000/tahun</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="font-semibold text-gray-900 mb-1">Aplikasi Kasir/POS</p>
+                    <p className="text-gray-600">Langganan: Rp200.000-500.000/bulan</p>
+                    <p className="text-red-600 font-medium mt-1">~Rp2.400.000/tahun</p>
+                  </div>
+                  <div className="text-center bg-green-100 rounded-xl p-3 border-2 border-green-500">
+                    <p className="font-semibold text-gray-900 mb-1">MyMenu</p>
+                    <p className="text-gray-600">Rp20.000/bulan</p>
+                    <p className="text-green-600 font-bold mt-1">Rp240.000/tahun ✨</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* --- FINAL CTA SECTION --- */}
         <section className="py-24 bg-gray-50 relative">
           <div className="container mx-auto px-4 sm:px-6 relative z-10">
@@ -650,7 +911,7 @@ export default function Home() {
                 {/* Social proof pill */}
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 border border-white/10 rounded-full text-stone-300 text-sm mb-8">
                   <span className="flex h-2 w-2 rounded-full bg-green-400" />
-                  500+ warung & kafe sudah bergabung
+                  Dipercaya oleh UMKM Indonesia
                 </div>
 
                 <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight leading-[1.15]">
@@ -671,7 +932,7 @@ export default function Home() {
                     Coba Gratis 7 Hari
                   </Link>
                   <a
-                    href="https://wa.me/628123456789"
+                    href={`https://wa.me/${process.env.NEXT_PUBLIC_ADMIN_WHATSAPP || '62895338170582'}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3.5 bg-transparent text-stone-300 text-base font-semibold rounded-xl border border-stone-700 hover:bg-stone-800 hover:text-white transition-colors"
