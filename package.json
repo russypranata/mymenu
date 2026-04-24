@@ -1,12 +1,44 @@
 {
   "name": "mymenu",
   "version": "0.1.0",
+  "description": "Digital Menu SaaS Platform for Indonesian UMKM",
+  "author": "MyMenu Team",
+  "license": "UNLICENSED",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/mymenu.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/mymenu/issues"
+  },
+  "homepage": "https://mymenu.id",
+  "keywords": [
+    "digital-menu",
+    "saas",
+    "umkm",
+    "restaurant",
+    "qr-code",
+    "nextjs",
+    "supabase"
+  ],
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage",
+    "test:ui": "vitest --ui",
+    "type-check": "tsc --noEmit",
+    "analyze": "cross-env ANALYZE=true next build"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

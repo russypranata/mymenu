@@ -110,7 +110,7 @@ const BACKGROUND_PATTERNS = [
   { value: 'none', label: 'None', desc: 'Tanpa pattern' },
   { value: 'dots', label: 'Dots', desc: 'Titik-titik halus' },
   { value: 'grid', label: 'Grid', desc: 'Garis grid' },
-  { value: 'waves', label: 'Waves', desc: 'Gelombang subtle' },
+  { value: 'waves', label: 'Stripes', desc: 'Garis diagonal' },
 ]
 
 const FONTS = [
@@ -452,9 +452,9 @@ export function StoreAppearanceForm({ storeId, storeName, storeSlug, storeDescri
                 backgroundPattern === opt.value ? 'border-green-400 bg-green-50' : 'border-gray-200 hover:border-gray-300'
               }`}>
               <div className={`w-full h-12 bg-gray-50 rounded-lg overflow-hidden relative ${
-                opt.value === 'dots' ? 'bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]' :
-                opt.value === 'grid' ? 'bg-[linear-gradient(#e5e7eb_1px,transparent_1px),linear-gradient(90deg,#e5e7eb_1px,transparent_1px)] [background-size:20px_20px]' :
-                opt.value === 'waves' ? 'bg-[url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 30c10 0 10-10 20-10s10 10 20 10 10-10 20-10 10 10 20 10v10H0z\' fill=\'%23e5e7eb\' fill-opacity=\'0.4\'/%3E%3C/svg%3E")]' : ''
+                opt.value === 'dots' ? 'bg-[radial-gradient(circle,#e5e7eb_1px,transparent_1px)] [background-size:20px_20px]' :
+                opt.value === 'grid' ? 'bg-[linear-gradient(#e5e7eb_1px,transparent_1px),linear-gradient(90deg,#e5e7eb_1px,transparent_1px)] [background-size:24px_24px]' :
+                opt.value === 'waves' ? '[background-image:repeating-linear-gradient(45deg,transparent,transparent_10px,#e5e7eb_10px,#e5e7eb_11px)]' : ''
               }`} />
               <div className="text-center">
                 <span className={`text-xs font-semibold block ${backgroundPattern === opt.value ? 'text-green-600' : 'text-gray-700'}`}>{opt.label}</span>

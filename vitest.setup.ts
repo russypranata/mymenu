@@ -1,0 +1,36 @@
+import '@testing-library/jest-dom'
+import { cleanup } from '@testing-library/react'
+import { afterEach } from 'vitest'
+
+// Cleanup after each test
+afterEach(() => {
+  cleanup()
+})
+
+// Mock Next.js router
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+    replace: vi.fn(),
+    prefetch: vi.fn(),
+    back: vi.fn(),
+    pathname: '/',
+    query: {},
+  }),
+  usePathname: () => '/',
+  useSearchParams: () => new URLSearchParams(),
+  redirect: vi.fn(),
+}))
+
+// Mock Next.js headers
+vi.mock('next/headers', () => ({
+  cookies: () => ({
+    get: vi.fn(),
+    set: vi.fn(),
+    delete: vi.fn(),
+    getAll: vi.fn(() => []),
+  }),
+  headers: () => ({
+    get: vi.fn(),
+  }),
+}))

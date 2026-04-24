@@ -106,9 +106,9 @@ export default async function PublicMenuPage({ params }: PageProps) {
     'rounded-xl'
 
   const backgroundPatternStyle =
-    backgroundPattern === 'dots' ? 'bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]' :
-    backgroundPattern === 'grid' ? 'bg-[linear-gradient(#e5e7eb_1px,transparent_1px),linear-gradient(90deg,#e5e7eb_1px,transparent_1px)] [background-size:20px_20px]' :
-    backgroundPattern === 'waves' ? 'bg-[url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 30c10 0 10-10 20-10s10 10 20 10 10-10 20-10 10 10 20 10v10H0z\' fill=\'%23e5e7eb\' fill-opacity=\'0.4\'/%3E%3C/svg%3E")]' :
+    backgroundPattern === 'dots' ? 'bg-[radial-gradient(circle,rgba(148,163,184,0.15)_1px,transparent_1px)] [background-size:20px_20px]' :
+    backgroundPattern === 'grid' ? 'bg-[linear-gradient(rgba(148,163,184,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.08)_1px,transparent_1px)] [background-size:24px_24px]' :
+    backgroundPattern === 'waves' ? `[background-image:repeating-linear-gradient(45deg,transparent,transparent_10px,rgba(148,163,184,0.03)_10px,rgba(148,163,184,0.03)_20px)]` :
     ''
 
   return (

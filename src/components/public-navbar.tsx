@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { UtensilsCrossed } from 'lucide-react'
+import { useTheme } from './theme-provider'
 
 interface Props {
   storeName: string
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export function PublicNavbar({ storeName, logoUrl, primaryColor }: Props) {
+  const { isDark } = useTheme()
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
@@ -19,16 +21,25 @@ export function PublicNavbar({ storeName, logoUrl, primaryColor }: Props) {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const textColor = scrolled ? 'text-slate-900' : 'text-white'
-  const linkColor = scrolled ? 'text-slate-600 hover:text-slate-900' : 'text-white/80 hover:text-white'
+  const textColor = scrolled 
+    ? (isDark ? 'text-white' : 'text-slate-900')
+    : 'text-white'
+  
+  const linkColor = scrolled 
+    ? (isDark ? 'text-slate-300 hover:text-white' : 'text-slate-600 hover:text-slate-900')
+    : 'text-white/80 hover:text-white'
+
+  const navBg = scrolled
+    ? (isDark ? 'bg-slate-900/90' : 'bg-white/90')
+    : 'bg-transparent'
+  
+  const borderColor = scrolled
+    ? (isDark ? 'border-slate-800' : 'border-slate-100')
+    : 'border-transparent'
 
   return (
     <nav
-      className={`fixed top-0 w-full z-[100] transition-all duration-300 ${
-        scrolled
-          ? 'bg-white/90 backdrop-blur-xl border-b border-slate-100'
-          : 'bg-transparent border-b border-transparent'
-      }`}
+      className={`fixed top-0 w-full z-[100] transition-all duration-300 ${navBg} backdrop-blur-xl border-b ${borderColor}`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 sm:h-20 items-center">

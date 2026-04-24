@@ -28,7 +28,7 @@ export function PublicMenuContent({
   return (
     <>
       {/* ── Hero Banner ── */}
-      <section className="relative pt-16 sm:pt-20 h-[300px] sm:h-[360px] flex items-center overflow-hidden">
+      <section className="relative pt-16 sm:pt-20 h-[300px] sm:h-[360px] flex items-center overflow-hidden rounded-b-3xl">
         {bannerUrl ? (
           <Image
             src={bannerUrl}
@@ -55,13 +55,6 @@ export function PublicMenuContent({
               </p>
             )}
           </div>
-        </div>
-
-        {/* Wave divider */}
-        <div className="absolute bottom-0 left-0 right-0 z-10">
-          <svg viewBox="0 0 1440 56" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" preserveAspectRatio="none" style={{ height: '56px' }}>
-            <path d="M0,32 C240,56 480,8 720,32 C960,56 1200,8 1440,32 L1440,56 L0,56 Z" fill={waveFill} />
-          </svg>
         </div>
       </section>
 

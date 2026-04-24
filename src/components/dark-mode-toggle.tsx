@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import { Moon, Sun } from 'lucide-react'
+import { useTheme } from './theme-provider'
 
 interface DarkModeToggleProps {
   storeId: string
@@ -10,16 +10,8 @@ interface DarkModeToggleProps {
 }
 
 export function DarkModeToggle({ storeId, enabled, primaryColor }: DarkModeToggleProps) {
-  const [isDark, setIsDark] = useState(false)
+  const { isDark, setIsDark } = useTheme()
   const storageKey = `dark-mode-${storeId}`
-
-  useEffect(() => {
-    // Load saved preference
-    const saved = localStorage.getItem(storageKey)
-    if (saved !== null) {
-      setIsDark(saved === 'true')
-    }
-  }, [storageKey])
 
   const toggle = () => {
     const newValue = !isDark
