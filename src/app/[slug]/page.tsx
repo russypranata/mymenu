@@ -15,16 +15,18 @@ import { DarkModeToggle } from '@/components/dark-mode-toggle'
 import { PublicMenuContent } from '@/components/public-menu-content'
 
 export const revalidate = 60
+export const dynamic = 'force-dynamic'
 
-export async function generateStaticParams() {
-  const { createClient } = await import('@supabase/supabase-js')
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
-  const { data } = await supabase.from('stores').select('slug')
-  return (data ?? []).map(({ slug }: { slug: string }) => ({ slug }))
-}
+// Disable static generation for this page since it requires Supabase at build time
+// export async function generateStaticParams() {
+//   const { createClient } = await import('@supabase/supabase-js')
+//   const supabase = createClient(
+//     process.env.NEXT_PUBLIC_SUPABASE_URL!,
+//     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+//   )
+//   const { data } = await supabase.from('stores').select('slug')
+//   return (data ?? []).map(({ slug }: { slug: string }) => ({ slug }))
+// }
 
 interface PageProps {
   params: Promise<{ slug: string }>
