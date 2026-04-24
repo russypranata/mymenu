@@ -64,7 +64,7 @@ export default function Home() {
             {/* Nav Actions */}
             <div className="flex items-center gap-2.5">
               <Link
-                href="/harga"
+                href="/#harga"
                 className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 hover:text-green-500 hover:bg-green-50 rounded-lg transition-all"
               >
                 Harga
@@ -792,8 +792,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* --- HARGA SECTION --- NEW */}
-        <section className="py-24 bg-gray-50">
+        {/* --- HARGA SECTION --- */}
+        <section id="harga" className="py-24 bg-gray-50">
           <div className="container mx-auto px-4 sm:px-6">
             <div className="text-center max-w-2xl mx-auto mb-16">
               <p className="inline-flex items-center gap-2 text-yellow-700 font-semibold text-sm uppercase tracking-widest mb-4 bg-yellow-100 px-3 py-1 rounded-full border border-yellow-200">
@@ -801,70 +801,97 @@ export default function Home() {
                 Harga
               </p>
               <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 tracking-tight leading-[1.15]">
-                Harga yang<br />
-                <span className="text-green-500">masuk akal</span>
+                Satu harga,<br />
+                <span className="text-green-500">semua fitur</span>
               </h2>
               <p className="text-gray-500 text-lg mt-5 leading-relaxed">
-                Tidak ada biaya tersembunyi. Tidak ada kontrak jangka panjang. Cancel kapan saja.
+                Tidak ada paket-paketan membingungkan. Bayar satu harga, dapat semua fitur.
               </p>
             </div>
 
-            <div className="max-w-2xl mx-auto">
-              <div className="bg-white rounded-3xl border-2 border-green-500 p-6 sm:p-8 shadow-xl relative overflow-hidden">
+            {/* Pricing Card - Compact & Centered */}
+            <div className="max-w-sm mx-auto">
+              <div className="bg-white rounded-3xl border-2 border-green-500 shadow-xl shadow-green-500/10 p-8 relative">
                 {/* Badge */}
-                <div className="absolute top-4 right-4">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-yellow-400 text-gray-900 text-xs font-bold rounded-full shadow-sm">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                  <span className="bg-green-500 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-md">
                     ⭐ Paling Populer
                   </span>
                 </div>
 
-                <div className="mb-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">Paket Bulanan</h3>
-                  <div className="flex items-baseline gap-2 mb-3">
-                    <span className="text-4xl font-bold text-green-500">Rp20.000</span>
-                    <span className="text-gray-500 text-base">/bulan</span>
+                <div className="text-center mb-8">
+                  <p className="text-sm font-semibold text-gray-500 mb-2">Langganan Bulanan</p>
+                  <div className="flex items-end justify-center gap-1">
+                    <span className="text-5xl font-extrabold text-gray-900">Rp20K</span>
+                    <span className="text-gray-400 text-base mb-1.5">/bulan</span>
                   </div>
-                  <p className="text-gray-600 text-sm">Gratis 7 hari pertama. Tanpa kartu kredit.</p>
+                  <p className="text-sm text-green-600 font-semibold mt-2 flex items-center justify-center gap-1.5">
+                    <Zap className="w-4 h-4" />
+                    Gratis 7 hari pertama
+                  </p>
                 </div>
 
-                <div className="space-y-3 mb-6">
-                  <h4 className="font-semibold text-gray-900 text-xs uppercase tracking-wider">Semua Fitur Termasuk:</h4>
-                  <ul className="space-y-2.5">
-                    {[
-                      "1 Toko dengan URL unik (mymenu.id/namatoko)",
-                      "Unlimited menu items dengan foto",
-                      "Kategori menu (Makanan, Minuman, dll)",
-                      "QR Code siap cetak untuk meja",
-                      "Custom warna & tema",
-                      "Upload logo & banner toko",
-                      "Aktif/nonaktifkan menu real-time",
-                      "Statistik pengunjung (coming soon)",
-                      "Support via WhatsApp",
-                      "Update & fitur baru gratis",
-                    ].map((feature, i) => (
-                      <li key={i} className="flex items-start gap-2.5">
-                        <CheckCircle2 className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700 text-sm leading-relaxed">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
+                {/* Features */}
+                <ul className="space-y-3 mb-8">
+                  {[
+                    'Menu digital unlimited item',
+                    'QR Code otomatis',
+                    'Order via WhatsApp',
+                    'Custom tema & warna',
+                    'Upload foto per menu',
+                    'Kategori menu',
+                    'Jam operasional',
+                    'Statistik views (coming soon)',
+                    'Banner & logo toko',
+                    'Sosial media links',
+                    'Subdomain mymenu.id/namatoko',
+                  ].map((feature, i) => (
+                    <li key={i} className="flex items-center gap-3 text-sm text-gray-700">
+                      <CheckCircle2 className="w-4 h-4 text-green-500 flex-shrink-0" strokeWidth={2.5} />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+
+                {/* CTA */}
+                <div className="space-y-3">
+                  <Link
+                    href="/register"
+                    className="w-full flex items-center justify-center gap-2 py-3.5 bg-green-500 text-white font-bold rounded-2xl hover:bg-green-600 transition-colors shadow-sm"
+                  >
+                    <Rocket className="w-5 h-5" />
+                    Mulai Gratis 7 Hari
+                  </Link>
+                  <a
+                    href={`https://wa.me/${process.env.NEXT_PUBLIC_ADMIN_WHATSAPP || '62895338170582'}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center justify-center gap-2 py-3 border border-gray-200 text-gray-600 text-sm font-semibold rounded-2xl hover:bg-gray-50 transition-colors"
+                  >
+                    <MessageCircle className="w-4 h-4 text-green-500" />
+                    Tanya via WhatsApp
+                  </a>
                 </div>
-
-                <Link
-                  href="/register"
-                  className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-green-500 text-white text-base font-semibold rounded-xl hover:bg-green-600 transition-colors shadow-sm"
-                >
-                  <Rocket className="w-5 h-5" />
-                  Mulai Gratis 7 Hari
-                </Link>
-
-                <p className="text-center text-xs text-gray-500 mt-4">
-                  Tidak perlu kartu kredit • Batal kapan saja • Tidak ada biaya tersembunyi
-                </p>
               </div>
 
-              {/* Comparison */}
-              <div className="mt-10 bg-gradient-to-br from-yellow-50 to-amber-50 rounded-2xl border-2 border-yellow-200 p-6 shadow-sm">
+              {/* Trust notes */}
+              <div className="mt-6 space-y-2 text-center">
+                {[
+                  'Tanpa kartu kredit',
+                  'Batal kapan saja',
+                  'Aktivasi manual oleh admin',
+                ].map((note, i) => (
+                  <p key={i} className="text-sm text-gray-400 flex items-center justify-center gap-2">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-green-400" strokeWidth={2.5} />
+                    {note}
+                  </p>
+                ))}
+              </div>
+            </div>
+
+            {/* Comparison Table */}
+            <div className="mt-16 max-w-3xl mx-auto">
+              <div className="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-2xl border-2 border-yellow-200 p-6 shadow-sm">
                 <div className="flex items-center justify-center gap-2 mb-5">
                   <span className="text-2xl">💡</span>
                   <h4 className="font-bold text-gray-900 text-base">Bandingkan dengan solusi lain</h4>
@@ -898,6 +925,36 @@ export default function Home() {
                 <p className="text-center text-xs text-gray-600 mt-4 font-medium">
                   💰 Hemat hingga <span className="text-green-600 font-bold">Rp2.160.000/tahun</span> dibanding aplikasi kasir!
                 </p>
+              </div>
+            </div>
+
+            {/* FAQ Mini */}
+            <div className="mt-16 max-w-2xl mx-auto">
+              <h3 className="text-2xl font-extrabold text-gray-900 text-center mb-8">Pertanyaan Umum</h3>
+              <div className="space-y-4">
+                {[
+                  {
+                    q: 'Bagaimana cara bayar?',
+                    a: 'Pembayaran dilakukan manual via transfer bank atau QRIS. Setelah konfirmasi, admin akan mengaktifkan langganan Anda.',
+                  },
+                  {
+                    q: 'Apakah bisa batal kapan saja?',
+                    a: 'Ya. Tidak ada kontrak. Jika tidak diperpanjang, akun otomatis expired dan data tetap tersimpan.',
+                  },
+                  {
+                    q: 'Berapa banyak menu yang bisa ditambahkan?',
+                    a: 'Tidak ada batasan. Tambahkan sebanyak yang Anda butuhkan.',
+                  },
+                  {
+                    q: 'Apakah ada biaya setup?',
+                    a: 'Tidak ada. Daftar gratis, setup sendiri dalam 5 menit.',
+                  },
+                ].map(({ q, a }, i) => (
+                  <div key={i} className="bg-white rounded-2xl p-5 border border-gray-100">
+                    <p className="font-bold text-gray-900 mb-1.5 text-sm">{q}</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">{a}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -989,7 +1046,7 @@ export default function Home() {
               <p className="text-xs font-semibold uppercase tracking-widest text-stone-500 mb-4">Produk</p>
               <ul className="space-y-2.5 text-sm">
                 <li><Link href="#fitur" className="hover:text-white transition-colors">Fitur</Link></li>
-                <li><Link href="/harga" className="hover:text-white transition-colors">Harga</Link></li>
+                <li><Link href="#harga" className="hover:text-white transition-colors">Harga</Link></li>
                 <li><Link href="/demo-kedai-kopi" className="hover:text-white transition-colors">Demo</Link></li>
                 <li><Link href="/register" className="hover:text-white transition-colors">Coba Gratis</Link></li>
                 <li><Link href="/login" className="hover:text-white transition-colors">Masuk</Link></li>
