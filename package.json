@@ -57,6 +57,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.5",
     "@next/eslint-plugin-next": "^16.2.1",
     "@types/node": "^20",
     "@types/qrcode": "^1.5.6",
