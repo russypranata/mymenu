@@ -884,40 +884,40 @@ export default function Home() {
             </div>
 
             {/* Comparison Table */}
-            <div className="mt-16 max-w-3xl mx-auto">
+            <div className="mt-16 max-w-2xl mx-auto">
               <div className="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-2xl border-2 border-yellow-200 p-6">
                 <div className="flex items-center justify-center gap-2 mb-5">
-                  <span className="text-2xl">💡</span>
-                  <h4 className="font-bold text-gray-900 text-base">Bandingkan dengan solusi lain</h4>
+                  <span className="text-xl">💡</span>
+                  <h4 className="font-bold text-gray-900 text-sm">Bandingkan dengan solusi lain</h4>
                 </div>
-                <div className="grid md:grid-cols-3 gap-4">
-                  <div className="bg-white rounded-xl p-4 border border-gray-200 text-center">
-                    <p className="font-bold text-gray-900 mb-2 text-sm">Menu Kertas</p>
-                    <p className="text-gray-600 text-xs mb-2 leading-relaxed">Cetak ulang: Rp50.000-100.000 per kali</p>
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="bg-white rounded-xl p-3 border border-gray-200 text-center">
+                    <p className="font-bold text-gray-900 mb-1.5 text-xs">Menu Kertas</p>
+                    <p className="text-gray-600 text-[10px] mb-2 leading-tight">Cetak ulang 3-4x/tahun</p>
                     <div className="pt-2 border-t border-gray-100">
-                      <p className="text-red-600 font-bold text-base">~Rp200.000<span className="text-xs font-normal">/tahun</span></p>
+                      <p className="text-red-600 font-bold text-sm">~Rp200K<span className="text-[10px] font-normal">/tahun</span></p>
                     </div>
                   </div>
-                  <div className="bg-white rounded-xl p-4 border border-gray-200 text-center">
-                    <p className="font-bold text-gray-900 mb-2 text-sm">Aplikasi Kasir/POS</p>
-                    <p className="text-gray-600 text-xs mb-2 leading-relaxed">Langganan: Rp200.000-500.000/bulan</p>
+                  <div className="bg-white rounded-xl p-3 border border-gray-200 text-center">
+                    <p className="font-bold text-gray-900 mb-1.5 text-xs">Aplikasi Kasir</p>
+                    <p className="text-gray-600 text-[10px] mb-2 leading-tight">Rp200K-500K/bulan</p>
                     <div className="pt-2 border-t border-gray-100">
-                      <p className="text-red-600 font-bold text-base">~Rp2.400.000<span className="text-xs font-normal">/tahun</span></p>
+                      <p className="text-red-600 font-bold text-sm">~Rp2.4Jt<span className="text-[10px] font-normal">/tahun</span></p>
                     </div>
                   </div>
-                  <div className="bg-gradient-to-br from-green-100 to-green-50 rounded-xl p-4 border-2 border-green-500 text-center relative">
-                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-xs font-bold">✓</span>
+                  <div className="bg-gradient-to-br from-green-100 to-green-50 rounded-xl p-3 border-2 border-green-500 text-center relative">
+                    <div className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                      <span className="text-white text-[10px] font-bold">✓</span>
                     </div>
-                    <p className="font-bold text-gray-900 mb-2 text-sm">MyMenu</p>
-                    <p className="text-gray-700 text-xs mb-2 leading-relaxed font-medium">Rp20.000/bulan</p>
+                    <p className="font-bold text-gray-900 mb-1.5 text-xs">MyMenu</p>
+                    <p className="text-gray-700 text-[10px] mb-2 leading-tight font-medium">Rp20K/bulan</p>
                     <div className="pt-2 border-t border-green-200">
-                      <p className="text-green-600 font-bold text-base">Rp240.000<span className="text-xs font-normal">/tahun</span> ✨</p>
+                      <p className="text-green-600 font-bold text-sm">Rp240K<span className="text-[10px] font-normal">/tahun</span> ✨</p>
                     </div>
                   </div>
                 </div>
-                <p className="text-center text-xs text-gray-600 mt-4 font-medium">
-                  💰 Hemat hingga <span className="text-green-600 font-bold">Rp2.160.000/tahun</span> dibanding aplikasi kasir!
+                <p className="text-center text-[10px] text-gray-600 mt-3 font-medium">
+                  💰 Hemat <span className="text-green-600 font-bold">hingga Rp2.16Jt/tahun</span> vs aplikasi kasir
                 </p>
               </div>
             </div>
@@ -1035,23 +1035,23 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Platform links */}
+            {/* Produk */}
             <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-stone-500 mb-4">Platform</p>
+              <p className="text-xs font-semibold uppercase tracking-widest text-stone-500 mb-4">Produk</p>
               <ul className="space-y-2.5 text-sm">
                 <li><Link href="#fitur" className="hover:text-white transition-colors">Fitur</Link></li>
                 <li><Link href="#harga" className="hover:text-white transition-colors">Harga</Link></li>
                 <li><Link href="/demo-kedai-kopi" className="hover:text-white transition-colors">Lihat Demo</Link></li>
-                <li><Link href="/bantuan" className="hover:text-white transition-colors">Bantuan</Link></li>
+                <li><Link href="/register" className="hover:text-white transition-colors">Daftar</Link></li>
+                <li><Link href="/login" className="hover:text-white transition-colors">Masuk</Link></li>
               </ul>
             </div>
 
-            {/* Account & Legal */}
+            {/* Bantuan & Legal */}
             <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-stone-500 mb-4">Akun & Legal</p>
+              <p className="text-xs font-semibold uppercase tracking-widest text-stone-500 mb-4">Bantuan & Legal</p>
               <ul className="space-y-2.5 text-sm">
-                <li><Link href="/register" className="hover:text-white transition-colors">Daftar</Link></li>
-                <li><Link href="/login" className="hover:text-white transition-colors">Masuk</Link></li>
+                <li><Link href="/bantuan" className="hover:text-white transition-colors">Bantuan</Link></li>
                 <li><Link href="/syarat" className="hover:text-white transition-colors">Syarat & Ketentuan</Link></li>
                 <li><Link href="/privasi" className="hover:text-white transition-colors">Kebijakan Privasi</Link></li>
               </ul>
