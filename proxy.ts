@@ -2,11 +2,11 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 /**
- * Next.js 16 Middleware — routing concerns + session refresh.
+ * Next.js 16 Proxy — routing concerns + session refresh.
  * Auth redirects and role checks live in Server Component layouts.
- * See: https://nextjs.org/docs/messages/middleware-to-proxy
+ * See: https://nextjs.org/docs/app/api-reference/file-conventions/proxy
  */
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request })
 
   const { pathname } = request.nextUrl
@@ -70,7 +70,7 @@ export async function middleware(request: NextRequest) {
   return response
 }
 
-// Config must be defined directly in middleware.ts
+// Config must be defined directly in proxy.ts
 export const config = {
   matcher: [
     '/((?!_next/static|_next/image|favicon\\.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|woff|woff2|ttf|otf)$).*)',
