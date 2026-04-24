@@ -51,12 +51,13 @@ export async function createStore(input: CreateStoreInput): Promise<{ error: str
   const { data: newStore, error } = await supabase.from('stores').insert(payload).select('id').single()
   if (error) return { error: error.message }
 
-  // Create primary location if address provided
-  if (newStore && input.address) {
+  // Create primary location if address or whatsapp provided
+  if (newStore && (input.address || input.whatsapp)) {
     await supabase.from('store_locations').insert({
       store_id: newStore.id,
       name: 'Lokasi Utama',
-      address: input.address,
+      address: input.address || '',
+      whatsapp: input.whatsapp,
       is_primary: true,
     })
   }
