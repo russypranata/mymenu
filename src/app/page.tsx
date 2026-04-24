@@ -152,7 +152,7 @@ export default function Home() {
                     href="/demo-kedai-kopi"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full sm:w-auto flex items-center justify-center gap-2 px-7 py-3.5 bg-yellow-400 text-gray-900 text-base font-semibold rounded-xl hover:bg-yellow-500 transition-all shadow-sm"
+                    className="w-full sm:w-auto flex items-center justify-center gap-2 px-7 py-3.5 bg-yellow-400 text-gray-900 text-base font-semibold rounded-xl hover:bg-yellow-500 transition-all"
                   >
                     <Eye className="w-5 h-5" strokeWidth={2} />
                     Lihat Demo
@@ -190,7 +190,7 @@ export default function Home() {
                 {/* Phone Frame - Single phone */}
                 <div className="relative w-[280px] sm:w-[300px]">
                   {/* Phone Border */}
-                  <div className="relative bg-slate-900 rounded-[2.5rem] p-2 shadow-2xl">
+                  <div className="relative bg-slate-900 rounded-[2.5rem] p-2">
                     {/* Phone Screen */}
                     <div className="bg-white rounded-[2rem] overflow-hidden">
                       {/* Status Bar */}
@@ -615,7 +615,7 @@ export default function Home() {
                 ].map((item, i) => (
                   <div key={i} className="relative z-10 flex flex-col items-center text-center">
                     {/* Step circle */}
-                    <div className={`w-[72px] h-[72px] rounded-2xl border-2 ${item.color} flex items-center justify-center text-3xl mb-5 shadow-sm`}>
+                    <div className={`w-[72px] h-[72px] rounded-2xl border-2 ${item.color} flex items-center justify-center text-3xl mb-5`}>
                       {item.icon}
                     </div>
                     <span className={`text-xs font-black tracking-widest ${item.numColor} mb-2`}>{item.step}</span>
@@ -704,7 +704,7 @@ export default function Home() {
                   color: "bg-orange-50 border-orange-100 text-orange-600",
                 },
               ].map((item, i) => (
-                <div key={i} className={`rounded-2xl border-2 ${item.color} p-6 hover:shadow-lg transition-all`}>
+                <div key={i} className={`rounded-2xl border-2 ${item.color} p-6 hover:border-opacity-80 transition-all`}>
                   <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${item.color}`}>
                     {item.icon}
                   </div>
@@ -811,10 +811,10 @@ export default function Home() {
 
             {/* Pricing Card - Compact & Centered */}
             <div className="max-w-sm mx-auto">
-              <div className="bg-white rounded-3xl border-2 border-green-500 shadow-xl shadow-green-500/10 p-8 relative">
+              <div className="bg-white rounded-3xl border-2 border-green-500 p-8 relative">
                 {/* Badge */}
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                  <span className="bg-green-500 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-md">
+                  <span className="bg-green-500 text-white text-xs font-bold px-4 py-1.5 rounded-full">
                     ⭐ Paling Populer
                   </span>
                 </div>
@@ -857,7 +857,7 @@ export default function Home() {
                 <div className="space-y-3">
                   <Link
                     href="/register"
-                    className="w-full flex items-center justify-center gap-2 py-3.5 bg-green-500 text-white font-bold rounded-2xl hover:bg-green-600 transition-colors shadow-sm"
+                    className="w-full flex items-center justify-center gap-2 py-3.5 bg-green-500 text-white font-bold rounded-2xl hover:bg-green-600 transition-colors"
                   >
                     <Rocket className="w-5 h-5" />
                     Mulai Gratis 7 Hari
@@ -891,7 +891,7 @@ export default function Home() {
 
             {/* Comparison Table */}
             <div className="mt-16 max-w-3xl mx-auto">
-              <div className="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-2xl border-2 border-yellow-200 p-6 shadow-sm">
+              <div className="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-2xl border-2 border-yellow-200 p-6">
                 <div className="flex items-center justify-center gap-2 mb-5">
                   <span className="text-2xl">💡</span>
                   <h4 className="font-bold text-gray-900 text-base">Bandingkan dengan solusi lain</h4>
@@ -911,7 +911,7 @@ export default function Home() {
                       <p className="text-red-600 font-bold text-base">~Rp2.400.000<span className="text-xs font-normal">/tahun</span></p>
                     </div>
                   </div>
-                  <div className="bg-gradient-to-br from-green-100 to-green-50 rounded-xl p-4 border-2 border-green-500 text-center shadow-md relative">
+                  <div className="bg-gradient-to-br from-green-100 to-green-50 rounded-xl p-4 border-2 border-green-500 text-center relative">
                     <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
                       <span className="text-white text-xs font-bold">✓</span>
                     </div>
@@ -963,7 +963,7 @@ export default function Home() {
         {/* --- FINAL CTA SECTION --- */}
         <section className="py-24 bg-gray-50 relative">
           <div className="container mx-auto px-4 sm:px-6 relative z-10">
-            <div className="relative rounded-3xl bg-stone-900 overflow-hidden px-6 py-16 sm:px-16 sm:py-20 shadow-2xl">
+            <div className="relative rounded-3xl bg-stone-900 overflow-hidden px-6 py-16 sm:px-16 sm:py-20">
               {/* Subtle grid texture */}
               <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
                 <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg">
@@ -1036,7 +1036,7 @@ export default function Home() {
                 </div>
                 <span className="font-bold text-white text-xl tracking-tight">MyMenu</span>
               </div>
-              <p className="text-sm leading-relaxed text-stone-500">
+              <p className="text-sm leading-relaxed text-stone-500 pl-11">
                 Solusi menu digital untuk warung, kafe, dan restoran Indonesia. Mudah, cepat, terjangkau.
               </p>
             </div>
