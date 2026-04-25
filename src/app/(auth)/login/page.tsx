@@ -36,9 +36,8 @@ function LoginForm() {
 
       {/* ── Left panel ── */}
       <div
-        className="hidden lg:flex w-1/2 flex-col p-14 relative overflow-hidden"
+        className="hidden lg:flex w-1/2 flex-col p-14 relative overflow-hidden bg-stone-900"
         style={{
-          background: 'linear-gradient(145deg, #1a0e08 0%, #2c1810 50%, #3d2010 100%)',
           clipPath: 'polygon(0 0, 95% 0, 100% 15%, 97% 30%, 100% 50%, 97% 70%, 100% 85%, 95% 100%, 0 100%)'
         }}
       >
