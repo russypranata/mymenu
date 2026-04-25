@@ -103,9 +103,9 @@ export default function Home() {
           </div>
 
           <div className="container mx-auto px-4 sm:px-6 relative z-10">
-            <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center max-w-6xl mx-auto">
-              {/* Left Content - White Background */}
-              <div className="text-center lg:text-left relative z-10">
+            <div className="grid lg:grid-cols-5 gap-8 sm:gap-10 lg:gap-12 items-center max-w-6xl mx-auto">
+              {/* Left Content - 60% */}
+              <div className="lg:col-span-3 text-center lg:text-left relative z-10">
                 {/* Pill Badge */}
                 <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1 sm:py-1.5 bg-yellow-100 border border-yellow-300 rounded-full text-yellow-800 font-medium text-[10px] sm:text-xs lg:text-sm mb-4 sm:mb-6">
                   <span className="relative flex h-1.5 w-1.5 sm:h-2 sm:w-2">
@@ -123,7 +123,7 @@ export default function Home() {
                   </span></span>
                 </h1>
 
-                <p className="text-base sm:text-lg lg:text-xl text-gray-600 mb-6 sm:mb-8 leading-relaxed lg:pr-8">
+                <p className="text-base sm:text-lg lg:text-xl text-gray-600 mb-6 sm:mb-8 leading-relaxed lg:pr-16 xl:pr-24">
                   Solusi digital untuk penjualan warung, kafe, atau restoran Anda dengan
                   menu digital modern yang bisa langsung dibuka lewat link & QR
                   code.
@@ -174,77 +174,63 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Right Content - Feature Bento Grid */}
-              <div className="relative flex justify-center lg:justify-end mt-8 lg:mt-0">
-                <div className="w-full max-w-md">
-                  <div className="grid grid-cols-2 gap-3 sm:gap-4">
+              {/* Right Content - Feature Bento Grid - 40% */}
+              <div className="lg:col-span-2 relative flex justify-center lg:justify-end mt-6 lg:mt-0">
+                <div className="w-full max-w-sm lg:max-w-none">
+                  <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
                     {/* QR Code Card */}
-                    <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl sm:rounded-3xl p-5 sm:p-6 flex flex-col items-center justify-center text-center min-h-[160px] sm:min-h-[180px] relative overflow-hidden">
+                    <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-4 sm:p-5 flex flex-col items-center justify-center text-center min-h-[140px] sm:min-h-[160px] lg:min-h-[150px] relative overflow-hidden">
                       <div className="absolute -top-8 -right-8 w-32 h-32 bg-white/10 rounded-full" />
                       <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-white/10 rounded-full" />
                       <div className="relative z-10">
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 sm:mb-4 mx-auto">
-                          <QrCode className="w-8 h-8 sm:w-10 sm:h-10 text-green-500" strokeWidth={2} />
+                        <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white rounded-xl flex items-center justify-center mb-2.5 mx-auto">
+                          <QrCode className="w-6 h-6 sm:w-7 sm:h-7 text-green-500" strokeWidth={2} />
                         </div>
-                        <p className="text-white font-bold text-sm sm:text-base">Scan & Buka</p>
-                        <p className="text-green-100 text-xs sm:text-sm mt-1">Tanpa install</p>
+                        <p className="text-white font-bold text-xs sm:text-sm">Scan & Buka</p>
+                        <p className="text-green-100 text-[10px] sm:text-xs mt-0.5">Tanpa install</p>
                       </div>
                     </div>
 
                     {/* Link Share Card */}
-                    <div className="bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-2xl sm:rounded-3xl p-5 sm:p-6 flex flex-col items-center justify-center text-center min-h-[160px] sm:min-h-[180px] relative overflow-hidden">
+                    <div className="bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-2xl p-4 sm:p-5 flex flex-col items-center justify-center text-center min-h-[140px] sm:min-h-[160px] lg:min-h-[150px] relative overflow-hidden">
                       <div className="absolute -top-8 -left-8 w-32 h-32 bg-white/10 rounded-full" />
                       <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-white/10 rounded-full" />
                       <div className="relative z-10">
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 sm:mb-4 mx-auto">
-                          <Link2 className="w-8 h-8 sm:w-10 sm:h-10 text-yellow-500" strokeWidth={2} />
+                        <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white rounded-xl flex items-center justify-center mb-2.5 mx-auto">
+                          <Link2 className="w-6 h-6 sm:w-7 sm:h-7 text-yellow-500" strokeWidth={2} />
                         </div>
-                        <p className="text-gray-900 font-bold text-sm sm:text-base">Bagikan Link</p>
-                        <p className="text-gray-800 text-xs sm:text-sm mt-1">Ke mana saja</p>
+                        <p className="text-gray-900 font-bold text-xs sm:text-sm">Bagikan Link</p>
+                        <p className="text-gray-800 text-[10px] sm:text-xs mt-0.5">Ke mana saja</p>
                       </div>
                     </div>
 
                     {/* Edit Anytime Card */}
-                    <div className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 flex flex-col items-center justify-center text-center min-h-[160px] sm:min-h-[180px] border-2 border-gray-100 relative overflow-hidden">
+                    <div className="bg-white rounded-2xl p-4 sm:p-5 flex flex-col items-center justify-center text-center min-h-[140px] sm:min-h-[160px] lg:min-h-[150px] border-2 border-gray-100 relative overflow-hidden">
                       <div className="absolute -top-6 -right-6 w-24 h-24 bg-green-50 rounded-full" />
                       <div className="relative z-10">
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-green-50 rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 sm:mb-4 mx-auto">
-                          <Pencil className="w-8 h-8 sm:w-10 sm:h-10 text-green-500" strokeWidth={2} />
+                        <div className="w-12 h-12 sm:w-14 sm:h-14 bg-green-50 rounded-xl flex items-center justify-center mb-2.5 mx-auto">
+                          <Pencil className="w-6 h-6 sm:w-7 sm:h-7 text-green-500" strokeWidth={2} />
                         </div>
-                        <p className="text-gray-900 font-bold text-sm sm:text-base">Edit Kapan Saja</p>
-                        <p className="text-gray-600 text-xs sm:text-sm mt-1">Langsung live</p>
+                        <p className="text-gray-900 font-bold text-xs sm:text-sm">Edit Kapan Saja</p>
+                        <p className="text-gray-600 text-[10px] sm:text-xs mt-0.5">Langsung live</p>
                       </div>
                     </div>
 
                     {/* Custom Theme Card */}
-                    <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl sm:rounded-3xl p-5 sm:p-6 flex flex-col items-center justify-center text-center min-h-[160px] sm:min-h-[180px] relative overflow-hidden">
+                    <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-4 sm:p-5 flex flex-col items-center justify-center text-center min-h-[140px] sm:min-h-[160px] lg:min-h-[150px] relative overflow-hidden">
                       <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-white/10 rounded-full" />
                       <div className="absolute -top-6 -right-6 w-24 h-24 bg-white/10 rounded-full" />
                       <div className="relative z-10">
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 sm:mb-4 mx-auto">
-                          <Palette className="w-8 h-8 sm:w-10 sm:h-10 text-purple-500" strokeWidth={2} />
+                        <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white rounded-xl flex items-center justify-center mb-2.5 mx-auto">
+                          <Palette className="w-6 h-6 sm:w-7 sm:h-7 text-purple-500" strokeWidth={2} />
                         </div>
-                        <p className="text-white font-bold text-sm sm:text-base">Custom Theme</p>
-                        <p className="text-purple-100 text-xs sm:text-sm mt-1">Sesuai brand</p>
+                        <p className="text-white font-bold text-xs sm:text-sm">Custom Theme</p>
+                        <p className="text-purple-100 text-[10px] sm:text-xs mt-0.5">Sesuai brand</p>
                       </div>
                     </div>
                   </div>
 
-                  {/* Bottom Feature Pills */}
-                  <div className="mt-4 sm:mt-5 flex flex-wrap gap-2 justify-center">
-                    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-green-50 border border-green-200 rounded-full">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-green-500" strokeWidth={2.5} />
-                      <span className="text-xs font-medium text-green-700">Tanpa Cetak</span>
-                    </div>
-                    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-yellow-50 border border-yellow-200 rounded-full">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-yellow-600" strokeWidth={2.5} />
-                      <span className="text-xs font-medium text-yellow-700">Hemat Biaya</span>
-                    </div>
-                    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-50 border border-purple-200 rounded-full">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-purple-500" strokeWidth={2.5} />
-                      <span className="text-xs font-medium text-purple-700">Mudah Dipakai</span>
-                    </div>
-                  </div>
+
                 </div>
               </div>
             </div>
