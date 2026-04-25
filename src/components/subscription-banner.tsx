@@ -209,9 +209,17 @@ function PaymentModal({
 
           {/* Step 2 */}
           <div className="space-y-2">
-            <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Langkah 2 — Konfirmasi via WhatsApp</p>
+            <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Langkah 2 — Kirim Bukti via WhatsApp</p>
+            <div className="bg-blue-50 border border-blue-100 rounded-xl px-4 py-3 space-y-1">
+              <p className="text-xs font-semibold text-blue-800">Cara kirim bukti transfer:</p>
+              <ol className="text-xs text-blue-700 space-y-1 list-decimal list-inside leading-relaxed">
+                <li>Screenshot atau foto struk transfer dari aplikasi bank</li>
+                <li>Klik tombol di bawah untuk buka WhatsApp admin</li>
+                <li>Lampirkan foto bukti transfer → kirim</li>
+              </ol>
+            </div>
             <p className="text-xs text-gray-500 leading-relaxed">
-              Setelah transfer, kirim bukti pembayaran ke admin via WhatsApp. Langganan akan diaktifkan dalam beberapa menit.
+              Langganan akan diaktifkan dalam beberapa menit setelah admin memverifikasi.
             </p>
             <a
               href={waUrl}
@@ -220,7 +228,7 @@ function PaymentModal({
               className="w-full flex items-center justify-center gap-2 py-3 bg-green-500 hover:bg-green-600 text-white text-sm font-semibold rounded-xl transition-colors"
             >
               <MessageCircle className="w-4 h-4" />
-              Kirim Bukti via WhatsApp
+              Buka WhatsApp &amp; Kirim Bukti
             </a>
           </div>
 

@@ -7,9 +7,11 @@ import { PhoneForm } from '@/components/phone-form'
 import { EmailForm } from '@/components/email-form'
 import { PasswordForm } from '@/components/password-form'
 import { DeleteAccountSection } from '@/components/delete-account-section'
+import { SubscriptionSection } from '@/components/subscription-section'
 import { UserCircle } from 'lucide-react'
 import type { Database } from '@/types/database.types'
 import type { Metadata } from 'next'
+import { getSubscription } from '@/lib/queries/dashboard'
 
 export const metadata: Metadata = {
   title: 'Pengaturan Akun — MyMenu',
@@ -20,14 +22,15 @@ export default async function ProfilePage() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .maybeSingle() as { data: Database['public']['Tables']['profiles']['Row'] | null }
+  const [profileResult, subscription] = await Promise.all([
+    supabase.from('profiles').select('*').eq('id', user.id).maybeSingle(),
+    getSubscription(user.id),
+  ])
 
+  const profile = profileResult.data as Database['public']['Tables']['profiles']['Row'] | null
   const displayName = getDisplayName(profile ?? { display_name: null, email: user.email ?? '' })
   const initial = getAvatarInitial(displayName)
+  const userEmail = profile?.email ?? user.email ?? ''
 
   return (
     <div className="space-y-6">
@@ -51,17 +54,23 @@ export default async function ProfilePage() {
         <PhoneForm phone={profile?.phone ?? null} />
       </section>
 
+      {/* Section: Langganan */}
+      <section className="space-y-4">
+        <SectionLabel>Langganan</SectionLabel>
+        <SubscriptionSection subscription={subscription} userEmail={userEmail} />
+      </section>
+
       {/* Section: Keamanan */}
       <section className="space-y-4">
         <SectionLabel>Keamanan</SectionLabel>
-        <EmailForm currentEmail={profile?.email ?? user.email ?? ''} />
+        <EmailForm currentEmail={userEmail} />
         <PasswordForm />
       </section>
 
       {/* Section: Danger Zone */}
       <section className="space-y-4">
         <SectionLabel danger>Zona Berbahaya</SectionLabel>
-        <DeleteAccountSection userEmail={profile?.email ?? user.email ?? ''} />
+        <DeleteAccountSection userEmail={userEmail} />
       </section>
     </div>
   )
