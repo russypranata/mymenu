@@ -11,6 +11,7 @@ import { Breadcrumb } from '@/components/breadcrumb'
 import { getDisplayName } from '@/lib/profile-helpers'
 import { getSubscription, isSubscriptionValid } from '@/lib/queries/dashboard'
 import { getStoresByUser } from '@/lib/queries/store'
+import { SubscriptionBanner } from '@/components/subscription-banner'
 
 export default async function DashboardLayout({
   children,
@@ -37,6 +38,11 @@ export default async function DashboardLayout({
   const displayName = getDisplayName(profile ?? { display_name: null, email: user.email || '' })
   const avatarUrl = profile?.avatar_url ?? null
   const hasValidSub = isSubscriptionValid(subscription)
+
+  const expiresAt = subscription?.expires_at ? new Date(subscription.expires_at) : null
+  const daysUntilExpiry = expiresAt
+    ? Math.ceil((expiresAt.getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+    : null
 
   const navItemsTop = [
     { href: '/dashboard', label: 'Dashboard' },
@@ -83,15 +89,20 @@ export default async function DashboardLayout({
         {/* Logout */}
         <div className="p-3 border-t border-gray-100 flex-shrink-0">
           {!hasValidSub && (
-            <div className="mx-1 mb-2 px-3 py-2.5 bg-amber-50 border border-amber-100 rounded-xl flex items-center gap-2.5">
+            <a
+              href={`https://wa.me/${process.env.NEXT_PUBLIC_ADMIN_WHATSAPP || '62895338170582'}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mx-1 mb-2 px-3 py-2.5 bg-amber-50 border border-amber-100 rounded-xl flex items-center gap-2.5 hover:bg-amber-100 transition-colors"
+            >
               <Zap className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" />
               <div>
                 <p className="text-xs font-semibold text-amber-700 leading-tight">
                   {subscription?.status === 'expired' ? 'Langganan berakhir' : 'Belum berlangganan'}
                 </p>
-                <p className="text-[10px] text-amber-500 leading-tight mt-0.5">Hubungi admin</p>
+                <p className="text-[10px] text-amber-500 leading-tight mt-0.5">Tap untuk perpanjang →</p>
               </div>
-            </div>
+            </a>
           )}
           <LogoutButton />
         </div>
@@ -144,32 +155,11 @@ export default async function DashboardLayout({
 
         {/* Page content */}
         <main className="flex-1 p-4 md:p-8 pb-24 md:pb-8">
-          {!hasValidSub && (
-            <div className="mb-6 bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4 flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3.5">
-                <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <Zap className="w-5 h-5 text-amber-500" />
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-amber-900">
-                    {subscription?.status === 'expired'
-                      ? 'Langganan Anda telah berakhir'
-                      : 'Anda belum memiliki langganan aktif'}
-                  </p>
-                  <p className="text-xs text-amber-600 mt-0.5">
-                    Hubungi admin untuk mengaktifkan atau memperpanjang langganan Anda.
-                  </p>
-                </div>
-              </div>
-              <Link
-                href="/profile"
-                className="flex-shrink-0 flex items-center gap-1.5 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold rounded-xl transition-colors"
-              >
-                <UserCircle2 className="w-3.5 h-3.5" />
-                Lihat Akun
-              </Link>
-            </div>
-          )}
+          <SubscriptionBanner
+            subscription={subscription}
+            daysUntilExpiry={daysUntilExpiry}
+            userEmail={profile?.email ?? user.email ?? ''}
+          />
           {children}
         </main>
 
