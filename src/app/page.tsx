@@ -8,14 +8,11 @@ import {
   MessageCircle,
   Grid3x3,
   QrCode,
-  Globe,
   ClipboardList,
-  Lock,
   Rocket,
   Coffee,
   UtensilsCrossed,
   Wine,
-  ShoppingCart,
   Image as ImageIcon,
   ArrowRight,
   CheckCircle2,
@@ -27,8 +24,6 @@ import {
   LayoutTemplate,
   BarChart3,
   HelpCircle,
-  DollarSign,
-  Users,
   Store,
   ChefHat,
   IceCream,
@@ -75,8 +70,7 @@ export default function Home() {
                 className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 bg-green-500 text-white text-xs sm:text-sm font-semibold rounded-lg sm:rounded-xl hover:bg-green-600 transition-all"
               >
                 <Rocket className="w-3.5 h-3.5 sm:w-4 sm:h-4" strokeWidth={2} />
-                <span className="hidden xs:inline">Coba Gratis</span>
-                <span className="xs:hidden">Gratis</span>
+                <span>Coba Gratis</span>
               </Link>
             </div>
           </div>
@@ -85,7 +79,7 @@ export default function Home() {
 
       <main className="pt-20 sm:pt-28">
         {/* Hero Section - Split Layout */}
-        <section className="relative pb-16 sm:pb-24 lg:pb-32 overflow-hidden">
+        <section className="relative min-h-[calc(100dvh-5rem)] flex flex-col justify-center pb-16 sm:pb-24 lg:pb-32 overflow-hidden">
           {/* Background Pattern - Menu Icons */}
           <div className="absolute inset-0 opacity-5 sm:opacity-10 pointer-events-none">
             <div className="absolute top-16 left-16 text-green-500 hidden lg:block">
@@ -180,118 +174,75 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Right Content - Mobile Phone Mockup */}
+              {/* Right Content - Feature Bento Grid */}
               <div className="relative flex justify-center lg:justify-end mt-8 lg:mt-0">
-                {/* Phone Frame - Single phone */}
-                <div className="relative w-[240px] sm:w-[280px] lg:w-[300px]">
-                  {/* Phone Border */}
-                  <div className="relative bg-slate-900 rounded-[2.5rem] p-2">
-                    {/* Phone Screen */}
-                    <div className="bg-white rounded-[2rem] overflow-hidden">
-                      {/* Status Bar */}
-                      <div className="bg-slate-900 px-6 py-2 flex justify-between items-center">
-                        <span className="text-white text-xs font-medium">
-                          09:41
-                        </span>
-                        <div className="flex items-center gap-1">
-                          <Globe
-                            className="w-4 h-4 text-white"
-                            strokeWidth={2}
-                          />
-                          <Lock
-                            className="w-4 h-4 text-white"
-                            strokeWidth={2}
-                          />
+                <div className="w-full max-w-md">
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                    {/* QR Code Card */}
+                    <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl sm:rounded-3xl p-5 sm:p-6 flex flex-col items-center justify-center text-center min-h-[160px] sm:min-h-[180px] relative overflow-hidden">
+                      <div className="absolute -top-8 -right-8 w-32 h-32 bg-white/10 rounded-full" />
+                      <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-white/10 rounded-full" />
+                      <div className="relative z-10">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 sm:mb-4 mx-auto">
+                          <QrCode className="w-8 h-8 sm:w-10 sm:h-10 text-green-500" strokeWidth={2} />
                         </div>
+                        <p className="text-white font-bold text-sm sm:text-base">Scan & Buka</p>
+                        <p className="text-green-100 text-xs sm:text-sm mt-1">Tanpa install</p>
                       </div>
+                    </div>
 
-                      {/* App Header */}
-                      <div className="bg-green-500 px-4 py-4">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
-                            <ShoppingCart
-                              className="w-6 h-6 text-white"
-                              strokeWidth={2}
-                            />
-                          </div>
-                          <div>
-                            <h3 className="text-white font-bold text-sm">
-                              Kedai Kopi Senja
-                            </h3>
-                            <p className="text-green-100 text-xs flex items-center gap-1">
-                              <span className="inline-block w-1.5 h-1.5 rounded-full bg-yellow-400" />
-                              Buka • 08:00 - 22:00
-                            </p>
-                          </div>
-                          <span className="ml-auto text-[10px] font-bold bg-yellow-400 text-gray-900 px-2 py-0.5 rounded-full">OPEN</span>
+                    {/* Link Share Card */}
+                    <div className="bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-2xl sm:rounded-3xl p-5 sm:p-6 flex flex-col items-center justify-center text-center min-h-[160px] sm:min-h-[180px] relative overflow-hidden">
+                      <div className="absolute -top-8 -left-8 w-32 h-32 bg-white/10 rounded-full" />
+                      <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-white/10 rounded-full" />
+                      <div className="relative z-10">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 sm:mb-4 mx-auto">
+                          <Link2 className="w-8 h-8 sm:w-10 sm:h-10 text-yellow-500" strokeWidth={2} />
                         </div>
+                        <p className="text-gray-900 font-bold text-sm sm:text-base">Bagikan Link</p>
+                        <p className="text-gray-800 text-xs sm:text-sm mt-1">Ke mana saja</p>
                       </div>
+                    </div>
 
-                      {/* Categories */}
-                      <div className="px-4 py-3 border-b border-gray-100">
-                        <div className="flex gap-2 overflow-hidden">
-                          <div className="px-3 py-1.5 bg-green-200 text-green-800 text-xs font-bold rounded-full whitespace-nowrap">
-                            Semua Menu
-                          </div>
-                          <div className="px-3 py-1.5 bg-gray-100 text-gray-600 text-xs font-medium rounded-full whitespace-nowrap">
-                            Kopi
-                          </div>
-                          <div className="px-3 py-1.5 bg-gray-100 text-gray-600 text-xs font-medium rounded-full whitespace-nowrap">
-                            Non-Kopi
-                          </div>
+                    {/* Edit Anytime Card */}
+                    <div className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 flex flex-col items-center justify-center text-center min-h-[160px] sm:min-h-[180px] border-2 border-gray-100 relative overflow-hidden">
+                      <div className="absolute -top-6 -right-6 w-24 h-24 bg-green-50 rounded-full" />
+                      <div className="relative z-10">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-green-50 rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 sm:mb-4 mx-auto">
+                          <Pencil className="w-8 h-8 sm:w-10 sm:h-10 text-green-500" strokeWidth={2} />
                         </div>
+                        <p className="text-gray-900 font-bold text-sm sm:text-base">Edit Kapan Saja</p>
+                        <p className="text-gray-600 text-xs sm:text-sm mt-1">Langsung live</p>
                       </div>
+                    </div>
 
-                      {/* Menu Items */}
-                      <div className="p-4 space-y-3">
-                        {/* Menu Item 1 */}
-                        <div className="flex gap-3 p-2.5 bg-gray-50 rounded-xl">
-                          <div className="w-16 h-16 bg-gradient-to-br from-amber-200 to-amber-300 rounded-lg flex-shrink-0"></div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="text-gray-900 font-bold text-sm truncate">
-                              Kopi Susu Gula Aren
-                            </h4>
-                            <p className="text-gray-500 text-xs mt-0.5 line-clamp-1">
-                              Espresso dengan susu segar
-                            </p>
-                            <p className="text-green-500 font-bold text-sm mt-1">
-                              Rp 18.000
-                            </p>
-                          </div>
+                    {/* Custom Theme Card */}
+                    <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl sm:rounded-3xl p-5 sm:p-6 flex flex-col items-center justify-center text-center min-h-[160px] sm:min-h-[180px] relative overflow-hidden">
+                      <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-white/10 rounded-full" />
+                      <div className="absolute -top-6 -right-6 w-24 h-24 bg-white/10 rounded-full" />
+                      <div className="relative z-10">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 sm:mb-4 mx-auto">
+                          <Palette className="w-8 h-8 sm:w-10 sm:h-10 text-purple-500" strokeWidth={2} />
                         </div>
-
-                        {/* Menu Item 2 */}
-                        <div className="flex gap-3 p-2.5 bg-gray-50 rounded-xl">
-                          <div className="w-16 h-16 bg-gradient-to-br from-amber-700 to-amber-800 rounded-lg flex-shrink-0"></div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="text-gray-900 font-bold text-sm truncate">
-                              Americano
-                            </h4>
-                            <p className="text-gray-500 text-xs mt-0.5 line-clamp-1">
-                              Espresso dengan air panas
-                            </p>
-                            <p className="text-green-500 font-bold text-sm mt-1">
-                              Rp 15.000
-                            </p>
-                          </div>
-                        </div>
-
-                        {/* Menu Item 3 */}
-                        <div className="flex gap-3 p-2.5 bg-gray-50 rounded-xl">
-                          <div className="w-16 h-16 bg-gradient-to-br from-pink-200 to-pink-300 rounded-lg flex-shrink-0"></div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="text-gray-900 font-bold text-sm truncate">
-                              Strawberry Latte
-                            </h4>
-                            <p className="text-gray-500 text-xs mt-0.5 line-clamp-1">
-                              Susu dengan sirup strawberry
-                            </p>
-                            <p className="text-green-500 font-bold text-sm mt-1">
-                              Rp 22.000
-                            </p>
-                          </div>
-                        </div>
+                        <p className="text-white font-bold text-sm sm:text-base">Custom Theme</p>
+                        <p className="text-purple-100 text-xs sm:text-sm mt-1">Sesuai brand</p>
                       </div>
+                    </div>
+                  </div>
+
+                  {/* Bottom Feature Pills */}
+                  <div className="mt-4 sm:mt-5 flex flex-wrap gap-2 justify-center">
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-green-50 border border-green-200 rounded-full">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-green-500" strokeWidth={2.5} />
+                      <span className="text-xs font-medium text-green-700">Tanpa Cetak</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-yellow-50 border border-yellow-200 rounded-full">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-yellow-600" strokeWidth={2.5} />
+                      <span className="text-xs font-medium text-yellow-700">Hemat Biaya</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-50 border border-purple-200 rounded-full">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-purple-500" strokeWidth={2.5} />
+                      <span className="text-xs font-medium text-purple-700">Mudah Dipakai</span>
                     </div>
                   </div>
                 </div>
@@ -886,72 +837,43 @@ export default function Home() {
 
             {/* Comparison Table */}
             <div className="mt-12 sm:mt-16 max-w-2xl mx-auto">
-              <div className="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-xl sm:rounded-2xl border-2 border-yellow-200 p-5 sm:p-6">
+              <div className="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-xl sm:rounded-2xl border-2 border-yellow-200 p-4 sm:p-6">
                 <div className="flex items-center justify-center gap-2 mb-4 sm:mb-5">
                   <span className="text-lg sm:text-xl">💡</span>
                   <h4 className="font-bold text-gray-900 text-xs sm:text-sm">Bandingkan dengan solusi lain</h4>
                 </div>
-                <div className="grid grid-cols-3 gap-2.5 sm:gap-3">
-                  <div className="bg-white rounded-lg sm:rounded-xl p-2.5 sm:p-3 border border-gray-200 text-center">
-                    <p className="font-bold text-gray-900 mb-1 sm:mb-1.5 text-[10px] sm:text-xs">Menu Kertas</p>
-                    <p className="text-gray-600 text-[9px] sm:text-[10px] mb-1.5 sm:mb-2 leading-tight">Cetak ulang 3-4x/tahun</p>
+                <div className="grid grid-cols-3 gap-2 sm:gap-3">
+                  <div className="bg-white rounded-lg sm:rounded-xl p-2 sm:p-3 border border-gray-200 text-center overflow-hidden">
+                    <p className="font-bold text-gray-900 mb-1 sm:mb-1.5 text-[10px] sm:text-xs whitespace-nowrap">Menu Kertas</p>
+                    <p className="text-gray-600 text-[9px] sm:text-[10px] mb-1.5 sm:mb-2 leading-tight">Cetak ulang<br className="sm:hidden" /> 3-4x/tahun</p>
                     <div className="pt-1.5 sm:pt-2 border-t border-gray-100">
-                      <p className="text-red-600 font-bold text-xs sm:text-sm">~Rp200K<span className="text-[9px] sm:text-[10px] font-normal">/tahun</span></p>
+                      <p className="text-red-600 font-bold text-[10px] sm:text-sm whitespace-nowrap">~Rp200K<span className="text-[8px] sm:text-[10px] font-normal">/thn</span></p>
                     </div>
                   </div>
-                  <div className="bg-white rounded-lg sm:rounded-xl p-2.5 sm:p-3 border border-gray-200 text-center">
-                    <p className="font-bold text-gray-900 mb-1 sm:mb-1.5 text-[10px] sm:text-xs">Aplikasi Kasir</p>
-                    <p className="text-gray-600 text-[9px] sm:text-[10px] mb-1.5 sm:mb-2 leading-tight">Rp200K-500K/bulan</p>
+                  <div className="bg-white rounded-lg sm:rounded-xl p-2 sm:p-3 border border-gray-200 text-center overflow-hidden">
+                    <p className="font-bold text-gray-900 mb-1 sm:mb-1.5 text-[10px] sm:text-xs whitespace-nowrap">Aplikasi Kasir</p>
+                    <p className="text-gray-600 text-[9px] sm:text-[10px] mb-1.5 sm:mb-2 leading-tight">Rp200K-<br className="sm:hidden" />500K/bln</p>
                     <div className="pt-1.5 sm:pt-2 border-t border-gray-100">
-                      <p className="text-red-600 font-bold text-xs sm:text-sm">~Rp2.4Jt<span className="text-[9px] sm:text-[10px] font-normal">/tahun</span></p>
+                      <p className="text-red-600 font-bold text-[10px] sm:text-sm whitespace-nowrap">~Rp2.4Jt<span className="text-[8px] sm:text-[10px] font-normal">/thn</span></p>
                     </div>
                   </div>
-                  <div className="bg-gradient-to-br from-green-100 to-green-50 rounded-lg sm:rounded-xl p-2.5 sm:p-3 border-2 border-green-500 text-center relative">
+                  <div className="bg-gradient-to-br from-green-100 to-green-50 rounded-lg sm:rounded-xl p-2 sm:p-3 border-2 border-green-500 text-center relative overflow-hidden">
                     <div className="absolute -top-1 sm:-top-1.5 -right-1 sm:-right-1.5 w-4 h-4 sm:w-5 sm:h-5 bg-green-500 rounded-full flex items-center justify-center">
                       <span className="text-white text-[9px] sm:text-[10px] font-bold">✓</span>
                     </div>
-                    <p className="font-bold text-gray-900 mb-1 sm:mb-1.5 text-[10px] sm:text-xs">MyMenu</p>
-                    <p className="text-gray-700 text-[9px] sm:text-[10px] mb-1.5 sm:mb-2 leading-tight font-medium">Rp20K/bulan</p>
+                    <p className="font-bold text-gray-900 mb-1 sm:mb-1.5 text-[10px] sm:text-xs whitespace-nowrap">MyMenu</p>
+                    <p className="text-gray-700 text-[9px] sm:text-[10px] mb-1.5 sm:mb-2 leading-tight font-medium whitespace-nowrap">Rp20K/bln</p>
                     <div className="pt-1.5 sm:pt-2 border-t border-green-200">
-                      <p className="text-green-600 font-bold text-xs sm:text-sm">Rp240K<span className="text-[9px] sm:text-[10px] font-normal">/tahun</span> ✨</p>
+                      <p className="text-green-600 font-bold text-[10px] sm:text-sm whitespace-nowrap">Rp240K<span className="text-[8px] sm:text-[10px] font-normal">/thn</span> ✨</p>
                     </div>
                   </div>
                 </div>
-                <p className="text-center text-[9px] sm:text-[10px] text-gray-600 mt-2.5 sm:mt-3 font-medium">
+                <p className="text-center text-[9px] sm:text-[10px] text-gray-600 mt-3 sm:mt-3 font-medium">
                   💰 Hemat <span className="text-green-600 font-bold">hingga Rp2.16Jt/tahun</span> vs aplikasi kasir
                 </p>
               </div>
             </div>
 
-            {/* FAQ Mini */}
-            <div className="mt-12 sm:mt-16 max-w-2xl mx-auto">
-              <h3 className="text-xl sm:text-2xl font-extrabold text-gray-900 text-center mb-6 sm:mb-8">Pertanyaan Umum</h3>
-              <div className="space-y-3 sm:space-y-4">
-                {[
-                  {
-                    q: 'Bagaimana cara bayar?',
-                    a: 'Pembayaran dilakukan manual via transfer bank atau QRIS. Setelah konfirmasi, admin akan mengaktifkan langganan Anda.',
-                  },
-                  {
-                    q: 'Apakah bisa batal kapan saja?',
-                    a: 'Ya. Tidak ada kontrak. Jika tidak diperpanjang, akun otomatis expired dan data tetap tersimpan.',
-                  },
-                  {
-                    q: 'Berapa banyak menu yang bisa ditambahkan?',
-                    a: 'Tidak ada batasan. Tambahkan sebanyak yang Anda butuhkan.',
-                  },
-                  {
-                    q: 'Apakah ada biaya setup?',
-                    a: 'Tidak ada. Daftar gratis, setup sendiri dalam 5 menit.',
-                  },
-                ].map(({ q, a }, i) => (
-                  <div key={i} className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-gray-100">
-                    <p className="font-bold text-gray-900 mb-1 sm:mb-1.5 text-xs sm:text-sm">{q}</p>
-                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">{a}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </section>
 
