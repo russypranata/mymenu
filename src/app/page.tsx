@@ -733,11 +733,11 @@ export default function Home() {
                 Harga
               </p>
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 tracking-tight leading-[1.15]">
-                Satu harga, semua fitur,<br />
-                <span className="text-green-500">tanpa biaya tersembunyi</span>
+                Satu harga,{" "}
+                <span className="text-green-500">semua fitur</span>
               </h2>
               <p className="text-gray-500 text-sm sm:text-base lg:text-lg mt-4 sm:mt-5 leading-relaxed">
-                Bayar satu harga, dapat semua fitur. Tidak ada kontrak jangka panjang.
+                Tanpa biaya tersembunyi. Tanpa kontrak jangka panjang.
               </p>
             </div>
 
