@@ -662,12 +662,12 @@ export default function Home() {
             <div className="max-w-3xl mx-auto space-y-3 sm:space-y-4">
               {[
                 {
-                  q: "Apakah benar gratis 7 hari?",
-                  a: "Ya! Anda bisa coba semua fitur Menuly gratis selama 7 hari. Tidak perlu kartu kredit untuk daftar. Setelah trial berakhir, Anda bisa lanjut berlangganan Rp20.000/bulan atau berhenti tanpa biaya apapun.",
+                  q: "Apakah benar gratis 3 hari?",
+                  a: "Ya! Anda bisa coba semua fitur Menuly gratis selama 3 hari. Tidak perlu kartu kredit untuk daftar. Setelah trial berakhir, Anda bisa lanjut berlangganan Rp20.000/bulan atau berhenti tanpa biaya apapun.",
                 },
                 {
                   q: "Bagaimana cara pembayaran setelah trial?",
-                  a: "Setelah trial 7 hari, Anda bisa bayar via transfer bank, OVO, DANA, atau e-wallet lainnya. Hubungi admin via WhatsApp untuk mendapatkan instruksi pembayaran. Pembayaran per bulan, tanpa kontrak jangka panjang.",
+                  a: "Setelah trial 3 hari, Anda bisa bayar via transfer bank, OVO, DANA, atau e-wallet lainnya. Hubungi admin via WhatsApp untuk mendapatkan instruksi pembayaran. Pembayaran per bulan, tanpa kontrak jangka panjang.",
                 },
                 {
                   q: "Bisakah saya punya lebih dari 1 toko?",
@@ -756,7 +756,7 @@ export default function Home() {
                   </div>
                   <p className="text-xs sm:text-sm text-green-600 font-semibold mt-1.5 sm:mt-2 flex items-center justify-center gap-1.5">
                     <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                    Gratis 7 hari pertama
+                    Gratis 3 hari pertama
                   </p>
                 </div>
 
@@ -789,7 +789,7 @@ export default function Home() {
                     className="w-full flex items-center justify-center gap-2 py-3 sm:py-3.5 bg-green-500 text-white text-sm sm:text-base font-bold rounded-xl sm:rounded-2xl hover:bg-green-600 transition-colors"
                   >
                     <Rocket className="w-4 h-4 sm:w-5 sm:h-5" />
-                    Mulai Gratis 7 Hari
+                    Mulai Gratis 3 Hari
                   </Link>
                   <a
                     href={`https://wa.me/${process.env.NEXT_PUBLIC_ADMIN_WHATSAPP || '62895338170582'}`}
@@ -892,7 +892,7 @@ export default function Home() {
                 </h2>
 
                 <p className="text-stone-400 text-sm sm:text-base lg:text-lg mb-8 sm:mb-10 leading-relaxed max-w-xl mx-auto">
-                  Gratis 7 hari. Tidak perlu kartu kredit. Setup selesai sebelum kopi Anda dingin.
+                  Gratis 3 hari. Tidak perlu kartu kredit. Setup selesai sebelum kopi Anda dingin.
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
@@ -901,7 +901,7 @@ export default function Home() {
                     className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 bg-green-500 text-white text-sm sm:text-base font-semibold rounded-lg sm:rounded-xl hover:bg-green-600 transition-colors"
                   >
                     <Rocket className="w-4 h-4 sm:w-5 sm:h-5" />
-                    Coba Gratis 7 Hari
+                    Coba Gratis 3 Hari
                   </Link>
                   <a
                     href={`https://wa.me/${process.env.NEXT_PUBLIC_ADMIN_WHATSAPP || '62895338170582'}`}
@@ -916,7 +916,7 @@ export default function Home() {
 
                 <div className="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-stone-500 text-xs sm:text-sm">
                   <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-500" />
-                  <span>Gratis 7 hari · Tanpa kartu kredit · Batal kapan saja</span>
+                  <span>Gratis 3 hari · Tanpa kartu kredit · Batal kapan saja</span>
                 </div>
               </div>
             </div>

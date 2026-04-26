@@ -48,7 +48,7 @@ export async function createTrialSubscription(
 
   const today = new Date()
   const expiresAt = new Date(today)
-  expiresAt.setDate(expiresAt.getDate() + 7)
+  expiresAt.setDate(expiresAt.getDate() + 3)
 
   const { error } = await supabase.from('subscriptions').insert({
     user_id: userId,

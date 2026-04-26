@@ -33,10 +33,10 @@ export async function updateOnboarding(input: OnboardingInput): Promise<{ error:
     .maybeSingle()
 
   if (!existingSub) {
-    // Auto-create 7-day trial on first onboarding
+    // Auto-create 3-day trial on first onboarding
     const today = new Date()
     const expiresAt = new Date(today)
-    expiresAt.setDate(expiresAt.getDate() + 7)
+    expiresAt.setDate(expiresAt.getDate() + 3)
 
     await supabase.from('subscriptions').insert({
       user_id: user.id,

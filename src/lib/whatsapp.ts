@@ -33,7 +33,7 @@ export async function sendWhatsApp(phone: string, message: string): Promise<void
 export function msgTrialActive(name: string, expiresAt: string): string {
   return `Halo ${name}! 👋
 
-Selamat datang di *Menuly*! Trial gratis 7 hari Anda sudah aktif.
+Selamat datang di *Menuly*! Trial gratis 3 hari Anda sudah aktif.
 
 ✅ Masa trial berakhir: *${expiresAt}*
 

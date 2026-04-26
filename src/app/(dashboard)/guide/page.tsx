@@ -264,12 +264,12 @@ export default function GuidePage() {
 
         <div className="bg-white rounded-2xl border border-gray-100 p-6 space-y-4">
           <p className="text-sm text-gray-600">
-            Menuly menggunakan sistem langganan berbayar. Akun baru mendapat masa trial gratis selama <span className="font-semibold text-gray-800">7 hari</span>.
+            Menuly menggunakan sistem langganan berbayar. Akun baru mendapat masa trial gratis selama <span className="font-semibold text-gray-800">3 hari</span>.
           </p>
 
           <div className="space-y-3">
             {[
-              { status: 'Trial', color: 'bg-green-100 text-green-700', desc: 'Akun baru otomatis mendapat trial 7 hari. Semua fitur bisa digunakan penuh.' },
+              { status: 'Trial', color: 'bg-green-100 text-green-700', desc: 'Akun baru otomatis mendapat trial 3 hari. Semua fitur bisa digunakan penuh.' },
               { status: 'Aktif', color: 'bg-blue-100 text-blue-700', desc: 'Langganan aktif setelah admin mengaktifkan akun Anda. Semua fitur tersedia.' },
               { status: 'Expired', color: 'bg-red-100 text-red-700', desc: 'Langganan habis. Toko dan menu masih tersimpan, tapi tidak bisa menambah atau mengedit menu.' },
             ].map(({ status, color, desc }) => (

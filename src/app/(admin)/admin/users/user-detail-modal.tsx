@@ -91,7 +91,7 @@ export function UserDetailModal({
               </div>
             ) : trialDone ? (
               <div className="bg-green-50 border border-green-100 rounded-xl px-4 py-3">
-                <p className="text-sm text-green-600 font-medium">Trial 7 hari berhasil diaktifkan.</p>
+                <p className="text-sm text-green-600 font-medium">Trial 3 hari berhasil diaktifkan.</p>
               </div>
             ) : (
               <div className="bg-gray-50 rounded-xl px-4 py-3 flex items-center justify-between">

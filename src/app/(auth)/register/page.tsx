@@ -124,7 +124,7 @@ export default function RegisterPage() {
 
           <div className="flex flex-col gap-3">
             {[
-              { icon: UtensilsCrossed, text: 'Gratis 7 hari, tanpa kartu kredit' },
+              { icon: UtensilsCrossed, text: 'Gratis 3 hari, tanpa kartu kredit' },
               { icon: QrCode, text: 'QR Code otomatis untuk setiap meja' },
               { icon: Smartphone, text: 'Tampilan rapi di semua perangkat' },
             ].map(({ icon: Icon, text }) => (
@@ -266,7 +266,7 @@ export default function RegisterPage() {
                 </>
               ) : (
                 <>
-                  Mulai Gratis 7 Hari
+                  Mulai Gratis 3 Hari
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}
