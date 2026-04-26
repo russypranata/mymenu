@@ -164,7 +164,7 @@ function PaymentModal({
             <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Langkah 1 — Bayar</p>
             {QRIS_IMAGE ? (
               <div className="flex flex-col items-center bg-gray-50 rounded-xl p-4 gap-3">
-                <p className="text-xs text-gray-500 font-medium">Scan QRIS dengan aplikasi bank atau e-wallet</p>
+                <p className="text-xs text-gray-500 font-medium">Scan QRIS lalu masukkan nominal <span className="font-bold text-gray-800">Rp20.000</span></p>
                 <div className="bg-white rounded-xl p-2 border border-gray-200">
                   <Image src={QRIS_IMAGE} alt="QRIS Payment" width={200} height={200} className="rounded-lg" />
                 </div>
