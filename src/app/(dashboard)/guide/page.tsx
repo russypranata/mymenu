@@ -23,7 +23,7 @@ import {
 } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Panduan — MyMenu',
+  title: 'Panduan — Menuly',
 }
 
 export default function GuidePage() {
@@ -39,7 +39,7 @@ export default function GuidePage() {
             </div>
           </div>
           <p className="text-sm text-gray-500 mt-0.5">
-            Pelajari cara mengelola halaman menu digital Anda di MyMenu — dari setup awal sampai siap dibagikan ke pelanggan.
+            Pelajari cara mengelola halaman menu digital Anda di Menuly — dari setup awal sampai siap dibagikan ke pelanggan.
           </p>
         </div>
       </div>
@@ -82,7 +82,7 @@ export default function GuidePage() {
         <StepCard
           step={1}
           title="Buat toko baru"
-          description="Toko di MyMenu adalah halaman menu digital usaha Anda yang bisa dibagikan via link atau QR code. Klik tombol Buat Toko, lalu isi nama, URL, deskripsi, nomor WhatsApp, dan alamat."
+          description="Toko di Menuly adalah halaman menu digital usaha Anda yang bisa dibagikan via link atau QR code. Klik tombol Buat Toko, lalu isi nama, URL, deskripsi, nomor WhatsApp, dan alamat."
           action={{ label: 'Buat Toko', href: '/store/new' }}
           tips={[
             'URL toko otomatis dibuat dari nama — bisa kamu ubah sendiri.',
@@ -264,7 +264,7 @@ export default function GuidePage() {
 
         <div className="bg-white rounded-2xl border border-gray-100 p-6 space-y-4">
           <p className="text-sm text-gray-600">
-            MyMenu menggunakan sistem langganan berbayar. Akun baru mendapat masa trial gratis selama <span className="font-semibold text-gray-800">7 hari</span>.
+            Menuly menggunakan sistem langganan berbayar. Akun baru mendapat masa trial gratis selama <span className="font-semibold text-gray-800">7 hari</span>.
           </p>
 
           <div className="space-y-3">

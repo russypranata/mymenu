@@ -3,7 +3,7 @@ import { ClipboardList } from 'lucide-react'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Kebijakan Privasi — MyMenu',
+  title: 'Kebijakan Privasi — Menuly',
 }
 
 export default function PrivasiPage() {
@@ -14,7 +14,7 @@ export default function PrivasiPage() {
           <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
             <ClipboardList className="w-4 h-4 text-white" strokeWidth={2.5} />
           </div>
-          <span className="font-bold text-gray-800">MyMenu</span>
+          <span className="font-bold text-gray-800">Menuly</span>
         </Link>
 
         <h1 className="text-3xl font-extrabold text-gray-900 mb-2">Kebijakan Privasi</h1>
@@ -23,7 +23,7 @@ export default function PrivasiPage() {
         <div className="bg-white rounded-2xl border border-gray-100 p-8 space-y-6 text-sm text-gray-600 leading-relaxed">
           <section>
             <h2 className="text-base font-bold text-gray-900 mb-2">Data yang Kami Kumpulkan</h2>
-            <p>Kami mengumpulkan email, nama toko, dan data menu yang Anda masukkan untuk menjalankan layanan MyMenu. Data analitik (jumlah kunjungan halaman) dikumpulkan secara anonim.</p>
+            <p>Kami mengumpulkan email, nama toko, dan data menu yang Anda masukkan untuk menjalankan layanan Menuly. Data analitik (jumlah kunjungan halaman) dikumpulkan secara anonim.</p>
           </section>
           <section>
             <h2 className="text-base font-bold text-gray-900 mb-2">Penggunaan Data</h2>

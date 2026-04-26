@@ -3,7 +3,7 @@ import { ClipboardList, MessageCircle, BookOpen } from 'lucide-react'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Bantuan — MyMenu',
+  title: 'Bantuan — Menuly',
 }
 
 const faqs = [
@@ -37,7 +37,7 @@ export default function BantuanPage() {
           <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
             <ClipboardList className="w-4 h-4 text-white" strokeWidth={2.5} />
           </div>
-          <span className="font-bold text-gray-800">MyMenu</span>
+          <span className="font-bold text-gray-800">Menuly</span>
         </Link>
 
         <h1 className="text-3xl font-extrabold text-gray-900 mb-2">Pusat Bantuan</h1>

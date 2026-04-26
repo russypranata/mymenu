@@ -6,7 +6,7 @@ import type { Metadata } from 'next'
 import { getStoresByUser } from '@/lib/queries/store'
 
 export const metadata: Metadata = {
-  title: 'Buat Toko — MyMenu',
+  title: 'Buat Toko — Menuly',
 }
 
 export default async function NewStorePage() {

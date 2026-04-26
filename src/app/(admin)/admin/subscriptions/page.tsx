@@ -6,7 +6,7 @@ import { CreditCard } from 'lucide-react'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Subscriptions — Admin MyMenu',
+  title: 'Subscriptions — Admin Menuly',
 }
 
 const PAGE_SIZE = 20

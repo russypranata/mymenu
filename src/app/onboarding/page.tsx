@@ -62,7 +62,7 @@ export default function OnboardingPage() {
           <div className="w-10 h-10 bg-green-500 rounded-2xl flex items-center justify-center">
             <ClipboardList className="w-5 h-5 text-white" strokeWidth={2.5} />
           </div>
-          <span className="text-xl font-extrabold text-gray-900">MyMenu</span>
+          <span className="text-xl font-extrabold text-gray-900">Menuly</span>
         </div>
 
         <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
@@ -125,7 +125,7 @@ export default function OnboardingPage() {
               {loading ? (
                 <><Spinner />Menyimpan...</>
               ) : (
-                <>Mulai Gunakan MyMenu <ArrowRight className="w-4 h-4" /></>
+                <>Mulai Gunakan Menuly <ArrowRight className="w-4 h-4" /></>
               )}
             </button>
           </form>

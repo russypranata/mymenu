@@ -9,7 +9,7 @@ import { Users } from 'lucide-react'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Users — Admin MyMenu',
+  title: 'Users — Admin Menuly',
 }
 
 const PAGE_SIZE = 20

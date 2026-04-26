@@ -9,7 +9,7 @@ import { StoreQRModal } from '@/components/store-qr-modal'
 import { CopyUrlButton } from '@/components/copy-url-button'
 
 export const metadata: Metadata = {
-  title: 'Toko Saya — MyMenu',
+  title: 'Toko Saya — Menuly',
 }
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://mymenu.id'

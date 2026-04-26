@@ -33,11 +33,11 @@ export async function sendWhatsApp(phone: string, message: string): Promise<void
 export function msgTrialActive(name: string, expiresAt: string): string {
   return `Halo ${name}! 👋
 
-Selamat datang di *MyMenu*! Trial gratis 7 hari Anda sudah aktif.
+Selamat datang di *Menuly*! Trial gratis 7 hari Anda sudah aktif.
 
 ✅ Masa trial berakhir: *${expiresAt}*
 
-Selama trial, Anda bisa menikmati semua fitur MyMenu secara penuh. Buat toko dan menu digital Anda sekarang!
+Selama trial, Anda bisa menikmati semua fitur Menuly secara penuh. Buat toko dan menu digital Anda sekarang!
 
 🔗 Login: ${process.env.NEXT_PUBLIC_APP_URL}/login
 
@@ -47,9 +47,9 @@ _Butuh bantuan? Hubungi kami kapan saja._`
 export function msgTrialExpiringSoon(name: string, daysLeft: number, expiresAt: string): string {
   return `Halo ${name}! ⏰
 
-Masa trial MyMenu Anda akan berakhir dalam *${daysLeft} hari* (${expiresAt}).
+Masa trial Menuly Anda akan berakhir dalam *${daysLeft} hari* (${expiresAt}).
 
-Untuk melanjutkan menggunakan MyMenu, silakan hubungi kami untuk informasi pembayaran.
+Untuk melanjutkan menggunakan Menuly, silakan hubungi kami untuk informasi pembayaran.
 
 💬 Hubungi admin: ${process.env.NEXT_PUBLIC_ADMIN_WHATSAPP ? `https://wa.me/${process.env.NEXT_PUBLIC_ADMIN_WHATSAPP}` : 'hubungi admin'}
 
@@ -59,7 +59,7 @@ Jangan sampai toko digital Anda tidak aktif! 🙏`
 export function msgTrialExpired(name: string): string {
   return `Halo ${name},
 
-Masa trial MyMenu Anda telah *berakhir*. Akses ke dashboard sementara dibatasi.
+Masa trial Menuly Anda telah *berakhir*. Akses ke dashboard sementara dibatasi.
 
 Untuk mengaktifkan kembali, silakan hubungi admin:
 💬 ${process.env.NEXT_PUBLIC_ADMIN_WHATSAPP ? `https://wa.me/${process.env.NEXT_PUBLIC_ADMIN_WHATSAPP}` : 'hubungi admin'}
@@ -70,13 +70,13 @@ Kami siap membantu Anda melanjutkan perjalanan bisnis digital! 🚀`
 export function msgSubscriptionActivated(name: string, expiresAt: string): string {
   return `Halo ${name}! 🎉
 
-Langganan MyMenu Anda telah *diaktifkan*!
+Langganan Menuly Anda telah *diaktifkan*!
 
 ✅ Aktif hingga: *${expiresAt}*
 
-Selamat menggunakan MyMenu. Toko digital Anda kini kembali aktif dan bisa diakses pelanggan.
+Selamat menggunakan Menuly. Toko digital Anda kini kembali aktif dan bisa diakses pelanggan.
 
 🔗 Dashboard: ${process.env.NEXT_PUBLIC_APP_URL}/dashboard
 
-Terima kasih telah mempercayai MyMenu! 🙏`
+Terima kasih telah mempercayai Menuly! 🙏`
 }

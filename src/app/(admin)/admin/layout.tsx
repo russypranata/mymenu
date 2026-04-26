@@ -47,7 +47,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           </div>
           <div className="flex flex-col min-w-0">
             <span className="font-extrabold text-gray-900 tracking-tight text-sm leading-tight">Admin Panel</span>
-            <span className="text-gray-400 text-[11px] leading-tight">MyMenu</span>
+            <span className="text-gray-400 text-[11px] leading-tight">Menuly</span>
           </div>
         </Link>
 
@@ -117,7 +117,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             <div className="w-6 h-6 bg-green-500 rounded-md flex items-center justify-center flex-shrink-0">
               <ClipboardList className="w-3.5 h-3.5 text-white" strokeWidth={2.5} />
             </div>
-            <span className="text-sm text-gray-500">&copy; {new Date().getFullYear()} MyMenu Admin.</span>
+            <span className="text-sm text-gray-500">&copy; {new Date().getFullYear()} Menuly Admin.</span>
           </div>
           <span className="text-sm text-gray-400">v1.0.0</span>
         </footer>

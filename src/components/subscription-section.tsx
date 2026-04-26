@@ -22,7 +22,7 @@ function formatDate(dateStr: string) {
 
 function buildWaMessage(email: string) {
   return encodeURIComponent(
-    `Halo, saya ingin perpanjang langganan MyMenu.\n\nEmail: ${email}\nNominal: ${PAYMENT_AMOUNT}\n\n[Lampirkan foto/screenshot bukti transfer di sini]`
+    `Halo, saya ingin perpanjang langganan Menuly.\n\nEmail: ${email}\nNominal: ${PAYMENT_AMOUNT}\n\n[Lampirkan foto/screenshot bukti transfer di sini]`
   )
 }
 
@@ -91,7 +91,7 @@ export function SubscriptionSection({ subscription, userEmail }: SubscriptionSec
           <div className="space-y-2.5">
             <div className="flex items-center justify-between text-sm">
               <span className="text-gray-500">Paket</span>
-              <span className="font-semibold text-gray-900">MyMenu — {PAYMENT_AMOUNT}/bulan</span>
+              <span className="font-semibold text-gray-900">Menuly — {PAYMENT_AMOUNT}/bulan</span>
             </div>
             {subscription?.started_at && (
               <div className="flex items-center justify-between text-sm">

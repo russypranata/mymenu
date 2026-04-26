@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: PageProps) {
       title: store.name,
       description: store.description ?? `Menu digital ${store.name}`,
       url: `${appUrl}/${slug}`,
-      siteName: 'MyMenu',
+      siteName: 'Menuly',
       images: store.store_settings?.banner_url
         ? [{ url: store.store_settings.banner_url, width: 1200, height: 630 }]
         : [],

@@ -3,7 +3,7 @@ import { Users, Store, CreditCard, Clock, ShieldOff, TrendingUp, LayoutDashboard
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Overview — Admin MyMenu',
+  title: 'Overview — Admin Menuly',
 }
 
 export default async function AdminOverviewPage() {
@@ -17,7 +17,7 @@ export default async function AdminOverviewPage() {
         </div>
         <div>
           <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">Overview</h1>
-          <p className="text-sm text-gray-500 mt-0.5">Ringkasan platform MyMenu.</p>
+          <p className="text-sm text-gray-500 mt-0.5">Ringkasan platform Menuly.</p>
         </div>
       </div>
 

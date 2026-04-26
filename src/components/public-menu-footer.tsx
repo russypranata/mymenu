@@ -143,9 +143,9 @@ export function PublicMenuFooter({ store, locations, primaryColor }: PublicMenuF
             </div>
           </div>
 
-          {/* Powered by MyMenu */}
+          {/* Powered by Menuly */}
           <div>
-            <h4 className={`text-xs font-semibold uppercase tracking-wider mb-4 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Powered by MyMenu</h4>
+            <h4 className={`text-xs font-semibold uppercase tracking-wider mb-4 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Powered by Menuly</h4>
             <p className={`text-sm leading-relaxed mb-4 ${descColor}`}>
               Platform menu digital modern untuk bisnis kuliner Anda.
             </p>
@@ -164,7 +164,7 @@ export function PublicMenuFooter({ store, locations, primaryColor }: PublicMenuF
         {/* Bottom Bar */}
         <div className={`mt-10 pt-6 border-t ${isDark ? 'border-slate-800' : 'border-slate-200'}`}>
           <p className={`text-xs ${descColor}`}>
-            © {new Date().getFullYear()} {store.name}. Powered by <a href="/" className="font-semibold hover:opacity-80 transition-opacity" style={{ color: primaryColor }}>MyMenu</a>
+            © {new Date().getFullYear()} {store.name}. Powered by <a href="/" className="font-semibold hover:opacity-80 transition-opacity" style={{ color: primaryColor }}>Menuly</a>
           </p>
         </div>
       </div>

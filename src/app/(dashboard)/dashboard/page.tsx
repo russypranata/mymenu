@@ -11,7 +11,7 @@ import { AnalyticsChart } from '@/components/analytics-chart'
 import { OnboardingChecklist } from '@/components/onboarding-checklist'
 
 export const metadata: Metadata = {
-  title: 'Dashboard — MyMenu',
+  title: 'Dashboard — Menuly',
   description: 'Kelola toko dan menu digital Anda.',
 }
 

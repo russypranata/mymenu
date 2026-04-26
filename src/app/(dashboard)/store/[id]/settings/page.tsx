@@ -13,7 +13,7 @@ import type { Database } from '@/types/database.types'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Pengaturan Toko — MyMenu',
+  title: 'Pengaturan Toko — Menuly',
 }
 
 type StoreSettings = Database['public']['Tables']['store_settings']['Row']

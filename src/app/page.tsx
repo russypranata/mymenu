@@ -52,7 +52,7 @@ export default function Home() {
                 />
               </div>
               <span className="text-lg sm:text-xl font-bold text-gray-800 tracking-tight">
-                MyMenu
+                Menuly
               </span>
             </Link>
 
@@ -244,7 +244,7 @@ export default function Home() {
             <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
               <p className="inline-flex items-center gap-2 text-yellow-700 font-semibold text-xs sm:text-sm uppercase tracking-widest mb-3 sm:mb-4 bg-yellow-100 px-2.5 sm:px-3 py-1 rounded-full border border-yellow-200">
                 <span className="w-1.5 h-1.5 rounded-full bg-yellow-500" />
-                Kenapa MyMenu?
+                Kenapa Menuly?
               </p>
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 tracking-tight leading-[1.15]">
                 Dari kertas ke digital,<br />
@@ -271,7 +271,7 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="relative z-10 mt-4 sm:mt-6 bg-white/10 rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2 sm:py-3">
-                  <p className="text-green-100 text-[10px] sm:text-xs font-medium">💡 Rata-rata pemilik warung cetak ulang menu <span className="text-white font-bold">3–4x per tahun</span>. Dengan MyMenu, tidak perlu sama sekali.</p>
+                  <p className="text-green-100 text-[10px] sm:text-xs font-medium">💡 Rata-rata pemilik warung cetak ulang menu <span className="text-white font-bold">3–4x per tahun</span>. Dengan Menuly, tidak perlu sama sekali.</p>
                 </div>
               </div>
 
@@ -284,7 +284,7 @@ export default function Home() {
                   <div>
                     <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-1 sm:mb-1.5">Pelanggan tidak perlu download apa pun</h3>
                     <p className="text-gray-500 text-xs sm:text-sm leading-relaxed">
-                      Tidak seperti aplikasi pesan antar yang butuh install dan akun. Menu MyMenu terbuka langsung di browser — scan QR atau klik link, selesai.
+                      Tidak seperti aplikasi pesan antar yang butuh install dan akun. Menu Menuly terbuka langsung di browser — scan QR atau klik link, selesai.
                     </p>
                   </div>
                 </div>
@@ -295,7 +295,7 @@ export default function Home() {
                   <div>
                     <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-1 sm:mb-1.5">Jauh lebih murah dari solusi lain</h3>
                     <p className="text-gray-500 text-xs sm:text-sm leading-relaxed">
-                      Aplikasi kasir dan POS bisa jutaan per bulan. MyMenu fokus ke satu hal — menu digital yang rapi dan bisa dibagikan — dengan harga yang masuk akal untuk UMKM.
+                      Aplikasi kasir dan POS bisa jutaan per bulan. Menuly fokus ke satu hal — menu digital yang rapi dan bisa dibagikan — dengan harga yang masuk akal untuk UMKM.
                     </p>
                   </div>
                 </div>
@@ -310,7 +310,7 @@ export default function Home() {
                   </div>
                   <h3 className="text-base sm:text-lg font-bold text-white mb-1.5 sm:mb-2">Tidak perlu ahli IT</h3>
                   <p className="text-stone-400 text-xs sm:text-sm leading-relaxed">
-                    Kalau bisa pakai WhatsApp, Anda bisa pakai MyMenu. Tidak ada coding, tidak ada desain, tidak ada konfigurasi rumit.
+                    Kalau bisa pakai WhatsApp, Anda bisa pakai Menuly. Tidak ada coding, tidak ada desain, tidak ada konfigurasi rumit.
                   </p>
                 </div>
                 <div className="flex gap-1.5 sm:gap-2 mt-4 sm:mt-5">
@@ -590,7 +590,7 @@ export default function Home() {
                 <span className="text-green-500">semua jenis usaha</span>
               </h2>
               <p className="text-gray-500 text-sm sm:text-base lg:text-lg mt-4 sm:mt-5 leading-relaxed">
-                Dari warung kecil hingga restoran, MyMenu membantu UMKM Indonesia tampil profesional dengan menu digital.
+                Dari warung kecil hingga restoran, Menuly membantu UMKM Indonesia tampil profesional dengan menu digital.
               </p>
             </div>
 
@@ -663,7 +663,7 @@ export default function Home() {
               {[
                 {
                   q: "Apakah benar gratis 7 hari?",
-                  a: "Ya! Anda bisa coba semua fitur MyMenu gratis selama 7 hari. Tidak perlu kartu kredit untuk daftar. Setelah trial berakhir, Anda bisa lanjut berlangganan Rp20.000/bulan atau berhenti tanpa biaya apapun.",
+                  a: "Ya! Anda bisa coba semua fitur Menuly gratis selama 7 hari. Tidak perlu kartu kredit untuk daftar. Setelah trial berakhir, Anda bisa lanjut berlangganan Rp20.000/bulan atau berhenti tanpa biaya apapun.",
                 },
                 {
                   q: "Bagaimana cara pembayaran setelah trial?",
@@ -844,7 +844,7 @@ export default function Home() {
                     <div className="absolute -top-1 sm:-top-1.5 -right-1 sm:-right-1.5 w-4 h-4 sm:w-5 sm:h-5 bg-green-500 rounded-full flex items-center justify-center">
                       <span className="text-white text-[9px] sm:text-[10px] font-bold">✓</span>
                     </div>
-                    <p className="font-bold text-gray-900 mb-1 sm:mb-1.5 text-[10px] sm:text-xs whitespace-nowrap">MyMenu</p>
+                    <p className="font-bold text-gray-900 mb-1 sm:mb-1.5 text-[10px] sm:text-xs whitespace-nowrap">Menuly</p>
                     <p className="text-gray-700 text-[9px] sm:text-[10px] mb-1.5 sm:mb-2 leading-tight font-medium whitespace-nowrap">Rp20K/bln</p>
                     <div className="pt-1.5 sm:pt-2 border-t border-green-200">
                       <p className="text-green-600 font-bold text-[10px] sm:text-sm whitespace-nowrap">Rp240K<span className="text-[8px] sm:text-[10px] font-normal">/thn</span> ✨</p>
@@ -934,7 +934,7 @@ export default function Home() {
                 <div className="w-8 h-8 sm:w-9 sm:h-9 bg-green-500 rounded-lg sm:rounded-xl flex items-center justify-center">
                   <ClipboardList className="w-4 h-4 sm:w-5 sm:h-5 text-white" strokeWidth={2.5} />
                 </div>
-                <span className="font-bold text-white text-lg sm:text-xl tracking-tight">MyMenu</span>
+                <span className="font-bold text-white text-lg sm:text-xl tracking-tight">Menuly</span>
               </div>
               <p className="text-xs sm:text-sm leading-relaxed text-stone-500 pl-10 sm:pl-11">
                 Solusi menu digital untuk warung, kafe, dan restoran Indonesia. Mudah, cepat, terjangkau.
@@ -965,7 +965,7 @@ export default function Home() {
           </div>
 
           <div className="border-t border-stone-800 pt-5 sm:pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3">
-            <p className="text-[10px] sm:text-xs text-stone-600 text-center sm:text-left">&copy; {new Date().getFullYear()} MyMenu. Hak Cipta Dilindungi.</p>
+            <p className="text-[10px] sm:text-xs text-stone-600 text-center sm:text-left">&copy; {new Date().getFullYear()} Menuly. Hak Cipta Dilindungi.</p>
             <p className="text-[10px] sm:text-xs text-stone-600 text-center sm:text-right">Dibuat dengan ❤️ untuk UMKM Indonesia</p>
           </div>
         </div>

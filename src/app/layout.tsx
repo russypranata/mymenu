@@ -42,25 +42,25 @@ const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://mymenu.id'
 
 export const metadata: Metadata = {
   title: {
-    default: "MyMenu — Menu Digital untuk UMKM Kuliner",
-    template: "%s — MyMenu",
+    default: "Menuly — Menu Digital untuk UMKM Kuliner",
+    template: "%s — Menuly",
   },
   description: "Buat menu digital untuk warung, kafe, atau restoran Anda dalam 5 menit. Lengkap dengan QR Code, keranjang order WhatsApp, dan link yang bisa langsung dibagikan.",
   metadataBase: new URL(appUrl),
   keywords: ['menu digital', 'menu online', 'UMKM', 'warung', 'kafe', 'restoran', 'QR code menu', 'menu WhatsApp'],
-  authors: [{ name: 'MyMenu' }],
-  creator: 'MyMenu',
+  authors: [{ name: 'Menuly' }],
+  creator: 'Menuly',
   openGraph: {
     type: 'website',
     locale: 'id_ID',
     url: appUrl,
-    siteName: 'MyMenu',
-    title: 'MyMenu — Menu Digital untuk UMKM Kuliner',
+    siteName: 'Menuly',
+    title: 'Menuly — Menu Digital untuk UMKM Kuliner',
     description: 'Buat menu digital untuk warung, kafe, atau restoran Anda dalam 5 menit.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'MyMenu — Menu Digital untuk UMKM Kuliner',
+    title: 'Menuly — Menu Digital untuk UMKM Kuliner',
     description: 'Buat menu digital untuk warung, kafe, atau restoran Anda dalam 5 menit.',
   },
   robots: {

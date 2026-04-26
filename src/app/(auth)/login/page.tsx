@@ -74,7 +74,7 @@ function LoginForm() {
             <ClipboardList className="w-5 h-5 text-white" strokeWidth={2.5} />
           </div>
           <div className="flex flex-col">
-            <span className="text-xl font-bold text-white tracking-tight leading-tight">MyMenu</span>
+            <span className="text-xl font-bold text-white tracking-tight leading-tight">Menuly</span>
             <span className="text-stone-500 text-xs leading-tight">Menu digital UMKM</span>
           </div>
         </Link>
@@ -144,7 +144,7 @@ function LoginForm() {
             <div className="w-9 h-9 bg-green-500 rounded-2xl flex items-center justify-center">
               <ClipboardList className="w-5 h-5 text-white" strokeWidth={2.5} />
             </div>
-            <span className="font-bold text-gray-800 text-lg">MyMenu</span>
+            <span className="font-bold text-gray-800 text-lg">Menuly</span>
           </Link>
 
           {/* Header */}
@@ -252,7 +252,7 @@ function LoginForm() {
           </div>
 
           <p className="text-center text-xs text-gray-400">
-            &copy; {new Date().getFullYear()} MyMenu &middot;{' '}
+            &copy; {new Date().getFullYear()} Menuly &middot;{' '}
             <Link href="/privasi" className="hover:text-gray-600 transition-colors">Privasi</Link>
             {' '}&middot;{' '}
             <Link href="/syarat" className="hover:text-gray-600 transition-colors">Syarat</Link>

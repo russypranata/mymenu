@@ -19,7 +19,7 @@ const BANK_HOLDER = process.env.NEXT_PUBLIC_BANK_HOLDER || ''
 
 function buildWaMessage(email: string) {
   return encodeURIComponent(
-    `Halo, saya ingin perpanjang langganan MyMenu.\n\nEmail: ${email}\nNominal: ${PAYMENT_AMOUNT}`
+    `Halo, saya ingin perpanjang langganan Menuly.\n\nEmail: ${email}\nNominal: ${PAYMENT_AMOUNT}`
   )
 }
 
@@ -63,7 +63,7 @@ export function SubscriptionBanner({
                   {isExpired ? 'Langganan Anda telah berakhir' : 'Anda belum memiliki langganan aktif'}
                 </p>
                 <p className="text-xs text-amber-700 mt-0.5">
-                  Perpanjang sekarang untuk tetap bisa menggunakan semua fitur MyMenu.
+                  Perpanjang sekarang untuk tetap bisa menggunakan semua fitur Menuly.
                 </p>
               </div>
             </div>

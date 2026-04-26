@@ -7,7 +7,7 @@ import { Store } from 'lucide-react'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Stores — Admin MyMenu',
+  title: 'Stores — Admin Menuly',
 }
 
 const PAGE_SIZE = 20

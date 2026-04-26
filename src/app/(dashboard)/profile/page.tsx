@@ -14,7 +14,7 @@ import type { Metadata } from 'next'
 import { getSubscription } from '@/lib/queries/dashboard'
 
 export const metadata: Metadata = {
-  title: 'Pengaturan Akun — MyMenu',
+  title: 'Pengaturan Akun — Menuly',
 }
 
 export default async function ProfilePage() {
