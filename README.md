@@ -247,7 +247,7 @@ All tables have RLS enabled with policies for:
 
 ## 📊 Subscription System
 
-- **Trial:** 7 days free trial for new users
+- **Trial:** 3 days free trial for new users
 - **Active:** Paid subscription (Rp 20,000/month)
 - **Expired:** Subscription ended (read-only access)
 - **Cancelled:** User cancelled subscription
