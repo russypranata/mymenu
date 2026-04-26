@@ -52,11 +52,11 @@ export function SubscriptionBanner({
   if (isExpired || hasNoSub) {
     return (
       <>
-        <div className="mb-6 bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4">
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex items-start gap-3.5">
-              <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
-                <Zap className="w-5 h-5 text-amber-500" />
+        <div className="mb-6 bg-amber-50 border border-amber-200 rounded-2xl px-4 py-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="flex items-start gap-3">
+              <div className="w-9 h-9 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Zap className="w-4 h-4 text-amber-500" />
               </div>
               <div>
                 <p className="text-sm font-bold text-amber-900">
@@ -69,7 +69,7 @@ export function SubscriptionBanner({
             </div>
             <button
               onClick={() => setShowPayment(true)}
-              className="flex-shrink-0 flex items-center gap-1.5 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold rounded-xl transition-colors"
+              className="w-full sm:w-auto flex-shrink-0 flex items-center justify-center gap-1.5 px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold rounded-xl transition-colors"
             >
               <CreditCard className="w-3.5 h-3.5" />
               Cara Bayar
@@ -86,11 +86,11 @@ export function SubscriptionBanner({
   if (expiresSoon) {
     return (
       <>
-        <div className="mb-6 bg-red-50 border border-red-200 rounded-2xl px-5 py-4">
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex items-start gap-3.5">
-              <div className="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
-                <AlertTriangle className="w-5 h-5 text-red-500" />
+        <div className="mb-6 bg-red-50 border border-red-200 rounded-2xl px-4 py-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="flex items-start gap-3">
+              <div className="w-9 h-9 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+                <AlertTriangle className="w-4 h-4 text-red-500" />
               </div>
               <div>
                 <p className="text-sm font-bold text-red-900">
@@ -105,7 +105,7 @@ export function SubscriptionBanner({
             </div>
             <button
               onClick={() => setShowPayment(true)}
-              className="flex-shrink-0 flex items-center gap-1.5 px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-xs font-semibold rounded-xl transition-colors"
+              className="w-full sm:w-auto flex-shrink-0 flex items-center justify-center gap-1.5 px-4 py-2.5 bg-red-500 hover:bg-red-600 text-white text-xs font-semibold rounded-xl transition-colors"
             >
               <CreditCard className="w-3.5 h-3.5" />
               Perpanjang
