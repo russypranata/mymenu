@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 import { CreditCard, Copy, Check, MessageCircle, X, CheckCircle2, Clock, AlertTriangle, Zap } from 'lucide-react'
 import type { Database } from '@/types/database.types'
+import { ImageWithSkeleton } from '@/components/image-with-skeleton'
 
 type Subscription = Database['public']['Tables']['subscriptions']['Row']
 
@@ -189,13 +190,9 @@ export function SubscriptionSection({ subscription, userEmail }: SubscriptionSec
                   <div className="flex flex-col items-center bg-gray-50 rounded-xl p-4 gap-3">
                 <p className="text-xs text-gray-500 font-medium">Scan QRIS lalu masukkan nominal <span className="font-bold text-gray-800">Rp20.000</span></p>
                     <div className="bg-white rounded-xl p-2 border border-gray-200">
-                      <Image
-                        src={QRIS_IMAGE}
-                        alt="QRIS Payment"
-                        width={200}
-                        height={200}
-                        className="rounded-lg"
-                      />
+                      <div className="relative w-[200px] h-[200px]">
+                        <ImageWithSkeleton src={QRIS_IMAGE} alt="QRIS Payment" fill sizes="200px" className="rounded-lg object-contain" />
+                      </div>
                     </div>
                     <p className="text-[10px] text-gray-400">QRIS Neo Bank · Berlaku untuk semua e-wallet & bank</p>
                     <div className="flex items-center gap-2 flex-wrap justify-center">

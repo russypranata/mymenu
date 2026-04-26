@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { X, UtensilsCrossed, ChevronLeft, ChevronRight } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
 import { useTheme } from '@/components/theme-provider'
+import { ImageWithSkeleton } from '@/components/image-with-skeleton'
 import type { Database } from '@/types/database.types'
 
 type Menu = Database['public']['Tables']['menus']['Row']
@@ -61,7 +62,7 @@ export function MenuDetailModal({
         <div className={`relative w-full aspect-[4/3] ${menuImageBg} flex-shrink-0`}>
           {allImages.length > 0 ? (
             <>
-              <Image
+              <ImageWithSkeleton
                 src={allImages[activeIdx]}
                 alt={`${menu.name} foto ${activeIdx + 1}`}
                 fill
@@ -129,7 +130,7 @@ export function MenuDetailModal({
                 style={i === activeIdx ? { borderColor: primaryColor } : {}}
                 aria-label={`Lihat foto ${i + 1}`}
               >
-                <Image src={url} alt={`Thumbnail ${i + 1}`} fill sizes="48px" className="object-cover" />
+                <ImageWithSkeleton src={url} alt={`Thumbnail ${i + 1}`} fill sizes="48px" className="object-cover" />
               </button>
             ))}
           </div>

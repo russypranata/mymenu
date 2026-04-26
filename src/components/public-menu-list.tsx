@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { UtensilsCrossed, Search, X, Plus, Minus } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
 import { MenuDetailModal } from '@/components/menu-detail-modal'
+import { ImageWithSkeleton } from '@/components/image-with-skeleton'
 import { useCart } from '@/components/cart-provider'
 import { useTheme } from '@/components/theme-provider'
 import type { Database } from '@/types/database.types'
@@ -65,7 +66,7 @@ function MenuCardList({ items, cardBg, menuNameColor, menuDescColor, menuImageBg
                 aria-label={`Lihat detail ${menu.name}`}
               >
                 {menu.image_url ? (
-                  <Image
+                  <ImageWithSkeleton
                     src={menu.image_url}
                     alt={menu.name}
                     fill
