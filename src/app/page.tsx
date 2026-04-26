@@ -237,7 +237,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Section 2 — Kenapa MyMenu */}
+        {/* Section 2 — Kenapa Menuly */}
         <section id="fitur" className="py-16 sm:py-20 lg:py-24 bg-gray-50">
           <div className="container mx-auto px-4 sm:px-6">
 
