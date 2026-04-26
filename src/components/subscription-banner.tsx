@@ -19,7 +19,7 @@ const BANK_HOLDER = process.env.NEXT_PUBLIC_BANK_HOLDER || ''
 
 function buildWaMessage(email: string) {
   return encodeURIComponent(
-    `Halo, saya ingin perpanjang langganan MyMenu.\n\nEmail: ${email}\nNominal: ${PAYMENT_AMOUNT}\n\n[Lampirkan bukti transfer di sini]`
+    `Halo, saya ingin perpanjang langganan MyMenu.\n\nEmail: ${email}\nNominal: ${PAYMENT_AMOUNT}`
   )
 }
 

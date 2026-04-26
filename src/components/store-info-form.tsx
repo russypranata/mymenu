@@ -17,8 +17,10 @@ const schema = z.object({
   slug: z.string().min(1, 'URL toko tidak boleh kosong.').max(60)
     .regex(/^[a-z0-9-]+$/, 'Hanya huruf kecil, angka, dan tanda hubung.'),
   description: z.string().max(150, 'Deskripsi maksimal 150 karakter.').optional(),
-  whatsapp: z.string().min(1, 'Nomor WhatsApp tidak boleh kosong.')
-    .regex(/^\+?[0-9]{10,15}$/, 'Format nomor tidak valid. Contoh: +628123456789'),
+  whatsapp: z.string()
+    .regex(/^\+?[0-9]{10,15}$/, 'Format nomor tidak valid. Contoh: +628123456789')
+    .optional()
+    .or(z.literal('')),
 })
 
 type FormValues = z.infer<typeof schema>
@@ -119,14 +121,14 @@ export function StoreInfoForm({ store }: { store: Tables<'stores'> }) {
 
       <div>
         <label htmlFor="si-whatsapp" className="block text-sm font-semibold text-gray-700 mb-1.5">
-          WhatsApp <span className="text-red-400">*</span>
+          WhatsApp
         </label>
         <input id="si-whatsapp" type="tel" {...register('whatsapp')}
           className={`w-full px-3.5 py-3 bg-gray-50 border rounded-xl text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-400 transition-all ${errors.whatsapp ? 'border-red-300 bg-red-50' : 'border-gray-200'}`}
           placeholder="+628123456789" />
         {errors.whatsapp ? <p className="text-xs text-red-500 mt-1">{errors.whatsapp.message}</p>
           : <p className="text-xs text-gray-400 mt-1.5">
-              Nomor ini digunakan untuk menerima pesanan dari pelanggan. Semua pesanan dari semua lokasi akan dikirim ke nomor ini.
+              Opsional. Diperlukan untuk mengaktifkan fitur pemesanan via WhatsApp.
             </p>}
       </div>
 

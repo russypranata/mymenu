@@ -470,7 +470,7 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Analytics — NEW */}
+                {/* Analytics */}
                 <div className="md:col-span-12 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl sm:rounded-3xl p-5 sm:p-7 border border-indigo-100 flex flex-col sm:flex-row gap-4 sm:gap-5 items-start sm:items-center">
                   <div className="w-9 h-9 sm:w-10 sm:h-10 bg-indigo-100 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0">
                     <BarChart3 className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-600" strokeWidth={2} />
@@ -478,9 +478,6 @@ export default function Home() {
                   <div className="flex-1">
                     <h4 className="font-bold text-gray-900 text-base sm:text-lg mb-1">Statistik Pengunjung</h4>
                     <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">Lihat berapa banyak orang yang mengunjungi menu Anda. Data real-time untuk membantu Anda memahami performa menu digital.</p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs bg-indigo-100 text-indigo-700 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full font-medium">Coming Soon</span>
                   </div>
                 </div>
 
@@ -670,7 +667,7 @@ export default function Home() {
                 },
                 {
                   q: "Bagaimana cara pembayaran setelah trial?",
-                  a: "Setelah trial 7 hari, Anda bisa bayar via transfer bank atau e-wallet. Kami akan kirim instruksi pembayaran via email dan WhatsApp. Pembayaran per bulan, tanpa kontrak jangka panjang.",
+                  a: "Setelah trial 7 hari, Anda bisa bayar via transfer bank, OVO, DANA, atau e-wallet lainnya. Hubungi admin via WhatsApp untuk mendapatkan instruksi pembayaran. Pembayaran per bulan, tanpa kontrak jangka panjang.",
                 },
                 {
                   q: "Bisakah saya punya lebih dari 1 toko?",
@@ -678,11 +675,11 @@ export default function Home() {
                 },
                 {
                   q: "Apakah bisa ganti nama atau URL toko?",
-                  a: "Ya, Anda bisa ganti nama toko kapan saja dari dashboard. Untuk URL (slug), saat ini belum bisa diganti setelah dibuat. Pastikan pilih URL yang tepat saat pertama kali setup.",
+                  a: "Ya, keduanya bisa diganti kapan saja dari halaman pengaturan toko di dashboard. Perlu diingat, jika URL (slug) diganti, link dan QR code lama tidak akan berfungsi lagi — pastikan update semua tempat yang sudah memakai link tersebut.",
                 },
                 {
                   q: "Bagaimana cara cancel subscription?",
-                  a: "Anda bisa cancel kapan saja dari dashboard atau hubungi kami via WhatsApp. Tidak ada biaya pembatalan. Menu Anda akan tetap aktif sampai akhir periode yang sudah dibayar.",
+                  a: "Anda bisa cancel kapan saja dengan menghubungi admin via WhatsApp. Tidak ada biaya pembatalan. Menu Anda akan tetap aktif sampai akhir periode yang sudah dibayar.",
                 },
                 {
                   q: "Apakah data saya aman?",
@@ -773,7 +770,7 @@ export default function Home() {
                     'Upload foto per menu',
                     'Kategori menu',
                     'Jam operasional',
-                    'Statistik views (coming soon)',
+                    'Statistik pengunjung real-time',
                     'Banner & logo toko',
                     'Sosial media links',
                     'Subdomain mymenu.id/namatoko',
