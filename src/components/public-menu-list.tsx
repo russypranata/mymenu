@@ -49,7 +49,7 @@ function MenuCardList({ items, cardBg, menuNameColor, menuDescColor, menuImageBg
   const cardBorder = cardStyle === 'minimal' ? 'border-0' : 'border'
 
   return (
-    <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6">
+    <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 sm:gap-6">
       {items.map((menu, idx) => {
         const cartItem = cartItems.find(i => i.menu.id === menu.id)
         const qty = cartItem?.qty ?? 0
@@ -62,7 +62,7 @@ function MenuCardList({ items, cardBg, menuNameColor, menuDescColor, menuImageBg
               <button
                 type="button"
                 onClick={() => onSelect(menu)}
-                className={`relative w-full h-44 sm:h-52 ${menuImageBg} overflow-hidden flex-shrink-0`}
+                className={`relative w-full h-48 sm:h-52 ${menuImageBg} overflow-hidden flex-shrink-0`}
                 aria-label={`Lihat detail ${menu.name}`}
               >
                 {menu.image_url ? (
