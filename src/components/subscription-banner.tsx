@@ -17,7 +17,7 @@ const PAYMENT_AMOUNT = 'Rp20.000'
 const BANK_NAME = process.env.NEXT_PUBLIC_BANK_NAME || 'BCA'
 const BANK_ACCOUNT = process.env.NEXT_PUBLIC_BANK_ACCOUNT || ''
 const BANK_HOLDER = process.env.NEXT_PUBLIC_BANK_HOLDER || ''
-const QRIS_IMAGE = '/qris-payment.png'
+const QRIS_IMAGE = '/qris-payment.jpeg'
 
 function buildWaMessage(email: string) {
   return encodeURIComponent(
@@ -168,6 +168,7 @@ function PaymentModal({
                 <div className="bg-white rounded-xl p-2 border border-gray-200">
                   <Image src={QRIS_IMAGE} alt="QRIS Payment" width={200} height={200} className="rounded-lg" />
                 </div>
+                <p className="text-[10px] text-gray-400">QRIS Neo Bank · Berlaku untuk semua e-wallet & bank</p>
                 <div className="flex items-center gap-2 flex-wrap justify-center">
                   {['GoPay', 'OVO', 'DANA', 'ShopeePay', 'Bank'].map(m => (
                     <span key={m} className="text-[10px] bg-white border border-gray-200 text-gray-500 px-2 py-0.5 rounded-full">{m}</span>
