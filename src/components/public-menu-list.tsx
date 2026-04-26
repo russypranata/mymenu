@@ -49,7 +49,7 @@ function MenuCardList({ items, cardBg, menuNameColor, menuDescColor, menuImageBg
   const cardBorder = cardStyle === 'minimal' ? 'border-0' : 'border'
 
   return (
-    <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
+    <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
       {items.map((menu, idx) => {
         const cartItem = cartItems.find(i => i.menu.id === menu.id)
         const qty = cartItem?.qty ?? 0
