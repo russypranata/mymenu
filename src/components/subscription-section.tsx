@@ -12,7 +12,7 @@ const PAYMENT_AMOUNT = 'Rp20.000'
 const BANK_NAME = process.env.NEXT_PUBLIC_BANK_NAME || 'BCA'
 const BANK_ACCOUNT = process.env.NEXT_PUBLIC_BANK_ACCOUNT || ''
 const BANK_HOLDER = process.env.NEXT_PUBLIC_BANK_HOLDER || ''
-const QRIS_IMAGE = process.env.NEXT_PUBLIC_QRIS_IMAGE_URL || ''
+const QRIS_IMAGE = '/qris-payment.png'
 
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString('id-ID', {
