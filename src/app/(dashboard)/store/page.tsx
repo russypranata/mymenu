@@ -74,21 +74,25 @@ export default async function StorePage() {
           </div>
           <ul className="divide-y divide-gray-50">
             {stores.map((store, index) => (
-              <li key={store.id} className="px-5 py-4 flex items-center gap-4 hover:bg-gray-50/50 transition-colors">
-                <div className="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
-                  <span className="text-xs font-bold text-gray-400">{index + 1}</span>
+              <li key={store.id} className="px-4 sm:px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-3 hover:bg-gray-50/50 transition-colors">
+                {/* Store info */}
+                <div className="flex items-center gap-3 flex-1 min-w-0">
+                  <div className="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
+                    <span className="text-xs font-bold text-gray-400">{index + 1}</span>
+                  </div>
+                  <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0">
+                    <Store className="w-5 h-5 text-green-400" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-gray-900 truncate">{store.name}</p>
+                    {store.description && (
+                      <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">{store.description}</p>
+                    )}
+                    <p className="text-xs font-mono text-gray-400 mt-0.5 truncate">/{store.slug}</p>
+                  </div>
                 </div>
-                <div className="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0">
-                  <Store className="w-5 h-5 text-green-400" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-gray-900 truncate">{store.name}</p>
-                  {store.description && (
-                    <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">{store.description}</p>
-                  )}
-                  <p className="text-xs font-mono text-gray-400 mt-0.5">/{store.slug}</p>
-                </div>
-                <div className="flex items-center gap-1 flex-shrink-0">
+                {/* Actions */}
+                <div className="flex items-center gap-1 flex-shrink-0 pl-10 sm:pl-0">
                   <Link
                     href={`/${store.slug}`}
                     target="_blank"

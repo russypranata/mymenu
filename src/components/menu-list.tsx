@@ -126,7 +126,7 @@ export function MenuList({ initialMenus, storeId }: { initialMenus: Menu[]; stor
       <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
         <div className="px-6 py-3 border-b border-gray-50 bg-gray-50/50 flex items-center justify-between">
           <p className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Daftar Item</p>
-          <p className="text-xs text-gray-400">Seret untuk mengubah urutan</p>
+          <p className="text-xs text-gray-400 hidden sm:block">Seret untuk mengubah urutan</p>
         </div>
         <ul className="divide-y divide-gray-50">
           {menus.map((menu) => {
@@ -147,8 +147,8 @@ export function MenuList({ initialMenus, storeId }: { initialMenus: Menu[]; stor
                   ${isDragOver ? 'bg-green-50 border-l-2 border-green-400' : ''}
                 `}
               >
-                {/* Drag handle */}
-                <div className="flex-shrink-0 cursor-grab active:cursor-grabbing text-gray-300 hover:text-gray-400 touch-none">
+                {/* Drag handle — desktop only */}
+                <div className="flex-shrink-0 cursor-grab active:cursor-grabbing text-gray-300 hover:text-gray-400 touch-none hidden sm:block">
                   <GripVertical className="w-4 h-4" aria-hidden="true" />
                 </div>
 

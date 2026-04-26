@@ -35,20 +35,19 @@ export default async function StoreMenuPage({
 
   return (
     <div className="space-y-6 max-w-4xl">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">Menu</h1>
-              <div className="w-7 h-7 bg-green-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                <UtensilsCrossed className="w-4 h-4 text-green-500" />
-              </div>
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div>
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">Menu</h1>
+            <div className="w-7 h-7 bg-green-50 rounded-lg flex items-center justify-center flex-shrink-0">
+              <UtensilsCrossed className="w-4 h-4 text-green-500" />
             </div>
-            <div className="flex items-center gap-2 mt-0.5">
-              <span className="text-sm text-gray-500">{store.name}</span>
-              <span className="text-gray-300">·</span>
-              <span className="text-sm text-gray-400">{menus.length} item</span>
-            </div>
+          </div>
+          <div className="flex items-center gap-2 mt-0.5">
+            <span className="text-sm text-gray-500">{store.name}</span>
+            <span className="text-gray-300">·</span>
+            <span className="text-sm text-gray-400">{menus.length} item</span>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -73,8 +72,7 @@ export default async function StoreMenuPage({
             className="flex items-center gap-2 px-4 py-2.5 bg-green-500 text-white text-sm font-semibold rounded-xl hover:bg-green-600 transition-colors shadow-sm"
           >
             <Plus className="w-4 h-4" />
-            <span className="hidden sm:inline">Tambah Menu</span>
-            <span className="sm:hidden">Tambah</span>
+            <span>Tambah Menu</span>
           </Link>
         </div>
       </div>
