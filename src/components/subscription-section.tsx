@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useState } from 'react'
 import { CreditCard, Copy, Check, MessageCircle, X, CheckCircle2, Clock, AlertTriangle, Zap } from 'lucide-react'
 import type { Database } from '@/types/database.types'
@@ -11,6 +12,7 @@ const PAYMENT_AMOUNT = 'Rp20.000'
 const BANK_NAME = process.env.NEXT_PUBLIC_BANK_NAME || 'BCA'
 const BANK_ACCOUNT = process.env.NEXT_PUBLIC_BANK_ACCOUNT || ''
 const BANK_HOLDER = process.env.NEXT_PUBLIC_BANK_HOLDER || ''
+const QRIS_IMAGE = process.env.NEXT_PUBLIC_QRIS_IMAGE_URL || ''
 
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString('id-ID', {
@@ -172,54 +174,67 @@ export function SubscriptionSection({ subscription, userEmail }: SubscriptionSec
 
             {/* Modal Body */}
             <div className="px-6 py-5 space-y-5">
+
+              {/* Nominal */}
+              <div className="text-center">
+                <p className="text-xs text-gray-500 mb-1">Nominal pembayaran</p>
+                <p className="text-3xl font-extrabold text-gray-900">{PAYMENT_AMOUNT}<span className="text-base font-normal text-gray-400">/bulan</span></p>
+              </div>
+
               {/* Step 1 */}
               <div className="space-y-2">
-                <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Langkah 1 — Transfer</p>
-                <div className="bg-gray-50 rounded-xl p-4 space-y-3">
-                  <div>
-                    <p className="text-xs text-gray-500">Nominal</p>
-                    <p className="text-lg font-extrabold text-gray-900">
-                      {PAYMENT_AMOUNT}
-                      <span className="text-sm font-normal text-gray-400">/bulan</span>
-                    </p>
-                  </div>
-                  {BANK_ACCOUNT && (
-                    <div className="border-t border-gray-200 pt-3">
-                      <p className="text-xs text-gray-500 mb-1">Rekening {BANK_NAME}</p>
-                      <div className="flex items-center justify-between gap-2">
-                        <div>
-                          <p className="font-bold text-gray-900 font-mono tracking-wider">{BANK_ACCOUNT}</p>
-                          {BANK_HOLDER && <p className="text-xs text-gray-500 mt-0.5">a.n. {BANK_HOLDER}</p>}
-                        </div>
-                        <button
-                          onClick={copyAccount}
-                          className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 text-gray-600 text-xs font-semibold rounded-lg hover:bg-gray-50 transition-colors flex-shrink-0"
-                        >
-                          {copied ? (
-                            <><Check className="w-3.5 h-3.5 text-green-500" />Disalin</>
-                          ) : (
-                            <><Copy className="w-3.5 h-3.5" />Salin</>
-                          )}
-                        </button>
-                      </div>
+                <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Langkah 1 — Bayar</p>
+
+                {QRIS_IMAGE ? (
+                  <div className="flex flex-col items-center bg-gray-50 rounded-xl p-4 gap-3">
+                    <p className="text-xs text-gray-500 font-medium">Scan QRIS dengan aplikasi bank atau e-wallet</p>
+                    <div className="bg-white rounded-xl p-2 border border-gray-200">
+                      <Image
+                        src={QRIS_IMAGE}
+                        alt="QRIS Payment"
+                        width={200}
+                        height={200}
+                        className="rounded-lg"
+                      />
                     </div>
-                  )}
-                </div>
+                    <div className="flex items-center gap-2 flex-wrap justify-center">
+                      {['GoPay', 'OVO', 'DANA', 'ShopeePay', 'Bank'].map(m => (
+                        <span key={m} className="text-[10px] bg-white border border-gray-200 text-gray-500 px-2 py-0.5 rounded-full">{m}</span>
+                      ))}
+                    </div>
+                  </div>
+                ) : BANK_ACCOUNT ? (
+                  <div className="bg-gray-50 rounded-xl p-4 space-y-3">
+                    <p className="text-xs text-gray-500">Transfer ke rekening {BANK_NAME}</p>
+                    <div className="flex items-center justify-between gap-2">
+                      <div>
+                        <p className="font-bold text-gray-900 font-mono tracking-wider">{BANK_ACCOUNT}</p>
+                        {BANK_HOLDER && <p className="text-xs text-gray-500 mt-0.5">a.n. {BANK_HOLDER}</p>}
+                      </div>
+                      <button
+                        onClick={copyAccount}
+                        className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 text-gray-600 text-xs font-semibold rounded-lg hover:bg-gray-50 transition-colors flex-shrink-0"
+                      >
+                        {copied ? (
+                          <><Check className="w-3.5 h-3.5 text-green-500" />Disalin</>
+                        ) : (
+                          <><Copy className="w-3.5 h-3.5" />Salin</>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="bg-amber-50 border border-amber-100 rounded-xl px-4 py-3">
+                    <p className="text-xs text-amber-700">Hubungi admin via WhatsApp untuk informasi pembayaran.</p>
+                  </div>
+                )}
               </div>
 
               {/* Step 2 */}
               <div className="space-y-2">
-                <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Langkah 2 — Kirim Bukti via WhatsApp</p>
-                <div className="bg-blue-50 border border-blue-100 rounded-xl px-4 py-3 space-y-1">
-                  <p className="text-xs font-semibold text-blue-800">Cara kirim bukti transfer:</p>
-                  <ol className="text-xs text-blue-700 space-y-1 list-decimal list-inside leading-relaxed">
-                    <li>Screenshot atau foto struk transfer dari aplikasi bank</li>
-                    <li>Klik tombol di bawah untuk buka WhatsApp admin</li>
-                    <li>Lampirkan foto bukti transfer → kirim</li>
-                  </ol>
-                </div>
+                <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Langkah 2 — Kirim Bukti</p>
                 <p className="text-xs text-gray-500 leading-relaxed">
-                  Langganan akan diaktifkan dalam beberapa menit setelah admin memverifikasi.
+                  Setelah bayar, screenshot bukti transfer lalu kirim ke admin via WhatsApp. Langganan diaktifkan dalam beberapa menit.
                 </p>
                 <a
                   href={waUrl}
@@ -228,7 +243,7 @@ export function SubscriptionSection({ subscription, userEmail }: SubscriptionSec
                   className="w-full flex items-center justify-center gap-2 py-3 bg-green-500 hover:bg-green-600 text-white text-sm font-semibold rounded-xl transition-colors"
                 >
                   <MessageCircle className="w-4 h-4" />
-                  Buka WhatsApp &amp; Kirim Bukti
+                  Sudah Bayar? Kirim Bukti via WA
                 </a>
               </div>
 
