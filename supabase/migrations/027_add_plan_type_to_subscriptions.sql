@@ -13,7 +13,7 @@ UPDATE public.subscriptions
 
 -- Update handle_new_user to include plan_type = 'monthly' on trial INSERT
 CREATE OR REPLACE FUNCTION public.handle_new_user()
-RETURNS TRIGGER AS $
+RETURNS TRIGGER AS $$
 BEGIN
   -- Create profile
   INSERT INTO public.profiles (id, email, role, status)
@@ -31,4 +31,4 @@ BEGIN
 
   RETURN NEW;
 END;
-$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
