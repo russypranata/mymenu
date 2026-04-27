@@ -8,7 +8,6 @@ import { getMenuCount } from '@/lib/queries/menu'
 import { getProfile, getSubscription, getPageViewCount, getWhatsAppClickCount, getDailyAnalytics } from '@/lib/queries/dashboard'
 import { AnalyticsChart } from '@/components/analytics-chart'
 import { OnboardingChecklist } from '@/components/onboarding-checklist'
-import { SubscriptionBanner } from '@/components/subscription-banner'
 
 export const metadata: Metadata = {
   title: 'Dashboard — Menuly',
@@ -66,16 +65,6 @@ export default async function DashboardPage() {
           hasStore={stores.length > 0}
           hasMenu={menuCount > 0}
           hasShared={stores.length > 0}
-        />
-      )}
-
-      {/* Subscription banner — show for trial, active, and expired */}
-      {subscription && (subscription.status === 'trial' || subscription.status === 'active' || subscription.status === 'expired') && (
-        <SubscriptionBanner
-          status={subscription.status as 'trial' | 'active' | 'expired'}
-          planType={(subscription.plan_type as 'monthly' | 'annual' | null) ?? 'monthly'}
-          expiresAt={subscription.expires_at ?? null}
-          daysUntilExpiry={daysUntilExpiry}
         />
       )}
 
