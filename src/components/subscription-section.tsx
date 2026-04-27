@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { CreditCard, Copy, Check, MessageCircle, X, CheckCircle2, Clock, AlertTriangle, Zap } from 'lucide-react'
 import type { Database } from '@/types/database.types'
 import { ImageWithSkeleton } from '@/components/image-with-skeleton'
@@ -43,6 +43,13 @@ export function SubscriptionSection({ subscription, userEmail, initialModalOpen 
   const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'annual'>(
     (subscription?.plan_type as 'monthly' | 'annual') ?? 'monthly'
   )
+
+  // Update modal state when initialModalOpen changes
+  useEffect(() => {
+    if (initialModalOpen) {
+      setShowModal(true)
+    }
+  }, [initialModalOpen])
 
   const planType = (subscription?.plan_type as 'monthly' | 'annual') ?? 'monthly'
   const origin = (subscription?.origin as 'trial' | 'paid') ?? 'trial'

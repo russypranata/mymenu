@@ -15,11 +15,25 @@ export function SubscriptionSectionWrapper({ subscription, userEmail }: Subscrip
   const [shouldOpenModal, setShouldOpenModal] = useState(false)
 
   useEffect(() => {
-    // Check if URL has #renew hash
-    if (window.location.hash === '#renew') {
-      setShouldOpenModal(true)
-      // Clean up the hash
-      window.history.replaceState(null, '', window.location.pathname)
+    // Check immediately on mount
+    const checkHash = () => {
+      if (typeof window !== 'undefined' && window.location.hash === '#renew') {
+        setShouldOpenModal(true)
+        // Clean up the hash after a short delay to ensure modal opens
+        setTimeout(() => {
+          window.history.replaceState(null, '', window.location.pathname)
+        }, 100)
+      }
+    }
+
+    // Check on mount
+    checkHash()
+
+    // Also listen for hash changes
+    window.addEventListener('hashchange', checkHash)
+    
+    return () => {
+      window.removeEventListener('hashchange', checkHash)
     }
   }, [])
 
