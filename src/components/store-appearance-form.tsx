@@ -130,10 +130,12 @@ interface Props {
   storeSlug: string
   storeDescription?: string | null
   storeWhatsapp?: string | null
+  menuSectionTitle?: string | null
+  menuSectionSubtitle?: string | null
   settings: Tables<'store_settings'> | null
 }
 
-export function StoreAppearanceForm({ storeId, storeName, storeSlug, storeDescription, storeWhatsapp, settings }: Props) {
+export function StoreAppearanceForm({ storeId, storeName, storeSlug, storeDescription, storeWhatsapp, menuSectionTitle, menuSectionSubtitle, settings }: Props) {
   const [logoPreview, setLogoPreview] = useState<string | null>(settings?.logo_url ?? null)
   const [bannerPreview, setBannerPreview] = useState<string | null>(settings?.banner_url ?? null)
   const [logoFile, setLogoFile] = useState<File | null>(null)
@@ -157,6 +159,8 @@ export function StoreAppearanceForm({ storeId, storeName, storeSlug, storeDescri
   const [instagram, setInstagram] = useState(settings?.instagram ?? '')
   const [facebook, setFacebook] = useState(settings?.facebook ?? '')
   const [tiktok, setTiktok] = useState(settings?.tiktok ?? '')
+  const [menuTitle, setMenuTitle] = useState(menuSectionTitle ?? '')
+  const [menuSubtitle, setMenuSubtitle] = useState(menuSectionSubtitle ?? '')
   const [error, setError] = useState<string | null>(null)
   const [isPending, setIsPending] = useState(false)
   const { toasts, addToast, removeToast } = useToast()
@@ -234,6 +238,8 @@ export function StoreAppearanceForm({ storeId, storeName, storeSlug, storeDescri
       cardStyle,
       textSize,
       backgroundPattern,
+      menuSectionTitle: menuTitle.trim() || null,
+      menuSectionSubtitle: menuSubtitle.trim() || null,
     })
     setIsPending(false)
     if (error) { setError(error); addToast('Gagal menyimpan tampilan toko.', 'error'); return }
@@ -566,6 +572,34 @@ export function StoreAppearanceForm({ storeId, storeName, storeSlug, storeDescri
           className="w-full px-3.5 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-400 transition-all"
           placeholder="Pesan via WhatsApp" />
         <p className="text-xs text-gray-400 mt-1.5">{waButtonText.length}/40 karakter</p>
+      </div>
+
+      {/* Menu section text */}
+      <div className="space-y-4 pt-2 border-t border-gray-100">
+        <div>
+          <h3 className="text-sm font-bold text-gray-900 mb-0.5">Teks Bagian Menu</h3>
+          <p className="text-xs text-gray-400">Kustomisasi judul dan subjudul di halaman menu publik.</p>
+        </div>
+        
+        <div>
+          <label htmlFor="menu-title" className="block text-sm font-semibold text-gray-700 mb-2">Judul Menu</label>
+          <input id="menu-title" type="text" value={menuTitle}
+            onChange={(e) => setMenuTitle(e.target.value)}
+            maxLength={50}
+            className="w-full px-3.5 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-400 transition-all"
+            placeholder="Menu Kami" />
+          <p className="text-xs text-gray-400 mt-1.5">Kosongkan untuk menggunakan default "Menu Kami". {menuTitle.length}/50 karakter</p>
+        </div>
+
+        <div>
+          <label htmlFor="menu-subtitle" className="block text-sm font-semibold text-gray-700 mb-2">Subjudul Menu</label>
+          <input id="menu-subtitle" type="text" value={menuSubtitle}
+            onChange={(e) => setMenuSubtitle(e.target.value)}
+            maxLength={100}
+            className="w-full px-3.5 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-400 transition-all"
+            placeholder="Pilih menu favorit Anda" />
+          <p className="text-xs text-gray-400 mt-1.5">Kosongkan untuk menggunakan default "Pilih menu favorit Anda". {menuSubtitle.length}/100 karakter</p>
+        </div>
       </div>
 
       {/* ── Kontak & Sosial Media ── */}

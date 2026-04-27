@@ -167,6 +167,8 @@ export interface UpdateStoreSettingsInput {
   cardStyle?: string | null
   textSize?: string | null
   backgroundPattern?: string | null
+  menuSectionTitle?: string | null
+  menuSectionSubtitle?: string | null
 }
 
 export async function updateStoreSettings(
@@ -212,6 +214,29 @@ export async function updateStoreSettings(
   }, { onConflict: 'store_id' })
 
   if (error) return { error: error.message }
+
+  // Update menu section text in stores table if provided
+  if (input.menuSectionTitle !== undefined || input.menuSectionSubtitle !== undefined) {
+    const storeUpdate: {
+      menu_section_title?: string | null
+      menu_section_subtitle?: string | null
+    } = {}
+    if (input.menuSectionTitle !== undefined) {
+      storeUpdate.menu_section_title = input.menuSectionTitle?.trim() || null
+    }
+    if (input.menuSectionSubtitle !== undefined) {
+      storeUpdate.menu_section_subtitle = input.menuSectionSubtitle?.trim() || null
+    }
+    
+    const { error: storeError } = await supabase
+      .from('stores')
+      .update(storeUpdate)
+      .eq('id', input.storeId)
+    
+    if (storeError) return { error: storeError.message }
+  }
+
   revalidatePath('/store')
+  revalidatePath(`/[slug]`, 'page')
   return { error: null }
 }

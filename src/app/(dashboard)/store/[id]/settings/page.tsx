@@ -81,6 +81,8 @@ export default async function StoreSettingsPage({ params }: { params: Promise<{ 
           storeSlug={store.slug}
           storeDescription={store.description}
           storeWhatsapp={store.whatsapp}
+          menuSectionTitle={store.menu_section_title}
+          menuSectionSubtitle={store.menu_section_subtitle}
           settings={settings} 
         />
       </section>

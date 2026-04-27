@@ -9,6 +9,8 @@ interface PublicMenuContentProps {
   storeDescription: string | null
   bannerUrl: string | null
   primaryColor: string
+  menuSectionTitle?: string | null
+  menuSectionSubtitle?: string | null
   children: ReactNode
 }
 
@@ -17,6 +19,8 @@ export function PublicMenuContent({
   storeDescription, 
   bannerUrl, 
   primaryColor,
+  menuSectionTitle,
+  menuSectionSubtitle,
   children 
 }: PublicMenuContentProps) {
   const { isDark } = useTheme()
@@ -63,9 +67,13 @@ export function PublicMenuContent({
         <div className="mb-10">
           <div className="flex items-center gap-3 mb-1">
             <div className="w-1 h-7 rounded-full flex-shrink-0" style={{ backgroundColor: primaryColor }} />
-            <h2 className={`text-2xl sm:text-3xl font-extrabold tracking-tight ${titleColor}`}>Jelajahi Menu Kami</h2>
+            <h2 className={`text-2xl sm:text-3xl font-extrabold tracking-tight ${titleColor}`}>
+              {menuSectionTitle || 'Menu Kami'}
+            </h2>
           </div>
-          <p className={`text-sm ml-4 ${descColor}`}>Temukan hidangan favorit yang memanjakan lidah Anda</p>
+          <p className={`text-sm ml-4 ${descColor}`}>
+            {menuSectionSubtitle || 'Pilih menu favorit Anda'}
+          </p>
         </div>
         {children}
       </section>

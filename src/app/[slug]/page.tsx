@@ -82,6 +82,8 @@ export default async function PublicMenuPage({ params }: PageProps) {
   const cardStyle = store.store_settings?.card_style ?? 'card'
   const textSize = store.store_settings?.text_size ?? 'md'
   const backgroundPattern = store.store_settings?.background_pattern ?? 'none'
+  const menuSectionTitle = store.menu_section_title
+  const menuSectionSubtitle = store.menu_section_subtitle
   
   // Only enable ordering if both setting is ON and WhatsApp is filled
   const enableOrdering = (store.store_settings?.enable_ordering ?? true) && !!store.whatsapp
@@ -136,6 +138,8 @@ export default async function PublicMenuPage({ params }: PageProps) {
             storeDescription={store.description}
             bannerUrl={store.store_settings?.banner_url ?? null}
             primaryColor={primaryColor}
+            menuSectionTitle={menuSectionTitle}
+            menuSectionSubtitle={menuSectionSubtitle}
           >
             <PublicMenuList
               menus={menus}
