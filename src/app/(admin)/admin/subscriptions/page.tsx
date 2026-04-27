@@ -24,6 +24,11 @@ const STATUS_COLORS: Record<string, string> = {
   cancelled: 'bg-red-50 text-red-600',
 }
 
+const PLAN_BADGE: Record<string, { label: string; className: string }> = {
+  annual: { label: 'Tahunan', className: 'bg-green-50 text-green-600' },
+  monthly: { label: 'Bulanan', className: 'bg-gray-100 text-gray-500' },
+}
+
 export default async function AdminSubscriptionsPage({
   searchParams,
 }: {
@@ -56,6 +61,7 @@ export default async function AdminSubscriptionsPage({
                 <th className="text-left px-5 py-3.5 text-gray-400 font-semibold text-xs uppercase tracking-wider">Email</th>
                 <th className="text-left px-5 py-3.5 text-gray-400 font-semibold text-xs uppercase tracking-wider">Nama</th>
                 <th className="text-left px-5 py-3.5 text-gray-400 font-semibold text-xs uppercase tracking-wider">Status</th>
+                <th className="text-left px-5 py-3.5 text-gray-400 font-semibold text-xs uppercase tracking-wider">Plan</th>
                 <th className="text-left px-5 py-3.5 text-gray-400 font-semibold text-xs uppercase tracking-wider">Mulai</th>
                 <th className="text-left px-5 py-3.5 text-gray-400 font-semibold text-xs uppercase tracking-wider">Berakhir</th>
                 <th className="text-right px-5 py-3.5 text-gray-400 font-semibold text-xs uppercase tracking-wider">Aksi</th>
@@ -78,10 +84,20 @@ export default async function AdminSubscriptionsPage({
                         {sub.status ?? '-'}
                       </span>
                     </td>
+                    <td className="px-5 py-3.5">
+                      {(() => {
+                        const plan = PLAN_BADGE[sub.plan_type ?? 'monthly'] ?? PLAN_BADGE.monthly
+                        return (
+                          <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${plan.className}`}>
+                            {plan.label}
+                          </span>
+                        )
+                      })()}
+                    </td>
                     <td className="px-5 py-3.5 text-gray-400 text-xs">{formatDMY(sub.started_at)}</td>
                     <td className="px-5 py-3.5 text-gray-400 text-xs">{formatDMY(sub.expires_at)}</td>
                     <td className="px-5 py-3.5 text-right">
-                      <SubActions subscriptionId={sub.id} currentStatus={sub.status ?? ''} />
+                      <SubActions subscriptionId={sub.id} currentStatus={sub.status ?? ''} currentPlanType={sub.plan_type as 'monthly' | 'annual' ?? 'monthly'} />
                     </td>
                   </tr>
                 ))
@@ -107,8 +123,16 @@ export default async function AdminSubscriptionsPage({
                   <div className="space-y-0.5">
                     <p className="text-xs text-gray-500">{sub.profiles?.display_name || '-'}</p>
                     <p className="text-xs text-gray-400">{formatDMY(sub.started_at)} — {formatDMY(sub.expires_at)}</p>
+                    {(() => {
+                      const plan = PLAN_BADGE[sub.plan_type ?? 'monthly'] ?? PLAN_BADGE.monthly
+                      return (
+                        <span className={`inline-block text-xs font-semibold px-2 py-0.5 rounded-full ${plan.className}`}>
+                          {plan.label}
+                        </span>
+                      )
+                    })()}
                   </div>
-                  <SubActions subscriptionId={sub.id} currentStatus={sub.status ?? ''} />
+                  <SubActions subscriptionId={sub.id} currentStatus={sub.status ?? ''} currentPlanType={sub.plan_type as 'monthly' | 'annual' ?? 'monthly'} />
                 </div>
               </div>
             ))

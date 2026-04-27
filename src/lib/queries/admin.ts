@@ -7,6 +7,12 @@ type Subscription = Database['public']['Tables']['subscriptions']['Row']
 
 export const SUBSCRIPTION_PRICE = 20000
 
+// Subscription plan constants
+export const SUBSCRIPTION_PRICE_MONTHLY = 20_000   // Rp20.000/bulan
+export const SUBSCRIPTION_PRICE_ANNUAL  = 200_000  // Rp200.000/tahun
+export const SUBSCRIPTION_DAYS_MONTHLY  = 30
+export const SUBSCRIPTION_DAYS_ANNUAL   = 365
+
 export interface AdminStats {
   totalUsers: number
   totalStores: number

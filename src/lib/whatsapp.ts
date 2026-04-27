@@ -67,11 +67,17 @@ Untuk mengaktifkan kembali, silakan hubungi admin:
 Kami siap membantu Anda melanjutkan perjalanan bisnis digital! 🚀`
 }
 
-export function msgSubscriptionActivated(name: string, expiresAt: string): string {
+export function msgSubscriptionActivated(
+  name: string,
+  expiresAt: string,
+  planType: 'monthly' | 'annual' = 'monthly'
+): string {
+  const paket = planType === 'annual' ? 'Paket Tahunan' : 'Paket Bulanan'
   return `Halo ${name}! 🎉
 
 Langganan Menuly Anda telah *diaktifkan*!
 
+📦 Paket: *${paket}*
 ✅ Aktif hingga: *${expiresAt}*
 
 Selamat menggunakan Menuly. Toko digital Anda kini kembali aktif dan bisa diakses pelanggan.

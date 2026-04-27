@@ -55,6 +55,7 @@ export async function createTrialSubscription(
     status: 'trial',
     started_at: today.toISOString(),
     expires_at: expiresAt.toISOString(),
+    plan_type: 'monthly',
   })
 
   if (error) return { error: error.message }
@@ -65,15 +66,19 @@ export async function createTrialSubscription(
 
 export async function updateSubscription(
   subscriptionId: string,
-  data: { status?: string; expires_at?: string }
+  data: { status?: string; expires_at?: string; plan_type?: 'monthly' | 'annual' }
 ): Promise<{ error: string | null }> {
   const { supabase, error: authError } = await verifyAdmin()
   if (authError || !supabase) return { error: authError }
 
+  if (data.plan_type && !['monthly', 'annual'].includes(data.plan_type)) {
+    return { error: 'Jenis paket tidak valid.' }
+  }
+
   // Fetch subscription + user info for WA notification
   const { data: sub } = await supabase
     .from('subscriptions')
-    .select('user_id')
+    .select('user_id, plan_type')
     .eq('id', subscriptionId)
     .maybeSingle()
 
@@ -104,7 +109,8 @@ export async function updateSubscription(
       const expiresAt = data.expires_at
         ? new Date(data.expires_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
         : '-'
-      await sendWhatsApp(store.whatsapp, msgSubscriptionActivated(name, expiresAt))
+      const planType = data.plan_type ?? (sub.plan_type as 'monthly' | 'annual') ?? 'monthly'
+      await sendWhatsApp(store.whatsapp, msgSubscriptionActivated(name, expiresAt, planType))
     }
   }
 
@@ -171,7 +177,7 @@ export async function extendSubscription(
 
   const { data: subscription, error: fetchError } = await supabase
     .from('subscriptions')
-    .select('expires_at, user_id')
+    .select('expires_at, user_id, plan_type')
     .eq('id', subscriptionId)
     .single()
 
@@ -208,7 +214,8 @@ export async function extendSubscription(
   if (store?.whatsapp) {
     const name = profile?.display_name || profile?.email?.split('@')[0] || 'Pengguna'
     const expiresAtStr = baseDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
-    await sendWhatsApp(store.whatsapp, msgSubscriptionActivated(name, expiresAtStr))
+    const planType = (subscription.plan_type as 'monthly' | 'annual') ?? 'monthly'
+    await sendWhatsApp(store.whatsapp, msgSubscriptionActivated(name, expiresAtStr, planType))
   }
 
   revalidatePath('/admin/subscriptions')

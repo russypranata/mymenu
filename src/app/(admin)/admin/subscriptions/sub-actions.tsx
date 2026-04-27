@@ -12,17 +12,25 @@ const STATUS_OPTIONS = [
   { value: 'cancelled', label: 'Cancelled' },
 ]
 
+const PLAN_TYPE_OPTIONS = [
+  { value: 'monthly', label: 'Bulanan' },
+  { value: 'annual', label: 'Tahunan' },
+]
+
 export function SubActions({
   subscriptionId,
   currentStatus,
+  currentPlanType,
 }: {
   subscriptionId: string
   currentStatus: string
+  currentPlanType?: 'monthly' | 'annual'
 }) {
   const [open, setOpen] = useState(false)
   const [extendDays, setExtendDays] = useState(30)
   const [newStatus, setNewStatus] = useState(currentStatus)
   const [newExpiry, setNewExpiry] = useState('')
+  const [planType, setPlanType] = useState<'monthly' | 'annual'>(currentPlanType ?? 'monthly')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [reminderLoading, setReminderLoading] = useState(false)
@@ -40,19 +48,20 @@ export function SubActions({
   async function handleUpdate() {
     setLoading(true)
     setError(null)
-    const data: { status?: string; expires_at?: string } = {}
+    const data: { status?: string; expires_at?: string; plan_type?: 'monthly' | 'annual' } = {}
     if (newStatus !== currentStatus) data.status = newStatus
     if (newExpiry) data.expires_at = new Date(newExpiry).toISOString()
+    if (planType !== (currentPlanType ?? 'monthly')) data.plan_type = planType
     const result = await updateSubscription(subscriptionId, data)
     if (result.error) setError(result.error)
     else setOpen(false)
     setLoading(false)
   }
 
-  async function handleExtend() {
+  async function handleExtend(days: number) {
     setLoading(true)
     setError(null)
-    const result = await extendSubscription(subscriptionId, extendDays)
+    const result = await extendSubscription(subscriptionId, days)
     if (result.error) setError(result.error)
     else setOpen(false)
     setLoading(false)
@@ -115,6 +124,15 @@ export function SubActions({
                   />
                 </div>
                 <div>
+                  <label className="text-xs font-semibold text-gray-500 block mb-1.5">Jenis Paket</label>
+                  <SelectFilter
+                    value={planType}
+                    onChange={(v) => setPlanType(v as 'monthly' | 'annual')}
+                    options={PLAN_TYPE_OPTIONS}
+                    className="w-full"
+                  />
+                </div>
+                <div>
                   <label className="text-xs font-semibold text-gray-500 block mb-1.5">Tanggal Berakhir</label>
                   <input
                     type="date"
@@ -135,18 +153,34 @@ export function SubActions({
               <div className="border-t border-gray-100 pt-4 space-y-3">
                 <p className="text-xs font-semibold text-gray-500">Perpanjang Langganan</p>
                 <div className="flex gap-2">
+                  <button
+                    onClick={() => handleExtend(30)}
+                    disabled={loading}
+                    className="flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold rounded-xl transition-colors disabled:opacity-50"
+                  >
+                    Perpanjang 30 Hari
+                  </button>
+                  <button
+                    onClick={() => handleExtend(365)}
+                    disabled={loading}
+                    className="flex-1 py-2.5 bg-green-500 hover:bg-green-600 text-white text-xs font-semibold rounded-xl transition-colors disabled:opacity-50"
+                  >
+                    Perpanjang 365 Hari
+                  </button>
+                </div>
+                <div className="flex gap-2">
                   <input
                     type="number"
                     min={1}
                     value={extendDays}
                     onChange={(e) => setExtendDays(Number(e.target.value))}
-                    className="w-20 bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl pl-3 pr-8 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-400"
+                    className="w-20 bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl pl-3 pr-2 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-400"
                   />
                   <span className="text-sm text-gray-400 self-center">hari</span>
                   <button
-                    onClick={handleExtend}
+                    onClick={() => handleExtend(extendDays)}
                     disabled={loading}
-                    className="flex-1 py-2.5 bg-green-500 hover:bg-green-600 text-white text-sm font-semibold rounded-xl transition-colors disabled:opacity-50"
+                    className="flex-1 py-2.5 bg-gray-900 hover:bg-gray-800 text-white text-sm font-semibold rounded-xl transition-colors disabled:opacity-50"
                   >
                     Perpanjang
                   </button>
@@ -159,5 +193,3 @@ export function SubActions({
     </>
   )
 }
-
-

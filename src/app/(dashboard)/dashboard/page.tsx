@@ -2,13 +2,13 @@ import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import type { Metadata } from 'next'
-import { Store, UtensilsCrossed, ArrowRight, ExternalLink, TrendingUp, Zap, MessageCircle } from 'lucide-react'
-import { formatDate } from '@/lib/utils'
+import { Store, UtensilsCrossed, ArrowRight, ExternalLink, TrendingUp, MessageCircle } from 'lucide-react'
 import { getStoresByUser } from '@/lib/queries/store'
 import { getMenuCount } from '@/lib/queries/menu'
 import { getProfile, getSubscription, getPageViewCount, getWhatsAppClickCount, getDailyAnalytics } from '@/lib/queries/dashboard'
 import { AnalyticsChart } from '@/components/analytics-chart'
 import { OnboardingChecklist } from '@/components/onboarding-checklist'
+import { SubscriptionBanner } from '@/components/subscription-banner'
 
 export const metadata: Metadata = {
   title: 'Dashboard — Menuly',
@@ -69,17 +69,14 @@ export default async function DashboardPage() {
         />
       )}
 
-      {/* Trial active banner — only show when healthy (not expiring soon) */}
-      {subscription?.status === 'trial' && daysUntilExpiry !== null && daysUntilExpiry > 3 && (
-        <div className="bg-green-50 border border-green-200 rounded-2xl px-5 py-4 flex items-center gap-3.5">
-          <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
-            <Zap className="w-5 h-5 text-green-500" />
-          </div>
-          <div>
-            <p className="text-sm font-bold text-green-900">Trial aktif — {daysUntilExpiry} hari tersisa</p>
-            <p className="text-xs text-green-600 mt-0.5">Berakhir {formatDate(subscription.expires_at!)}. Nikmati semua fitur selama masa trial.</p>
-          </div>
-        </div>
+      {/* Subscription banner — show for trial, active, and expired */}
+      {subscription && (subscription.status === 'trial' || subscription.status === 'active' || subscription.status === 'expired') && (
+        <SubscriptionBanner
+          status={subscription.status as 'trial' | 'active' | 'expired'}
+          planType={(subscription.plan_type as 'monthly' | 'annual' | null) ?? 'monthly'}
+          expiresAt={subscription.expires_at ?? null}
+          daysUntilExpiry={daysUntilExpiry}
+        />
       )}
 
       {/* Stats */}

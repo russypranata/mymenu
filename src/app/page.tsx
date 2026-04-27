@@ -28,6 +28,7 @@ import {
   ChefHat,
   IceCream,
 } from "lucide-react";
+import { PricingSection } from "@/components/pricing-section";
 
 // Color Palette: Green + Dark + White
 // Primary: #16a34a (green-500)
@@ -722,143 +723,7 @@ export default function Home() {
         </section>
 
         {/* --- HARGA SECTION --- */}
-        <section id="harga" className="py-16 sm:py-20 lg:py-24 bg-gray-50">
-          <div className="container mx-auto px-4 sm:px-6">
-            <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-              <p className="inline-flex items-center gap-2 text-yellow-700 font-semibold text-xs sm:text-sm uppercase tracking-widest mb-3 sm:mb-4 bg-yellow-100 px-2.5 sm:px-3 py-1 rounded-full border border-yellow-200">
-                <span className="w-1.5 h-1.5 rounded-full bg-yellow-500" />
-                Harga
-              </p>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 tracking-tight leading-[1.15]">
-                Satu harga,{" "}
-                <span className="text-green-500">semua fitur</span>
-              </h2>
-              <p className="text-gray-500 text-sm sm:text-base lg:text-lg mt-4 sm:mt-5 leading-relaxed">
-                Tanpa biaya tersembunyi. Tanpa kontrak jangka panjang.
-              </p>
-            </div>
-
-            {/* Pricing Card - Compact & Centered */}
-            <div className="max-w-sm mx-auto">
-              <div className="bg-white rounded-2xl sm:rounded-3xl border-2 border-green-500 p-6 sm:p-8 relative">
-                {/* Badge */}
-                <div className="absolute -top-3 sm:-top-4 left-1/2 -translate-x-1/2">
-                  <span className="bg-green-500 text-white text-[10px] sm:text-xs font-bold px-3 sm:px-4 py-1 sm:py-1.5 rounded-full">
-                    ⭐ Paling Populer
-                  </span>
-                </div>
-
-                <div className="text-center mb-6 sm:mb-8">
-                  <p className="text-xs sm:text-sm font-semibold text-gray-500 mb-1.5 sm:mb-2">Langganan Bulanan</p>
-                  <div className="flex items-end justify-center gap-1">
-                    <span className="text-4xl sm:text-5xl font-extrabold text-gray-900">Rp20K</span>
-                    <span className="text-gray-400 text-sm sm:text-base mb-1 sm:mb-1.5">/bulan</span>
-                  </div>
-                  <p className="text-xs sm:text-sm text-green-600 font-semibold mt-1.5 sm:mt-2 flex items-center justify-center gap-1.5">
-                    <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                    Gratis 3 hari pertama
-                  </p>
-                </div>
-
-                {/* Features */}
-                <ul className="space-y-2.5 sm:space-y-3 mb-6 sm:mb-8">
-                  {[
-                    'Menu digital unlimited item',
-                    'QR Code otomatis',
-                    'Order via WhatsApp',
-                    'Custom tema & warna',
-                    'Upload foto per menu',
-                    'Kategori menu',
-                    'Jam operasional',
-                    'Statistik pengunjung real-time',
-                    'Banner & logo toko',
-                    'Sosial media links',
-                    'Subdomain mymenu.id/namatoko',
-                  ].map((feature, i) => (
-                    <li key={i} className="flex items-center gap-2.5 sm:gap-3 text-xs sm:text-sm text-gray-700">
-                      <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-500 flex-shrink-0" strokeWidth={2.5} />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-
-                {/* CTA */}
-                <div className="space-y-2.5 sm:space-y-3">
-                  <Link
-                    href="/register"
-                    className="w-full flex items-center justify-center gap-2 py-3 sm:py-3.5 bg-green-500 text-white text-sm sm:text-base font-bold rounded-xl sm:rounded-2xl hover:bg-green-600 transition-colors"
-                  >
-                    <Rocket className="w-4 h-4 sm:w-5 sm:h-5" />
-                    Mulai Gratis 3 Hari
-                  </Link>
-                  <a
-                    href={`https://wa.me/${process.env.NEXT_PUBLIC_ADMIN_WHATSAPP || '62895338170582'}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full flex items-center justify-center gap-2 py-2.5 sm:py-3 border border-gray-200 text-gray-600 text-xs sm:text-sm font-semibold rounded-xl sm:rounded-2xl hover:bg-gray-50 transition-colors"
-                  >
-                    <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-500" />
-                    Tanya via WhatsApp
-                  </a>
-                </div>
-              </div>
-
-              {/* Trust notes */}
-              <div className="mt-5 sm:mt-6 space-y-1.5 sm:space-y-2 text-center">
-                {[
-                  'Tanpa kartu kredit',
-                  'Batal kapan saja',
-                  'Aktivasi manual oleh admin',
-                ].map((note, i) => (
-                  <p key={i} className="text-xs sm:text-sm text-gray-400 flex items-center justify-center gap-1.5 sm:gap-2">
-                    <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-green-400" strokeWidth={2.5} />
-                    {note}
-                  </p>
-                ))}
-              </div>
-            </div>
-
-            {/* Comparison Table */}
-            <div className="mt-12 sm:mt-16 max-w-2xl mx-auto">
-              <div className="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-xl sm:rounded-2xl border-2 border-yellow-200 p-4 sm:p-6">
-                <div className="flex items-center justify-center gap-2 mb-4 sm:mb-5">
-                  <span className="text-lg sm:text-xl">💡</span>
-                  <h4 className="font-bold text-gray-900 text-xs sm:text-sm">Bandingkan dengan solusi lain</h4>
-                </div>
-                <div className="grid grid-cols-3 gap-2 sm:gap-3">
-                  <div className="bg-white rounded-lg sm:rounded-xl p-2 sm:p-3 border border-gray-200 text-center overflow-hidden">
-                    <p className="font-bold text-gray-900 mb-1 sm:mb-1.5 text-[10px] sm:text-xs whitespace-nowrap">Menu Kertas</p>
-                    <p className="text-gray-600 text-[9px] sm:text-[10px] mb-1.5 sm:mb-2 leading-tight">Cetak ulang<br className="sm:hidden" /> 3-4x/tahun</p>
-                    <div className="pt-1.5 sm:pt-2 border-t border-gray-100">
-                      <p className="text-red-600 font-bold text-[10px] sm:text-sm whitespace-nowrap">~Rp200K<span className="text-[8px] sm:text-[10px] font-normal">/thn</span></p>
-                    </div>
-                  </div>
-                  <div className="bg-white rounded-lg sm:rounded-xl p-2 sm:p-3 border border-gray-200 text-center overflow-hidden">
-                    <p className="font-bold text-gray-900 mb-1 sm:mb-1.5 text-[10px] sm:text-xs whitespace-nowrap">Aplikasi Kasir</p>
-                    <p className="text-gray-600 text-[9px] sm:text-[10px] mb-1.5 sm:mb-2 leading-tight">Rp200K-<br className="sm:hidden" />500K/bln</p>
-                    <div className="pt-1.5 sm:pt-2 border-t border-gray-100">
-                      <p className="text-red-600 font-bold text-[10px] sm:text-sm whitespace-nowrap">~Rp2.4Jt<span className="text-[8px] sm:text-[10px] font-normal">/thn</span></p>
-                    </div>
-                  </div>
-                  <div className="bg-gradient-to-br from-green-100 to-green-50 rounded-lg sm:rounded-xl p-2 sm:p-3 border-2 border-green-500 text-center relative overflow-hidden">
-                    <div className="absolute -top-1 sm:-top-1.5 -right-1 sm:-right-1.5 w-4 h-4 sm:w-5 sm:h-5 bg-green-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-[9px] sm:text-[10px] font-bold">✓</span>
-                    </div>
-                    <p className="font-bold text-gray-900 mb-1 sm:mb-1.5 text-[10px] sm:text-xs whitespace-nowrap">Menuly</p>
-                    <p className="text-gray-700 text-[9px] sm:text-[10px] mb-1.5 sm:mb-2 leading-tight font-medium whitespace-nowrap">Rp20K/bln</p>
-                    <div className="pt-1.5 sm:pt-2 border-t border-green-200">
-                      <p className="text-green-600 font-bold text-[10px] sm:text-sm whitespace-nowrap">Rp240K<span className="text-[8px] sm:text-[10px] font-normal">/thn</span> ✨</p>
-                    </div>
-                  </div>
-                </div>
-                <p className="text-center text-[9px] sm:text-[10px] text-gray-600 mt-3 sm:mt-3 font-medium">
-                  💰 Hemat <span className="text-green-600 font-bold">hingga Rp2.16Jt/tahun</span> vs aplikasi kasir
-                </p>
-              </div>
-            </div>
-
-          </div>
-        </section>
+        <PricingSection />
 
         {/* --- FINAL CTA SECTION --- */}
         <section className="py-16 sm:py-20 lg:py-24 bg-gray-50 relative">
