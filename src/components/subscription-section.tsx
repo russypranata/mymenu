@@ -123,16 +123,7 @@ export function SubscriptionSection({ subscription, userEmail, initialModalOpen 
               </span>
             </div>
 
-            {/* Paket info - show for all states */}
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-gray-500">Paket</span>
-              <span className="font-semibold text-gray-900">
-                {isTrial && 'Trial Gratis 3 Hari'}
-                {isActive && `${planLabel}`}
-                {isExpired && !hasNoSub && (isExpiredFromTrial ? 'Trial Gratis 3 Hari' : planLabel)}
-                {hasNoSub && '-'}
-              </span>
-            </div>
+            {/* Paket info - removed, detail per transaksi ada di riwayat */}
 
             {subscription?.started_at && (
               <div className="flex items-center justify-between text-sm">
@@ -170,7 +161,7 @@ export function SubscriptionSection({ subscription, userEmail, initialModalOpen 
             <div className="pt-1">
               <button
                 onClick={() => setShowModal(true)}
-                className="w-full flex items-center justify-center gap-2 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold rounded-xl transition-colors"
+                className="w-full flex items-center justify-center gap-2 py-2.5 bg-green-500 hover:bg-green-600 text-white text-sm font-semibold rounded-xl transition-colors"
               >
                 <CreditCard className="w-4 h-4" />
                 {isExpiringSoon ? 'Perpanjang Sekarang' : 'Perpanjang Langganan'}

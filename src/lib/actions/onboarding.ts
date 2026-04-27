@@ -43,6 +43,17 @@ export async function updateOnboarding(input: OnboardingInput): Promise<{ error:
       status: 'trial',
       started_at: today.toISOString(),
       expires_at: expiresAt.toISOString(),
+      origin: 'trial',
+    })
+
+    // Record trial in history
+    await supabase.from('subscription_history').insert({
+      user_id: user.id,
+      plan_type: 'trial',
+      origin: 'trial',
+      started_at: today.toISOString(),
+      ended_at: expiresAt.toISOString(),
+      note: 'Trial 3 hari (registrasi)',
     })
 
     // Send WA welcome notification (fire and forget — non-blocking)

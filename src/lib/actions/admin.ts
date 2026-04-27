@@ -55,7 +55,6 @@ export async function createTrialSubscription(
     status: 'trial',
     started_at: today.toISOString(),
     expires_at: expiresAt.toISOString(),
-    plan_type: 'monthly',
     origin: 'trial',
   })
 
@@ -123,7 +122,7 @@ export async function updateSubscription(
   if (sub && (data.status === 'active' || data.status === 'trial')) {
     const { data: profile } = await supabase
       .from('profiles')
-      .select('display_name, email')
+      .select('display_name, email, phone')
       .eq('id', sub.user_id)
       .maybeSingle()
     const { data: store } = await supabase
@@ -134,13 +133,16 @@ export async function updateSubscription(
       .limit(1)
       .maybeSingle()
 
-    if (store?.whatsapp) {
+    // Primary: owner phone (profiles.phone), fallback: store whatsapp
+    const rawPhone = profile?.phone || store?.whatsapp
+    if (rawPhone) {
+      const waNumber = rawPhone.replace(/^0/, '62').replace(/\D/g, '')
       const name = profile?.display_name || profile?.email?.split('@')[0] || 'Pengguna'
       const expiresAt = data.expires_at
         ? new Date(data.expires_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
         : '-'
       const planType = data.plan_type ?? (sub.plan_type as 'monthly' | 'annual') ?? 'monthly'
-      await sendWhatsApp(store.whatsapp, msgSubscriptionActivated(name, expiresAt, planType))
+      await sendWhatsApp(waNumber, msgSubscriptionActivated(name, expiresAt, planType))
     }
   }
 
@@ -164,7 +166,7 @@ export async function sendSubscriptionReminder(
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('display_name, email')
+    .select('display_name, email, phone')
     .eq('id', sub.user_id)
     .maybeSingle()
 
@@ -176,7 +178,10 @@ export async function sendSubscriptionReminder(
     .limit(1)
     .maybeSingle()
 
-  if (!store?.whatsapp) return { error: 'User tidak memiliki nomor WhatsApp toko.' }
+  // Primary: owner phone (profiles.phone), fallback: store whatsapp
+  const rawPhone = profile?.phone || store?.whatsapp
+  if (!rawPhone) return { error: 'User tidak memiliki nomor WhatsApp.' }
+  const waNumber = rawPhone.replace(/^0/, '62').replace(/\D/g, '')
 
   const name = profile?.display_name || profile?.email?.split('@')[0] || 'Pengguna'
   const expiresAt = sub.expires_at
@@ -194,13 +199,14 @@ export async function sendSubscriptionReminder(
     message = msgTrialExpiringSoon(name, daysLeft ?? 0, expiresAt)
   }
 
-  await sendWhatsApp(store.whatsapp, message)
+  await sendWhatsApp(waNumber, message)
   return { error: null }
 }
 
 export async function extendSubscription(
   subscriptionId: string,
-  days: number
+  days: number,
+  planType?: 'monthly' | 'annual'
 ): Promise<{ error: string | null }> {
   const { supabase, error: authError } = await verifyAdmin()
   if (authError || !supabase) return { error: authError }
@@ -222,26 +228,31 @@ export async function extendSubscription(
 
   const { error } = await supabase
     .from('subscriptions')
-    .update({ expires_at: baseDate.toISOString(), status: 'active', origin: 'paid' })
+    .update({
+      expires_at: baseDate.toISOString(),
+      status: 'active',
+      origin: 'paid',
+      ...(planType && { plan_type: planType }),
+    })
     .eq('id', subscriptionId)
 
   if (error) return { error: error.message }
 
   // Insert history record for this extension
-  const planType = (subscription.plan_type as string) ?? 'monthly'
+  const finalPlanType = planType ?? (subscription.plan_type as string) ?? 'monthly'
   await supabase.from('subscription_history').insert({
     user_id: subscription.user_id,
-    plan_type: planType,
+    plan_type: finalPlanType,
     origin: 'paid',
     started_at: new Date().toISOString(),
     ended_at: baseDate.toISOString(),
-    note: `Diperpanjang ${days} hari oleh admin (${planType === 'annual' ? 'Tahunan' : 'Bulanan'})`,
+    note: `Diperpanjang ${days} hari oleh admin (${finalPlanType === 'annual' ? 'Tahunan' : 'Bulanan'})`,
   })
 
   // Send WA notification
   const { data: profile } = await supabase
     .from('profiles')
-    .select('display_name, email')
+    .select('display_name, email, phone')
     .eq('id', subscription.user_id)
     .maybeSingle()
   const { data: store } = await supabase
@@ -252,11 +263,14 @@ export async function extendSubscription(
     .limit(1)
     .maybeSingle()
 
-  if (store?.whatsapp) {
+  // Primary: owner phone (profiles.phone), fallback: store whatsapp
+  const rawPhone = profile?.phone || store?.whatsapp
+  if (rawPhone) {
+    const waNumber = rawPhone.replace(/^0/, '62').replace(/\D/g, '')
     const name = profile?.display_name || profile?.email?.split('@')[0] || 'Pengguna'
     const expiresAtStr = baseDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
-    const planType = (subscription.plan_type as 'monthly' | 'annual') ?? 'monthly'
-    await sendWhatsApp(store.whatsapp, msgSubscriptionActivated(name, expiresAtStr, planType))
+    const extendPlanType = planType ?? (subscription.plan_type as 'monthly' | 'annual') ?? 'monthly'
+    await sendWhatsApp(waNumber, msgSubscriptionActivated(name, expiresAtStr, extendPlanType))
   }
 
   revalidatePath('/admin/subscriptions')

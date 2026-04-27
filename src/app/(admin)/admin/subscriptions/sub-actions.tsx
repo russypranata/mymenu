@@ -17,20 +17,39 @@ const PLAN_TYPE_OPTIONS = [
   { value: 'annual', label: 'Tahunan' },
 ]
 
+function formatDateLong(dateStr: string | null | undefined): string {
+  if (!dateStr) return 'Belum ada tanggal berakhir'
+  const d = new Date(dateStr)
+  return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+}
+
+function isExpired(dateStr: string | null | undefined): boolean {
+  if (!dateStr) return true
+  const expiry = new Date(dateStr)
+  const today = new Date()
+  expiry.setHours(0, 0, 0, 0)
+  today.setHours(0, 0, 0, 0)
+  return expiry.getTime() <= today.getTime()
+}
+
 export function SubActions({
   subscriptionId,
   currentStatus,
   currentPlanType,
+  currentExpiresAt,
 }: {
   subscriptionId: string
   currentStatus: string
   currentPlanType?: 'monthly' | 'annual'
+  currentExpiresAt?: string | null
 }) {
   const [open, setOpen] = useState(false)
   const [extendDays, setExtendDays] = useState(30)
+  const [customPlanType, setCustomPlanType] = useState<'monthly' | 'annual'>('monthly')
   const [newStatus, setNewStatus] = useState(currentStatus)
-  const [newExpiry, setNewExpiry] = useState('')
-  const [planType, setPlanType] = useState<'monthly' | 'annual'>(currentPlanType ?? 'monthly')
+  const [newExpiry, setNewExpiry] = useState(
+    currentExpiresAt ? new Date(currentExpiresAt).toISOString().split('T')[0] : ''
+  )
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [reminderLoading, setReminderLoading] = useState(false)
@@ -48,29 +67,19 @@ export function SubActions({
   async function handleUpdate() {
     setLoading(true)
     setError(null)
-    const data: { status?: string; expires_at?: string; plan_type?: 'monthly' | 'annual' } = {}
+    const data: { status?: string; expires_at?: string } = {}
     if (newStatus !== currentStatus) data.status = newStatus
     if (newExpiry) data.expires_at = new Date(newExpiry).toISOString()
-    if (planType !== (currentPlanType ?? 'monthly')) data.plan_type = planType
     const result = await updateSubscription(subscriptionId, data)
     if (result.error) setError(result.error)
     else setOpen(false)
     setLoading(false)
   }
 
-  async function handleExtend(days: number) {
+  async function handleExtend(days: number, planType: 'monthly' | 'annual') {
     setLoading(true)
     setError(null)
-    // If plan_type was changed in the dropdown, save it first before extending
-    if (planType !== (currentPlanType ?? 'monthly')) {
-      const updateResult = await updateSubscription(subscriptionId, { plan_type: planType })
-      if (updateResult.error) {
-        setError(updateResult.error)
-        setLoading(false)
-        return
-      }
-    }
-    const result = await extendSubscription(subscriptionId, days)
+    const result = await extendSubscription(subscriptionId, days, planType)
     if (result.error) setError(result.error)
     else setOpen(false)
     setLoading(false)
@@ -102,8 +111,8 @@ export function SubActions({
 
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm" onClick={() => setOpen(false)}>
-          <div className="bg-white rounded-2xl border border-gray-100 w-full max-w-sm shadow-xl" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+          <div className="bg-white rounded-2xl border border-gray-100 w-full max-w-sm shadow-xl max-h-[90vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 flex-shrink-0">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 bg-green-50 rounded-xl flex items-center justify-center flex-shrink-0">
                   <CreditCard className="w-5 h-5 text-green-500" />
@@ -115,29 +124,26 @@ export function SubActions({
               </button>
             </div>
 
-            <div className="px-6 py-5 space-y-4">
+            <div className="px-6 py-5 space-y-4 overflow-y-auto">
               {error && (
                 <div className="bg-red-50 border border-red-100 rounded-xl px-4 py-3">
                   <p className="text-xs text-red-600">{error}</p>
                 </div>
               )}
 
+              {/* Section 1: Manual Edit */}
               <div className="space-y-3">
+                <div>
+                  <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Edit Manual</p>
+                  <p className="text-xs text-gray-400 mt-1">Untuk koreksi data atau set tanggal spesifik</p>
+                  <p className="text-xs text-gray-500 mt-0.5">Berakhir saat ini: <span className="font-medium">{formatDateLong(currentExpiresAt)}</span></p>
+                </div>
                 <div>
                   <label className="text-xs font-semibold text-gray-500 block mb-1.5">Status</label>
                   <SelectFilter
                     value={newStatus}
                     onChange={setNewStatus}
                     options={STATUS_OPTIONS}
-                    className="w-full"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs font-semibold text-gray-500 block mb-1.5">Jenis Paket</label>
-                  <SelectFilter
-                    value={planType}
-                    onChange={(v) => setPlanType(v as 'monthly' | 'annual')}
-                    options={PLAN_TYPE_OPTIONS}
                     className="w-full"
                   />
                 </div>
@@ -159,37 +165,54 @@ export function SubActions({
                 </button>
               </div>
 
+              {/* Section 2: Quick Extend */}
               <div className="border-t border-gray-100 pt-4 space-y-3">
-                <p className="text-xs font-semibold text-gray-500">Perpanjang Langganan</p>
+                <div>
+                  <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Perpanjang Langganan</p>
+                  <p className="text-xs text-gray-400 mt-1">
+                    {isExpired(currentExpiresAt)
+                      ? 'Langganan sudah expired, akan extend dari hari ini'
+                      : `Otomatis extend dari tanggal berakhir: ${formatDateLong(currentExpiresAt)}`}
+                  </p>
+                </div>
                 <div className="flex gap-2">
                   <button
-                    onClick={() => handleExtend(30)}
+                    onClick={() => handleExtend(30, 'monthly')}
                     disabled={loading}
                     className="flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold rounded-xl transition-colors disabled:opacity-50"
                   >
-                    Perpanjang 30 Hari
+                    Perpanjang 1 Bulan
                   </button>
                   <button
-                    onClick={() => handleExtend(365)}
+                    onClick={() => handleExtend(365, 'annual')}
                     disabled={loading}
                     className="flex-1 py-2.5 bg-green-500 hover:bg-green-600 text-white text-xs font-semibold rounded-xl transition-colors disabled:opacity-50"
                   >
-                    Perpanjang 365 Hari
+                    Perpanjang 1 Tahun
                   </button>
                 </div>
-                <div className="flex gap-2">
-                  <input
-                    type="number"
-                    min={1}
-                    value={extendDays}
-                    onChange={(e) => setExtendDays(Number(e.target.value))}
-                    className="w-20 bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl pl-3 pr-2 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-400"
-                  />
-                  <span className="text-sm text-gray-400 self-center">hari</span>
+                <div className="space-y-2">
+                  <p className="text-xs text-gray-400">Custom perpanjang:</p>
+                  <div className="flex gap-2">
+                    <input
+                      type="number"
+                      min={1}
+                      value={extendDays}
+                      onChange={(e) => setExtendDays(Number(e.target.value))}
+                      className="w-20 bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl pl-3 pr-2 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-400"
+                    />
+                    <span className="text-sm text-gray-400 self-center">hari</span>
+                    <SelectFilter
+                      value={customPlanType}
+                      onChange={(v) => setCustomPlanType(v as 'monthly' | 'annual')}
+                      options={PLAN_TYPE_OPTIONS}
+                      className="flex-1"
+                    />
+                  </div>
                   <button
-                    onClick={() => handleExtend(extendDays)}
+                    onClick={() => handleExtend(extendDays, customPlanType)}
                     disabled={loading}
-                    className="flex-1 py-2.5 bg-gray-900 hover:bg-gray-800 text-white text-sm font-semibold rounded-xl transition-colors disabled:opacity-50"
+                    className="w-full py-2.5 bg-gray-900 hover:bg-gray-800 text-white text-sm font-semibold rounded-xl transition-colors disabled:opacity-50"
                   >
                     Perpanjang
                   </button>

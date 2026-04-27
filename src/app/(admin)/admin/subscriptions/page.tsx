@@ -97,7 +97,7 @@ export default async function AdminSubscriptionsPage({
                     <td className="px-5 py-3.5 text-gray-400 text-xs">{formatDMY(sub.started_at)}</td>
                     <td className="px-5 py-3.5 text-gray-400 text-xs">{formatDMY(sub.expires_at)}</td>
                     <td className="px-5 py-3.5 text-right">
-                      <SubActions subscriptionId={sub.id} currentStatus={sub.status ?? ''} currentPlanType={sub.plan_type as 'monthly' | 'annual' ?? 'monthly'} />
+                      <SubActions subscriptionId={sub.id} currentStatus={sub.status ?? ''} currentPlanType={sub.plan_type as 'monthly' | 'annual' ?? 'monthly'} currentExpiresAt={sub.expires_at} />
                     </td>
                   </tr>
                 ))
@@ -132,7 +132,7 @@ export default async function AdminSubscriptionsPage({
                       )
                     })()}
                   </div>
-                  <SubActions subscriptionId={sub.id} currentStatus={sub.status ?? ''} currentPlanType={sub.plan_type as 'monthly' | 'annual' ?? 'monthly'} />
+                  <SubActions subscriptionId={sub.id} currentStatus={sub.status ?? ''} currentPlanType={sub.plan_type as 'monthly' | 'annual' ?? 'monthly'} currentExpiresAt={sub.expires_at} />
                 </div>
               </div>
             ))

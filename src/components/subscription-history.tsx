@@ -30,8 +30,8 @@ export function SubscriptionHistorySection({ history }: SubscriptionHistoryProps
       </div>
 
       <ul className="divide-y divide-gray-50">
-        {history.map((item) => {
-          const isActive = isSubscriptionActive(item.ended_at)
+        {history.map((item, index) => {
+          const isActive = index === 0 && isSubscriptionActive(item.ended_at)
           const dotColor = isActive ? 'bg-green-500' : 'bg-gray-300'
           
           return (
