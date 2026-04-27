@@ -80,6 +80,12 @@ export function UserDetailModal({
                     {subscription.status}
                   </span>
                 </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-500">Paket</span>
+                  <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${subscription.plan_type === 'annual' ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-gray-500'}`}>
+                    {subscription.plan_type === 'annual' ? 'Tahunan' : 'Bulanan'}
+                  </span>
+                </div>
                 <div className="flex justify-between">
                   <span className="text-gray-500">Mulai</span>
                   <span className="font-medium text-gray-700">{subscription.started_at ? formatDate(subscription.started_at) : '-'}</span>

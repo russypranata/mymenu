@@ -63,7 +63,7 @@ export default async function AdminOverviewPage() {
 
       <div className="bg-white rounded-2xl border border-gray-100 px-5 py-4">
         <p className="text-xs text-gray-400">
-          Estimasi revenue dihitung dari {stats.activeSubscriptions} langganan aktif × Rp {SUBSCRIPTION_PRICE.toLocaleString('id-ID')} / bulan.
+          Estimasi revenue dihitung dari {stats.activeSubscriptions} langganan aktif × Rp {SUBSCRIPTION_PRICE.toLocaleString('id-ID')} / bulan (asumsi paket bulanan). Angka aktual bisa lebih tinggi jika ada pelanggan paket tahunan.
         </p>
       </div>
     </div>

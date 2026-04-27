@@ -9,7 +9,8 @@ import { ImageWithSkeleton } from '@/components/image-with-skeleton'
 type Subscription = Database['public']['Tables']['subscriptions']['Row']
 
 const ADMIN_WA = process.env.NEXT_PUBLIC_ADMIN_WHATSAPP || '62895338170582'
-const PAYMENT_AMOUNT = 'Rp20.000'
+const PAYMENT_AMOUNT_MONTHLY = 'Rp20.000'
+const PAYMENT_AMOUNT_ANNUAL = 'Rp200.000'
 const BANK_NAME = process.env.NEXT_PUBLIC_BANK_NAME || 'BCA'
 const BANK_ACCOUNT = process.env.NEXT_PUBLIC_BANK_ACCOUNT || ''
 const BANK_HOLDER = process.env.NEXT_PUBLIC_BANK_HOLDER || ''
@@ -23,9 +24,11 @@ function formatDate(dateStr: string) {
   })
 }
 
-function buildWaMessage(email: string) {
+function buildWaMessage(email: string, planType: 'monthly' | 'annual' = 'monthly') {
+  const amount = planType === 'annual' ? PAYMENT_AMOUNT_ANNUAL : PAYMENT_AMOUNT_MONTHLY
+  const paket = planType === 'annual' ? 'Tahunan' : 'Bulanan'
   return encodeURIComponent(
-    `Halo, saya ingin perpanjang langganan Menuly.\n\nEmail: ${email}\nNominal: ${PAYMENT_AMOUNT}\n\n[Lampirkan foto/screenshot bukti transfer di sini]`
+    `Halo, saya ingin perpanjang langganan Menuly.\n\nEmail: ${email}\nPaket: ${paket}\nNominal: ${amount}\n\n[Lampirkan foto/screenshot bukti transfer di sini]`
   )
 }
 
@@ -38,7 +41,10 @@ export function SubscriptionSection({ subscription, userEmail }: SubscriptionSec
   const [showModal, setShowModal] = useState(false)
   const [copied, setCopied] = useState(false)
 
-  const waUrl = `https://wa.me/${ADMIN_WA}?text=${buildWaMessage(userEmail)}`
+  const planType = (subscription?.plan_type as 'monthly' | 'annual') ?? 'monthly'
+  const paymentAmount = planType === 'annual' ? PAYMENT_AMOUNT_ANNUAL : PAYMENT_AMOUNT_MONTHLY
+  const planLabel = planType === 'annual' ? 'Tahunan' : 'Bulanan'
+  const waUrl = `https://wa.me/${ADMIN_WA}?text=${buildWaMessage(userEmail, planType)}`
 
   const status = subscription?.status ?? null
   const expiresAt = subscription?.expires_at ? new Date(subscription.expires_at) : null
@@ -94,7 +100,7 @@ export function SubscriptionSection({ subscription, userEmail }: SubscriptionSec
           <div className="space-y-2.5">
             <div className="flex items-center justify-between text-sm">
               <span className="text-gray-500">Paket</span>
-              <span className="font-semibold text-gray-900">Menuly — {PAYMENT_AMOUNT}/bulan</span>
+              <span className="font-semibold text-gray-900">Menuly — {paymentAmount}/{planType === 'annual' ? 'tahun' : 'bulan'} ({planLabel})</span>
             </div>
             {subscription?.started_at && (
               <div className="flex items-center justify-between text-sm">
@@ -179,7 +185,7 @@ export function SubscriptionSection({ subscription, userEmail }: SubscriptionSec
               {/* Nominal */}
               <div className="text-center">
                 <p className="text-xs text-gray-500 mb-1">Nominal pembayaran</p>
-                <p className="text-3xl font-extrabold text-gray-900">{PAYMENT_AMOUNT}<span className="text-base font-normal text-gray-400">/bulan</span></p>
+                <p className="text-3xl font-extrabold text-gray-900">{paymentAmount}<span className="text-base font-normal text-gray-400">/{planType === 'annual' ? 'tahun' : 'bulan'}</span></p>
               </div>
 
               {/* Step 1 */}
@@ -188,7 +194,7 @@ export function SubscriptionSection({ subscription, userEmail }: SubscriptionSec
 
                 {QRIS_IMAGE ? (
                   <div className="flex flex-col items-center bg-gray-50 rounded-xl p-4 gap-3">
-                <p className="text-xs text-gray-500 font-medium">Scan QRIS lalu masukkan nominal <span className="font-bold text-gray-800">Rp20.000</span></p>
+                <p className="text-xs text-gray-500 font-medium">Scan QRIS lalu masukkan nominal <span className="font-bold text-gray-800">{paymentAmount}</span></p>
                     <div className="bg-white rounded-xl p-2 border border-gray-200">
                       <div className="relative w-[200px] h-[200px]">
                         <ImageWithSkeleton src={QRIS_IMAGE} alt="QRIS Payment" fill sizes="200px" className="rounded-lg object-contain" />

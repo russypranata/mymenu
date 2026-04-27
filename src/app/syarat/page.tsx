@@ -31,7 +31,7 @@ export default function SyaratPage() {
           </section>
           <section>
             <h2 className="text-base font-bold text-gray-900 mb-2">Langganan</h2>
-            <p>Layanan tersedia dengan biaya Rp20.000/bulan setelah masa trial 3 hari. Pembayaran dilakukan secara manual melalui konfirmasi ke admin. Akun yang tidak diperpanjang akan dinonaktifkan setelah masa aktif berakhir.</p>
+            <p>Layanan tersedia dengan biaya Rp20.000/bulan atau Rp200.000/tahun setelah masa trial 3 hari. Pembayaran dilakukan secara manual melalui konfirmasi ke admin. Akun yang tidak diperpanjang akan dinonaktifkan setelah masa aktif berakhir.</p>
           </section>
           <section>
             <h2 className="text-base font-bold text-gray-900 mb-2">Penghentian Layanan</h2>
