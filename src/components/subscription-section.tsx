@@ -101,10 +101,19 @@ export function SubscriptionSection({ subscription, userEmail }: SubscriptionSec
         <div className="px-5 py-4 space-y-4">
           {/* Info rows */}
           <div className="space-y-2.5">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-gray-500">Paket</span>
-              <span className="font-semibold text-gray-900">Menuly — {paymentAmount}/{planType === 'annual' ? 'tahun' : 'bulan'} ({planLabel})</span>
-            </div>
+            {/* Only show plan info if subscription was actually paid (active status) */}
+            {isActive && (
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-500">Paket</span>
+                <span className="font-semibold text-gray-900">Menuly — {paymentAmount}/{planType === 'annual' ? 'tahun' : 'bulan'} ({planLabel})</span>
+              </div>
+            )}
+            {isTrial && (
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-500">Paket</span>
+                <span className="font-semibold text-gray-900">Trial Gratis 3 Hari</span>
+              </div>
+            )}
             {subscription?.started_at && (
               <div className="flex items-center justify-between text-sm">
                 <span className="text-gray-500">Mulai</span>
