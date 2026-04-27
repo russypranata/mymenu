@@ -40,11 +40,14 @@ interface SubscriptionSectionProps {
 export function SubscriptionSection({ subscription, userEmail }: SubscriptionSectionProps) {
   const [showModal, setShowModal] = useState(false)
   const [copied, setCopied] = useState(false)
+  const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'annual'>(
+    (subscription?.plan_type as 'monthly' | 'annual') ?? 'monthly'
+  )
 
   const planType = (subscription?.plan_type as 'monthly' | 'annual') ?? 'monthly'
-  const paymentAmount = planType === 'annual' ? PAYMENT_AMOUNT_ANNUAL : PAYMENT_AMOUNT_MONTHLY
+  const paymentAmount = selectedPlan === 'annual' ? PAYMENT_AMOUNT_ANNUAL : PAYMENT_AMOUNT_MONTHLY
   const planLabel = planType === 'annual' ? 'Tahunan' : 'Bulanan'
-  const waUrl = `https://wa.me/${ADMIN_WA}?text=${buildWaMessage(userEmail, planType)}`
+  const waUrl = `https://wa.me/${ADMIN_WA}?text=${buildWaMessage(userEmail, selectedPlan)}`
 
   const status = subscription?.status ?? null
   const expiresAt = subscription?.expires_at ? new Date(subscription.expires_at) : null
@@ -182,10 +185,43 @@ export function SubscriptionSection({ subscription, userEmail }: SubscriptionSec
             {/* Modal Body */}
             <div className="px-6 py-5 space-y-5">
 
+              {/* Plan selector */}
+              <div>
+                <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Pilih Paket</p>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={() => setSelectedPlan('monthly')}
+                    className={`py-2.5 px-3 rounded-xl text-sm font-semibold border-2 transition-all ${
+                      selectedPlan === 'monthly'
+                        ? 'border-green-500 bg-green-50 text-green-700'
+                        : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
+                    }`}
+                  >
+                    Bulanan
+                    <span className="block text-xs font-normal mt-0.5">{PAYMENT_AMOUNT_MONTHLY}/bln</span>
+                  </button>
+                  <button
+                    onClick={() => setSelectedPlan('annual')}
+                    className={`py-2.5 px-3 rounded-xl text-sm font-semibold border-2 transition-all relative ${
+                      selectedPlan === 'annual'
+                        ? 'border-green-500 bg-green-50 text-green-700'
+                        : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
+                    }`}
+                  >
+                    Tahunan
+                    <span className="block text-xs font-normal mt-0.5">{PAYMENT_AMOUNT_ANNUAL}/thn</span>
+                    <span className="absolute -top-2 -right-1 text-[9px] bg-green-500 text-white px-1.5 py-0.5 rounded-full font-bold">Hemat</span>
+                  </button>
+                </div>
+              </div>
+
               {/* Nominal */}
               <div className="text-center">
                 <p className="text-xs text-gray-500 mb-1">Nominal pembayaran</p>
-                <p className="text-3xl font-extrabold text-gray-900">{paymentAmount}<span className="text-base font-normal text-gray-400">/{planType === 'annual' ? 'tahun' : 'bulan'}</span></p>
+                <p className="text-3xl font-extrabold text-gray-900">{paymentAmount}<span className="text-base font-normal text-gray-400">/{selectedPlan === 'annual' ? 'tahun' : 'bulan'}</span></p>
+                {selectedPlan === 'annual' && (
+                  <p className="text-xs text-green-600 mt-1 font-medium">Hemat Rp40.000 dibanding bayar bulanan</p>
+                )}
               </div>
 
               {/* Step 1 */}
@@ -194,8 +230,7 @@ export function SubscriptionSection({ subscription, userEmail }: SubscriptionSec
 
                 {QRIS_IMAGE ? (
                   <div className="flex flex-col items-center bg-gray-50 rounded-xl p-4 gap-3">
-                <p className="text-xs text-gray-500 font-medium">Scan QRIS lalu masukkan nominal <span className="font-bold text-gray-800">{paymentAmount}</span></p>
-                    <div className="bg-white rounded-xl p-2 border border-gray-200">
+                <p className="text-xs text-gray-500 font-medium">Scan QRIS lalu masukkan nominal <span className="font-bold text-gray-800">{paymentAmount}</span></p>                    <div className="bg-white rounded-xl p-2 border border-gray-200">
                       <div className="relative w-[200px] h-[200px]">
                         <ImageWithSkeleton src={QRIS_IMAGE} alt="QRIS Payment" fill sizes="200px" className="rounded-lg object-contain" />
                       </div>

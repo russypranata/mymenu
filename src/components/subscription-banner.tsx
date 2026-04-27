@@ -34,7 +34,7 @@ export function SubscriptionBanner({
           <div className="flex items-center gap-2 mb-0.5">
             <p className="text-sm font-bold text-green-900">
               Trial aktif
-              {daysUntilExpiry !== null && ` — ${daysUntilExpiry} hari tersisa`}
+              {daysUntilExpiry !== null && daysUntilExpiry > 0 && ` — ${daysUntilExpiry} hari tersisa`}
             </p>
             <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${planBadgeClass}`}>
               {planLabel}
@@ -60,7 +60,7 @@ export function SubscriptionBanner({
           <div className="flex items-center gap-2 mb-0.5">
             <p className="text-sm font-bold text-green-900">
               Langganan aktif
-              {daysUntilExpiry !== null && ` — ${daysUntilExpiry} hari tersisa`}
+              {daysUntilExpiry !== null && daysUntilExpiry > 0 && ` — ${daysUntilExpiry} hari tersisa`}
             </p>
             <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${planBadgeClass}`}>
               {planLabel}
