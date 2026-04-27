@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import type { Database } from '@/types/database.types'
-import { ClipboardList, UserCircle2, Zap } from 'lucide-react'
+import { ClipboardList, UserCircle2 } from 'lucide-react'
 import { LogoutButton } from '@/components/logout-button'
 import { NavLink } from '@/components/nav-link'
 import { MenuNavLink } from '@/components/menu-nav-link'
@@ -43,7 +43,6 @@ export default async function DashboardLayout({
   const navStores = stores.map(s => ({ id: s.id, name: s.name }))
   const displayName = getDisplayName(profile ?? { display_name: null, email: user.email || '' })
   const avatarUrl = profile?.avatar_url ?? null
-  const hasValidSub = isSubscriptionValid(subscription)
 
   const expiresAt = subscription?.expires_at ? new Date(subscription.expires_at) : null
   const daysUntilExpiry = expiresAt
@@ -107,22 +106,6 @@ export default async function DashboardLayout({
 
         {/* Logout */}
         <div className="p-3 border-t border-gray-100 flex-shrink-0">
-          {!hasValidSub && (
-            <a
-              href={`https://wa.me/${process.env.NEXT_PUBLIC_ADMIN_WHATSAPP || '62895338170582'}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mx-1 mb-2 px-3 py-2.5 bg-amber-50 border border-amber-100 rounded-xl flex items-center gap-2.5 hover:bg-amber-100 transition-colors"
-            >
-              <Zap className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" />
-              <div>
-                <p className="text-xs font-semibold text-amber-700 leading-tight">
-                  {subscription?.status === 'expired' ? 'Langganan berakhir' : 'Belum berlangganan'}
-                </p>
-                <p className="text-[10px] text-amber-500 leading-tight mt-0.5">Tap untuk perpanjang →</p>
-              </div>
-            </a>
-          )}
           <LogoutButton />
         </div>
       </aside>
