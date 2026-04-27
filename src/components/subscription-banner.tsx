@@ -1,3 +1,5 @@
+'use client'
+
 import { Zap, AlertCircle, CreditCard } from 'lucide-react'
 import { formatDate } from '@/lib/utils'
 
@@ -8,6 +10,7 @@ interface SubscriptionBannerProps {
   expiresAt: string | null
   daysUntilExpiry: number | null
   gracePeriodDaysLeft?: number | null
+  onRenewClick?: () => void
 }
 
 export function SubscriptionBanner({
@@ -17,6 +20,7 @@ export function SubscriptionBanner({
   expiresAt,
   daysUntilExpiry,
   gracePeriodDaysLeft,
+  onRenewClick,
 }: SubscriptionBannerProps) {
   const resolvedPlanType = planType === 'annual' ? 'annual' : 'monthly'
   const planLabel = resolvedPlanType === 'annual' ? 'Paket Tahunan' : 'Paket Bulanan'
@@ -88,32 +92,30 @@ export function SubscriptionBanner({
     : 'Perpanjang sekarang untuk akses kembali.'
 
   return (
-    <div className="bg-red-50 border border-red-200 rounded-2xl px-5 py-4 flex items-start gap-3.5">
-      <div className="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
-        <AlertCircle className="w-5 h-5 text-red-500" />
-      </div>
-      <div className="flex-1 min-w-0">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <div>
-            <p className="text-sm font-bold text-red-900">{expiredTitle}</p>
-            {expiresAt && (
-              <p className="text-xs text-red-600 mt-0.5">
-                Berakhir {formatDate(expiresAt)}. {gracePeriodText}
-              </p>
-            )}
-            {inGracePeriod && (
-              <p className="text-xs text-red-700 font-semibold mt-1">
-                ⚠️ Masa tenggang 3 hari — perpanjang sekarang!
-              </p>
-            )}
-          </div>
-          <a
-            href="/profile"
-            className="flex-shrink-0 inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
+    <div className="bg-red-50 border border-red-200 rounded-2xl px-4 sm:px-5 py-4">
+      <div className="flex flex-col sm:flex-row items-start gap-3">
+        <div className="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0">
+          <AlertCircle className="w-5 h-5 text-red-500" />
+        </div>
+        <div className="flex-1 min-w-0 w-full">
+          <p className="text-sm font-bold text-red-900">{expiredTitle}</p>
+          {expiresAt && (
+            <p className="text-xs text-red-600 mt-0.5">
+              Berakhir {formatDate(expiresAt)}. {gracePeriodText}
+            </p>
+          )}
+          {inGracePeriod && (
+            <p className="text-xs text-red-700 font-semibold mt-1.5">
+              ⚠️ Masa tenggang 3 hari — perpanjang sekarang!
+            </p>
+          )}
+          <button
+            onClick={onRenewClick}
+            className="mt-3 w-full sm:w-auto inline-flex items-center justify-center gap-1.5 text-xs font-semibold px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
           >
             <CreditCard className="w-3.5 h-3.5" />
             Perpanjang
-          </a>
+          </button>
         </div>
       </div>
     </div>

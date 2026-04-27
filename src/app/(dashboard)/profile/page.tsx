@@ -7,7 +7,7 @@ import { PhoneForm } from '@/components/phone-form'
 import { EmailForm } from '@/components/email-form'
 import { PasswordForm } from '@/components/password-form'
 import { DeleteAccountSection } from '@/components/delete-account-section'
-import { SubscriptionSection } from '@/components/subscription-section'
+import { SubscriptionSectionWrapper } from '@/components/subscription-section-wrapper'
 import { SubscriptionHistorySection } from '@/components/subscription-history'
 import { UserCircle } from 'lucide-react'
 import type { Database } from '@/types/database.types'
@@ -60,7 +60,7 @@ export default async function ProfilePage() {
       {/* Section: Langganan */}
       <section className="space-y-4">
         <SectionLabel>Langganan</SectionLabel>
-        <SubscriptionSection subscription={subscription} userEmail={userEmail} />
+        <SubscriptionSectionWrapper subscription={subscription} userEmail={userEmail} />
         <SubscriptionHistorySection history={subscriptionHistory} />
       </section>
 

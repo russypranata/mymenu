@@ -34,10 +34,11 @@ function buildWaMessage(email: string, planType: 'monthly' | 'annual' = 'monthly
 interface SubscriptionSectionProps {
   subscription: Subscription | null
   userEmail: string
+  initialModalOpen?: boolean
 }
 
-export function SubscriptionSection({ subscription, userEmail }: SubscriptionSectionProps) {
-  const [showModal, setShowModal] = useState(false)
+export function SubscriptionSection({ subscription, userEmail, initialModalOpen = false }: SubscriptionSectionProps) {
+  const [showModal, setShowModal] = useState(initialModalOpen)
   const [copied, setCopied] = useState(false)
   const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'annual'>(
     (subscription?.plan_type as 'monthly' | 'annual') ?? 'monthly'

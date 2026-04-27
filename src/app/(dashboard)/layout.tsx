@@ -11,7 +11,7 @@ import { Breadcrumb } from '@/components/breadcrumb'
 import { getDisplayName } from '@/lib/profile-helpers'
 import { getSubscription, isSubscriptionValid } from '@/lib/queries/dashboard'
 import { getStoresByUser } from '@/lib/queries/store'
-import { SubscriptionBanner } from '@/components/subscription-banner'
+import { SubscriptionBannerWrapper } from '@/components/subscription-banner-wrapper'
 
 export default async function DashboardLayout({
   children,
@@ -176,7 +176,7 @@ export default async function DashboardLayout({
         <main className="flex-1 p-4 md:p-8 pb-24 md:pb-8">
           {subscription && (subscription.status === 'trial' || subscription.status === 'active' || subscription.status === 'expired') && (
             <div className="mb-6">
-              <SubscriptionBanner
+              <SubscriptionBannerWrapper
                 status={subscription.status as 'trial' | 'active' | 'expired'}
                 planType={(subscription.plan_type as 'monthly' | 'annual') ?? 'monthly'}
                 origin={(subscription.origin as 'trial' | 'paid') ?? 'trial'}
