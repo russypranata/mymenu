@@ -5,12 +5,11 @@ import { useState } from 'react'
 import { CreditCard, Copy, Check, MessageCircle, X, CheckCircle2, Clock, AlertTriangle, Zap } from 'lucide-react'
 import type { Database } from '@/types/database.types'
 import { ImageWithSkeleton } from '@/components/image-with-skeleton'
+import { getPlanAmount, getPlanDuration, getPlanLabel } from '@/lib/subscription-helpers'
 
 type Subscription = Database['public']['Tables']['subscriptions']['Row']
 
 const ADMIN_WA = process.env.NEXT_PUBLIC_ADMIN_WHATSAPP || '62895338170582'
-const PAYMENT_AMOUNT_MONTHLY = 'Rp20.000'
-const PAYMENT_AMOUNT_ANNUAL = 'Rp200.000'
 const BANK_NAME = process.env.NEXT_PUBLIC_BANK_NAME || 'BCA'
 const BANK_ACCOUNT = process.env.NEXT_PUBLIC_BANK_ACCOUNT || ''
 const BANK_HOLDER = process.env.NEXT_PUBLIC_BANK_HOLDER || ''
@@ -25,7 +24,7 @@ function formatDate(dateStr: string) {
 }
 
 function buildWaMessage(email: string, planType: 'monthly' | 'annual' = 'monthly') {
-  const amount = planType === 'annual' ? PAYMENT_AMOUNT_ANNUAL : PAYMENT_AMOUNT_MONTHLY
+  const amount = getPlanAmount(planType)
   const paket = planType === 'annual' ? 'Tahunan' : 'Bulanan'
   return encodeURIComponent(
     `Halo, saya ingin perpanjang langganan Menuly.\n\nEmail: ${email}\nPaket: ${paket}\nNominal: ${amount}\n\n[Lampirkan foto/screenshot bukti transfer di sini]`
@@ -45,8 +44,11 @@ export function SubscriptionSection({ subscription, userEmail }: SubscriptionSec
   )
 
   const planType = (subscription?.plan_type as 'monthly' | 'annual') ?? 'monthly'
-  const paymentAmount = selectedPlan === 'annual' ? PAYMENT_AMOUNT_ANNUAL : PAYMENT_AMOUNT_MONTHLY
-  const planLabel = planType === 'annual' ? 'Tahunan' : 'Bulanan'
+  const origin = (subscription?.origin as 'trial' | 'paid') ?? 'trial'
+  const planLabel = getPlanLabel(planType, origin)
+  const currentAmount = getPlanAmount(planType)
+  const currentDuration = getPlanDuration(planType)
+  const selectedAmount = getPlanAmount(selectedPlan)
   const waUrl = `https://wa.me/${ADMIN_WA}?text=${buildWaMessage(userEmail, selectedPlan)}`
 
   const status = subscription?.status ?? null
@@ -60,6 +62,7 @@ export function SubscriptionSection({ subscription, userEmail }: SubscriptionSec
   const isExpiringSoon = daysLeft !== null && daysLeft <= 3 && daysLeft >= 0
   const isExpired = status === 'expired' || (daysLeft !== null && daysLeft <= 0)
   const hasNoSub = !subscription
+  const isExpiredFromTrial = isExpired && origin !== 'paid'
 
   function copyAccount() {
     if (!BANK_ACCOUNT) return
@@ -69,8 +72,14 @@ export function SubscriptionSection({ subscription, userEmail }: SubscriptionSec
   }
 
   // Status badge config
-  const statusConfig = hasNoSub || isExpired
-    ? { label: 'Tidak aktif', color: 'bg-red-50 text-red-600 border-red-100', icon: <AlertTriangle className="w-3.5 h-3.5" /> }
+  const statusConfig = hasNoSub
+    ? { label: 'Belum berlangganan', color: 'bg-gray-50 text-gray-500 border-gray-100', icon: <AlertTriangle className="w-3.5 h-3.5" /> }
+    : isExpired
+    ? {
+        label: isExpiredFromTrial ? 'Trial berakhir' : 'Langganan berakhir',
+        color: 'bg-red-50 text-red-600 border-red-100',
+        icon: <AlertTriangle className="w-3.5 h-3.5" />
+      }
     : isTrial
     ? { label: 'Trial', color: 'bg-amber-50 text-amber-600 border-amber-100', icon: <Clock className="w-3.5 h-3.5" /> }
     : isActive
@@ -105,7 +114,7 @@ export function SubscriptionSection({ subscription, userEmail }: SubscriptionSec
             {isActive && (
               <div className="flex items-center justify-between text-sm">
                 <span className="text-gray-500">Paket</span>
-                <span className="font-semibold text-gray-900">Menuly — {paymentAmount}/{planType === 'annual' ? 'tahun' : 'bulan'} ({planLabel})</span>
+                <span className="font-semibold text-gray-900">Menuly — {currentAmount}{currentDuration} ({planLabel})</span>
               </div>
             )}
             {isTrial && (
@@ -168,15 +177,15 @@ export function SubscriptionSection({ subscription, userEmail }: SubscriptionSec
       {/* Payment Modal */}
       {showModal && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm overflow-y-auto"
           onClick={() => setShowModal(false)}
         >
           <div
-            className="bg-white rounded-2xl border border-gray-100 w-full max-w-sm shadow-xl"
+            className="bg-white rounded-2xl border border-gray-100 w-full max-w-sm shadow-xl my-8"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 sticky top-0 bg-white rounded-t-2xl z-10">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 bg-green-50 rounded-xl flex items-center justify-center flex-shrink-0">
                   <CreditCard className="w-5 h-5 text-green-500" />
@@ -192,7 +201,7 @@ export function SubscriptionSection({ subscription, userEmail }: SubscriptionSec
             </div>
 
             {/* Modal Body */}
-            <div className="px-6 py-5 space-y-5">
+            <div className="px-6 py-5 space-y-5 max-h-[calc(100vh-12rem)] overflow-y-auto">
 
               {/* Plan selector */}
               <div>
@@ -207,7 +216,7 @@ export function SubscriptionSection({ subscription, userEmail }: SubscriptionSec
                     }`}
                   >
                     Bulanan
-                    <span className="block text-xs font-normal mt-0.5">{PAYMENT_AMOUNT_MONTHLY}/bln</span>
+                    <span className="block text-xs font-normal mt-0.5">{getPlanAmount('monthly')}/bln</span>
                   </button>
                   <button
                     onClick={() => setSelectedPlan('annual')}
@@ -218,7 +227,7 @@ export function SubscriptionSection({ subscription, userEmail }: SubscriptionSec
                     }`}
                   >
                     Tahunan
-                    <span className="block text-xs font-normal mt-0.5">{PAYMENT_AMOUNT_ANNUAL}/thn</span>
+                    <span className="block text-xs font-normal mt-0.5">{getPlanAmount('annual')}/thn</span>
                     <span className="absolute -top-2 -right-1 text-[9px] bg-green-500 text-white px-1.5 py-0.5 rounded-full font-bold">Hemat</span>
                   </button>
                 </div>
@@ -227,7 +236,7 @@ export function SubscriptionSection({ subscription, userEmail }: SubscriptionSec
               {/* Nominal */}
               <div className="text-center">
                 <p className="text-xs text-gray-500 mb-1">Nominal pembayaran</p>
-                <p className="text-3xl font-extrabold text-gray-900">{paymentAmount}<span className="text-base font-normal text-gray-400">/{selectedPlan === 'annual' ? 'tahun' : 'bulan'}</span></p>
+                <p className="text-3xl font-extrabold text-gray-900">{selectedAmount}<span className="text-base font-normal text-gray-400">{getPlanDuration(selectedPlan)}</span></p>
                 {selectedPlan === 'annual' && (
                   <p className="text-xs text-green-600 mt-1 font-medium">Hemat Rp40.000 dibanding bayar bulanan</p>
                 )}
@@ -239,7 +248,7 @@ export function SubscriptionSection({ subscription, userEmail }: SubscriptionSec
 
                 {QRIS_IMAGE ? (
                   <div className="flex flex-col items-center bg-gray-50 rounded-xl p-4 gap-3">
-                <p className="text-xs text-gray-500 font-medium">Scan QRIS lalu masukkan nominal <span className="font-bold text-gray-800">{paymentAmount}</span></p>                    <div className="bg-white rounded-xl p-2 border border-gray-200">
+                <p className="text-xs text-gray-500 font-medium">Scan QRIS lalu masukkan nominal <span className="font-bold text-gray-800">{selectedAmount}</span></p>                    <div className="bg-white rounded-xl p-2 border border-gray-200">
                       <div className="relative w-[200px] h-[200px]">
                         <ImageWithSkeleton src={QRIS_IMAGE} alt="QRIS Payment" fill sizes="200px" className="rounded-lg object-contain" />
                       </div>

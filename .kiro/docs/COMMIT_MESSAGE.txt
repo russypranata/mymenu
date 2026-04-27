@@ -1,0 +1,74 @@
+fix: correct subscription history display for trial subscriptions
+
+## Problem
+Trial subscriptions were incorrectly displaying as "Paket Bulanan" 
+(Monthly Package) in the subscription history, when they should 
+display as "Trial Gratis" (Free Trial).
+
+## Root Cause
+1. Migration 029 backfill logic checked `status` instead of `origin`
+2. Components checked `plan_type` without considering `origin` field
+3. No centralized helper functions for subscription display logic
+
+## Solution
+
+### Database Layer
+- Updated migration 029 backfill to check `origin` field
+- Created migration 030 to fix existing trial records
+- Set `plan_type = 'trial'` for all `origin = 'trial'` records
+
+### Application Layer
+- Created `src/lib/subscription-helpers.ts` with centralized functions:
+  - getPlanLabel(planType, origin)
+  - getPlanBadgeClass(planType, origin)
+  - getPlanAmount(planType)
+  - getPlanDuration(planType)
+  - getDaysUntilExpiry(expiresAt)
+  - isSubscriptionActive(expiresAt)
+- Updated components to use helper functions:
+  - subscription-history.tsx
+  - subscription-section.tsx
+- Added active/expired status indicators
+
+### Documentation
+- Created comprehensive system documentation
+- Added production fix script
+- Created unit tests for helper functions
+- Added before/after comparison guide
+
+## Changes
+
+### Added
+- src/lib/subscription-helpers.ts (helper functions)
+- src/lib/__tests__/subscription-helpers.test.ts (unit tests)
+- supabase/migrations/030_fix_subscription_history_trial.sql
+- .kiro/docs/SUBSCRIPTION_SYSTEM.md (full documentation)
+- .kiro/docs/FIX_SUBSCRIPTION_HISTORY.sql (production fix)
+- .kiro/docs/BEFORE_AFTER_COMPARISON.md (visual guide)
+- .kiro/docs/SUBSCRIPTION_FIX_SUMMARY.md (change summary)
+- .kiro/docs/README.md (documentation index)
+
+### Modified
+- src/components/subscription-history.tsx (use helpers)
+- src/components/subscription-section.tsx (use helpers)
+- supabase/migrations/029_subscription_history.sql (fix backfill)
+- CHANGELOG.md (document changes)
+
+## Testing
+- ✅ TypeScript type checking passes
+- ✅ No linting errors
+- ✅ Unit tests created for helper functions
+- ✅ Manual testing completed
+
+## Deployment
+1. Deploy code changes
+2. Run .kiro/docs/FIX_SUBSCRIPTION_HISTORY.sql in production
+3. Verify subscription history displays correctly
+
+## Impact
+- User experience: Clear and accurate subscription display
+- Code quality: Centralized, testable, maintainable
+- Data integrity: Consistent database records
+- Documentation: Comprehensive guides for future development
+
+Fixes #[issue-number] (if applicable)

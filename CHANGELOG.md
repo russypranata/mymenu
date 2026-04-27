@@ -20,11 +20,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Rate limiting utility
 - Deployment guide
 - Security policy
+- Subscription helper functions library (`src/lib/subscription-helpers.ts`)
+- Subscription system documentation (`.kiro/docs/SUBSCRIPTION_SYSTEM.md`)
+- Unit tests for subscription helpers
+- Manual fix script for existing trial records (`.kiro/docs/FIX_SUBSCRIPTION_HISTORY.sql`)
+- **Subscription enforcement with 3-day grace period** (`isSubscriptionExpiredWithGrace` function)
+- **Subscription expired page** (`/subscription-expired`) with clear call-to-action
+- **Grace period warning** in subscription banner for expired users
 
 ### Changed
 - Updated package.json with new scripts
 - Enhanced error handling in API routes
 - Improved code organization
+
+### Fixed
+- **Subscription History Display**: Trial subscriptions now correctly show "Trial Gratis" badge instead of "Paket Bulanan"
+- **Badge Logic**: Subscription badges now properly check `origin` field first before `plan_type`
+- **Data Consistency**: Migration 029 backfill logic updated to set `plan_type = 'trial'` for trial origin records
+- **Component Refactoring**: Centralized subscription display logic into reusable helper functions
+- **Active Status Indicator**: Subscription history now shows green dot for active periods, gray for expired
+- **Subscription Section Display Bug**: Fixed variable naming issue where current subscription info was incorrectly using modal state (`selectedPlan`) instead of actual subscription data (`planType`)
+- **Subscription Enforcement**: Implemented hard block with 3-day grace period for expired subscriptions to protect revenue and enforce payment
+- **Grace Period Calculation**: Fixed grace period days calculation to use start of day for consistent countdown (prevents time-of-day discrepancies)
+- **Payment Modal Scroll**: Fixed payment modal overflow issue - modal now scrollable on small screens and content no longer cut off
 
 ### Security
 - Added rate limiting to analytics API

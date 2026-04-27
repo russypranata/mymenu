@@ -8,10 +8,11 @@ import { EmailForm } from '@/components/email-form'
 import { PasswordForm } from '@/components/password-form'
 import { DeleteAccountSection } from '@/components/delete-account-section'
 import { SubscriptionSection } from '@/components/subscription-section'
+import { SubscriptionHistorySection } from '@/components/subscription-history'
 import { UserCircle } from 'lucide-react'
 import type { Database } from '@/types/database.types'
 import type { Metadata } from 'next'
-import { getSubscription } from '@/lib/queries/dashboard'
+import { getSubscription, getSubscriptionHistory } from '@/lib/queries/dashboard'
 
 export const metadata: Metadata = {
   title: 'Pengaturan Akun — Menuly',
@@ -26,6 +27,8 @@ export default async function ProfilePage() {
     supabase.from('profiles').select('*').eq('id', user.id).maybeSingle(),
     getSubscription(user.id),
   ])
+
+  const subscriptionHistory = await getSubscriptionHistory(user.id)
 
   const profile = profileResult.data as Database['public']['Tables']['profiles']['Row'] | null
   const displayName = getDisplayName(profile ?? { display_name: null, email: user.email ?? '' })
@@ -58,6 +61,7 @@ export default async function ProfilePage() {
       <section className="space-y-4">
         <SectionLabel>Langganan</SectionLabel>
         <SubscriptionSection subscription={subscription} userEmail={userEmail} />
+        <SubscriptionHistorySection history={subscriptionHistory} />
       </section>
 
       {/* Section: Keamanan */}

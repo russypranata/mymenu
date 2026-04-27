@@ -56,9 +56,20 @@ export async function createTrialSubscription(
     started_at: today.toISOString(),
     expires_at: expiresAt.toISOString(),
     plan_type: 'monthly',
+    origin: 'trial',
   })
 
   if (error) return { error: error.message }
+
+  // Insert history record
+  await supabase.from('subscription_history').insert({
+    user_id: userId,
+    plan_type: 'trial',
+    origin: 'trial',
+    started_at: today.toISOString(),
+    ended_at: expiresAt.toISOString(),
+    note: 'Trial 3 hari dibuat oleh admin',
+  })
 
   revalidatePath('/admin/subscriptions')
   return { error: null }
@@ -84,10 +95,29 @@ export async function updateSubscription(
 
   const { error } = await supabase
     .from('subscriptions')
-    .update(data)
+    .update({
+      ...data,
+      // When activating, mark as paid origin
+      ...(data.status === 'active' && { origin: 'paid' }),
+    })
     .eq('id', subscriptionId)
 
   if (error) return { error: error.message }
+
+  // Insert history record when activating subscription
+  if (data.status === 'active' && sub) {
+    const finalPlanType = data.plan_type ?? (sub.plan_type as string) ?? 'monthly'
+    const startedAt = new Date().toISOString()
+    const endedAt = data.expires_at ?? null
+    await supabase.from('subscription_history').insert({
+      user_id: sub.user_id,
+      plan_type: finalPlanType,
+      origin: 'paid',
+      started_at: startedAt,
+      ended_at: endedAt,
+      note: `Diaktifkan oleh admin (${finalPlanType === 'annual' ? 'Tahunan' : 'Bulanan'})`,
+    })
+  }
 
   // Send WA notification if activating subscription
   if (sub && (data.status === 'active' || data.status === 'trial')) {
@@ -192,10 +222,21 @@ export async function extendSubscription(
 
   const { error } = await supabase
     .from('subscriptions')
-    .update({ expires_at: baseDate.toISOString(), status: 'active' })
+    .update({ expires_at: baseDate.toISOString(), status: 'active', origin: 'paid' })
     .eq('id', subscriptionId)
 
   if (error) return { error: error.message }
+
+  // Insert history record for this extension
+  const planType = (subscription.plan_type as string) ?? 'monthly'
+  await supabase.from('subscription_history').insert({
+    user_id: subscription.user_id,
+    plan_type: planType,
+    origin: 'paid',
+    started_at: new Date().toISOString(),
+    ended_at: baseDate.toISOString(),
+    note: `Diperpanjang ${days} hari oleh admin (${planType === 'annual' ? 'Tahunan' : 'Bulanan'})`,
+  })
 
   // Send WA notification
   const { data: profile } = await supabase

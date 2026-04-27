@@ -4,6 +4,9 @@ import type { Database } from '@/types/database.types'
 
 type Profile = Database['public']['Tables']['profiles']['Row']
 type Subscription = Database['public']['Tables']['subscriptions']['Row']
+type SubscriptionHistory = Database['public']['Tables']['subscription_history']['Row']
+
+export type { SubscriptionHistory }
 
 export async function getProfile(userId: string): Promise<Profile | null> {
   const supabase = await createClient()
@@ -76,6 +79,36 @@ export function isSubscriptionValid(subscription: Subscription | null): boolean 
   return new Date(subscription.expires_at) > new Date()
 }
 
+/**
+ * Returns true if subscription is expired AND grace period has ended.
+ * Grace period: 3 days after expiration.
+ * Used for hard blocking access to dashboard.
+ * 
+ * @param subscription - User's subscription record
+ * @returns true if user should be blocked from dashboard
+ */
+export function isSubscriptionExpiredWithGrace(subscription: Subscription | null): boolean {
+  // No subscription = block
+  if (!subscription) return true
+  
+  // Active or trial = don't block
+  if (subscription.status === 'active' || subscription.status === 'trial') return false
+  
+  // Not expired status = don't block
+  if (subscription.status !== 'expired') return false
+  
+  // No expiry date = don't block (shouldn't happen but safety check)
+  if (!subscription.expires_at) return false
+  
+  // Calculate grace period end (3 days after expiration)
+  const expiresAt = new Date(subscription.expires_at)
+  const gracePeriodEnd = new Date(expiresAt)
+  gracePeriodEnd.setDate(gracePeriodEnd.getDate() + 3) // 3 days grace period
+  
+  // Block if current date is after grace period
+  return new Date() > gracePeriodEnd
+}
+
 export interface DailyAnalytics {
   date: string
   page_views: number
@@ -127,4 +160,19 @@ export async function getDailyAnalytics(
   }
 
   return Object.entries(map).map(([date, counts]) => ({ date, ...counts }))
+}
+
+export async function getSubscriptionHistory(userId: string): Promise<SubscriptionHistory[]> {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('subscription_history')
+    .select('*')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false })
+    .limit(20)
+  if (error) {
+    logger.error('[getSubscriptionHistory]', error, { userId })
+    return []
+  }
+  return (data as SubscriptionHistory[]) ?? []
 }

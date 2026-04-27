@@ -32,6 +32,12 @@ export default async function DashboardLayout({
   const profile = (profileResult.data as Database['public']['Tables']['profiles']['Row'] | null)
   if (profile?.status === 'suspended') redirect('/suspended')
 
+  // Subscription enforcement — block expired users after grace period
+  const { isSubscriptionExpiredWithGrace } = await import('@/lib/queries/dashboard')
+  if (isSubscriptionExpiredWithGrace(subscription)) {
+    redirect('/subscription-expired')
+  }
+
   // Onboarding guard — redirect if phone not filled yet
   if (!profile?.phone) redirect('/onboarding')
   const navStores = stores.map(s => ({ id: s.id, name: s.name }))
@@ -42,6 +48,19 @@ export default async function DashboardLayout({
   const expiresAt = subscription?.expires_at ? new Date(subscription.expires_at) : null
   const daysUntilExpiry = expiresAt
     ? Math.ceil((expiresAt.getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+    : null
+
+  // Calculate grace period days left (3 days after expiration)
+  // Use start of day for consistent calculation
+  const gracePeriodDaysLeft = expiresAt && subscription?.status === 'expired'
+    ? (() => {
+        const today = new Date()
+        today.setHours(0, 0, 0, 0)
+        const expiry = new Date(expiresAt)
+        expiry.setHours(0, 0, 0, 0)
+        const daysSinceExpiry = Math.floor((today.getTime() - expiry.getTime()) / (1000 * 60 * 60 * 24))
+        return Math.max(0, 3 - daysSinceExpiry)
+      })()
     : null
 
   const navItemsTop = [
@@ -160,8 +179,10 @@ export default async function DashboardLayout({
               <SubscriptionBanner
                 status={subscription.status as 'trial' | 'active' | 'expired'}
                 planType={(subscription.plan_type as 'monthly' | 'annual') ?? 'monthly'}
+                origin={(subscription.origin as 'trial' | 'paid') ?? 'trial'}
                 expiresAt={subscription.expires_at ?? null}
                 daysUntilExpiry={daysUntilExpiry}
+                gracePeriodDaysLeft={gracePeriodDaysLeft}
               />
             </div>
           )}
