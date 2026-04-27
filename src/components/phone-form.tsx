@@ -40,7 +40,7 @@ export function PhoneForm({ phone }: Props) {
       <form onSubmit={handleSubmit} noValidate className="bg-white rounded-2xl border border-gray-100 p-6 space-y-5">
         <div>
           <h2 className="text-base font-bold text-gray-900">Nomor WhatsApp</h2>
-          <p className="text-sm text-gray-500 mt-0.5">Digunakan untuk notifikasi dan fitur order via WhatsApp.</p>
+          <p className="text-sm text-gray-500 mt-0.5">Untuk komunikasi dengan admin Menuly terkait langganan, support, dan update fitur.</p>
         </div>
 
         {error && (

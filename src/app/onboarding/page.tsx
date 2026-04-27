@@ -114,7 +114,7 @@ export default function OnboardingPage() {
                   className="w-full pl-10 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-400 disabled:opacity-60 transition-all"
                 />
               </div>
-              <p className="text-xs text-gray-400 mt-1.5">Digunakan untuk notifikasi dan fitur order via WhatsApp</p>
+              <p className="text-xs text-gray-400 mt-1.5">Untuk komunikasi dengan admin Menuly terkait langganan, support, dan update fitur.</p>
             </div>
 
             <button

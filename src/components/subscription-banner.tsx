@@ -93,30 +93,37 @@ export function SubscriptionBanner({
 
   return (
     <div className="bg-red-50 border border-red-200 rounded-2xl px-4 sm:px-5 py-4">
-      <div className="flex flex-col sm:flex-row items-start gap-3">
+      {/* Icon + Title + First Description - Always horizontal */}
+      <div className="flex items-start gap-3">
         <div className="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0">
           <AlertCircle className="w-5 h-5 text-red-500" />
         </div>
-        <div className="flex-1 min-w-0 w-full">
+        <div className="flex-1 min-w-0">
           <p className="text-sm font-bold text-red-900">{expiredTitle}</p>
           {expiresAt && (
             <p className="text-xs text-red-600 mt-0.5">
               Berakhir {formatDate(expiresAt)}. {gracePeriodText}
             </p>
           )}
-          {inGracePeriod && (
-            <p className="text-xs text-red-700 font-semibold mt-1.5">
-              ⚠️ Masa tenggang 3 hari — perpanjang sekarang!
-            </p>
-          )}
-          <button
-            onClick={onRenewClick}
-            className="mt-3 w-full sm:w-auto inline-flex items-center justify-center gap-1.5 text-xs font-semibold px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
-          >
-            <CreditCard className="w-3.5 h-3.5" />
-            Perpanjang
-          </button>
         </div>
+      </div>
+      
+      {/* Grace period warning + Button - Stacked below */}
+      {inGracePeriod && (
+        <div className="mt-3 ml-0 sm:ml-[52px]">
+          <p className="text-xs text-red-700 font-semibold">
+            ⚠️ Masa tenggang 3 hari — perpanjang sekarang!
+          </p>
+        </div>
+      )}
+      <div className="mt-3 ml-0 sm:ml-[52px]">
+        <button
+          onClick={onRenewClick}
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 text-xs font-semibold px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
+        >
+          <CreditCard className="w-3.5 h-3.5" />
+          Perpanjang
+        </button>
       </div>
     </div>
   )

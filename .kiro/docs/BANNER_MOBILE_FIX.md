@@ -17,31 +17,91 @@
 ### 2. Button Behavior Fix
 **Problem**: Button "Perpanjang" di banner links to `/profile` but should open modal directly
 
-**Solution**:
-- Created `SubscriptionSectionWrapper` client component to detect URL hash `#renew`
-- When banner button is clicked, navigates to `/profile#renew`
-- Profile page wrapper detects hash and automatically opens the subscription modal
-- Hash is cleaned up after detection for clean URL
-- Modal opens with correct plan selection
-
-**Files Created**:
-- `src/components/subscription-section-wrapper.tsx`
+**Solution**: 
+- Used **sessionStorage** approach for reliable cross-page communication
+- Banner sets `openSubscriptionModal` flag in sessionStorage when button clicked
+- Navigates to `/profile` page
+- Profile page wrapper checks sessionStorage on mount and opens modal
+- Flag is cleared after reading to prevent re-opening on refresh
+- Works reliably on first click
 
 **Files Modified**:
-- `src/components/subscription-section.tsx` - Added `initialModalOpen` prop
-- `src/app/(dashboard)/profile/page.tsx` - Uses wrapper component
-- `src/components/subscription-banner-wrapper.tsx` - Already existed, no changes needed
+- `src/components/subscription-banner-wrapper.tsx` - Dispatches custom event
+- `src/components/subscription-section-wrapper.tsx` - Listens for event and opens modal
+- `src/components/subscription-section.tsx` - Added `initialModalOpen` prop with useEffect
 
 ## How It Works
 
 ### Flow:
 1. User sees expired/trial banner in dashboard
 2. User clicks "Perpanjang" button
-3. Banner wrapper navigates to `/profile#renew`
-4. Profile page loads
-5. `SubscriptionSectionWrapper` detects `#renew` hash
-6. Modal opens automatically
-7. Hash is removed from URL for clean state
+3. Banner wrapper sets `openSubscriptionModal=true` in sessionStorage
+4. Banner wrapper navigates to `/profile`
+5. Profile page loads
+6. `SubscriptionSectionWrapper` checks sessionStorage on mount
+7. Finds flag, sets `shouldOpenModal` to `true`
+8. Modal opens via `initialModalOpen` prop
+9. Flag is cleared from sessionStorage
+10. State resets after 500ms to allow re-triggering
+
+### Technical Implementation:
+
+**Banner Wrapper** (`subscription-banner-wrapper.tsx`):
+```typescript
+const handleRenewClick = () => {
+  // Set flag in sessionStorage to open modal after navigation
+  sessionStorage.setItem('openSubscriptionModal', 'true')
+  // Navigate to profile page
+  router.push('/profile')
+}
+```
+
+**Section Wrapper** (`subscription-section-wrapper.tsx`):
+```typescript
+useEffect(() => {
+  // Check sessionStorage flag on mount
+  const shouldOpen = sessionStorage.getItem('openSubscriptionModal')
+  if (shouldOpen === 'true') {
+    // Clear the flag
+    sessionStorage.removeItem('openSubscriptionModal')
+    // Open modal
+    setShouldOpenModal(true)
+    // Reset state after opening
+    setTimeout(() => setShouldOpenModal(false), 500)
+  }
+}, [])
+```
+
+**Subscription Section** (`subscription-section.tsx`):
+```typescript
+// Update modal state when initialModalOpen changes
+useEffect(() => {
+  if (initialModalOpen) {
+    setShowModal(true)
+  }
+}, [initialModalOpen])
+```
+
+### Why sessionStorage?
+
+**Advantages over Custom Events**:
+1. ✅ Persists across navigation - event listener doesn't need to be mounted first
+2. ✅ Works reliably on first click - no timing issues
+3. ✅ Simple to implement and debug
+4. ✅ Automatically cleared when tab closes
+5. ✅ No race conditions with component mounting
+
+**Advantages over Hash approach**:
+1. ✅ No URL manipulation needed
+2. ✅ Cleaner URLs
+3. ✅ No hash cleanup required
+4. ✅ More predictable behavior
+
+**Advantages over Context API**:
+1. ✅ Simpler implementation
+2. ✅ No need to wrap entire app in provider
+3. ✅ Works across page navigations
+4. ✅ Less boilerplate code
 
 ### Mobile Layout:
 - **Mobile (< 640px)**: Icon and content stacked vertically, button full-width below text
@@ -52,37 +112,26 @@
 - [ ] Banner displays correctly on mobile (stacked layout)
 - [ ] Banner displays correctly on desktop (side-by-side layout)
 - [ ] "Perpanjang" button opens modal when clicked from banner
-- [ ] Modal opens with correct plan selection
-- [ ] URL is clean after modal opens (no hash visible)
-- [ ] Modal can be closed and reopened normally
+- [ ] Modal opens immediately without delay
+- [ ] Works when user is on dashboard page
+- [ ] Works when user is already on profile page
+- [ ] Modal can be closed and button clicked again
 - [ ] Works for both trial and paid subscription expiry
-
-## Technical Details
-
-### State Management:
-- Banner uses callback prop `onRenewClick` to trigger navigation
-- Profile page uses `useEffect` to detect hash on mount
-- Modal state is controlled by `initialModalOpen` prop
-- Hash is cleaned up using `window.history.replaceState`
-
-### Responsive Classes:
-- `flex-col sm:flex-row` - Stack on mobile, row on desktop
-- `w-full sm:w-auto` - Full width on mobile, auto on desktop
-- `px-4 sm:px-5` - Smaller padding on mobile
-- `gap-3` - Consistent spacing between elements
 
 ## Related Files
 
 - `src/components/subscription-banner.tsx` - Banner display component
-- `src/components/subscription-banner-wrapper.tsx` - Banner navigation wrapper
+- `src/components/subscription-banner-wrapper.tsx` - Banner with event dispatch
 - `src/components/subscription-section.tsx` - Subscription card with modal
-- `src/components/subscription-section-wrapper.tsx` - Profile page wrapper for hash detection
+- `src/components/subscription-section-wrapper.tsx` - Profile page wrapper with event listener
 - `src/app/(dashboard)/profile/page.tsx` - Profile page
 - `src/app/(dashboard)/layout.tsx` - Dashboard layout with banner
 
 ## Notes
 
-- This approach uses URL hash for state communication between components
-- Alternative approaches considered: Context API, URL params, direct modal state lifting
-- Hash approach chosen for simplicity and clean separation of concerns
-- Works seamlessly with Next.js App Router and server components
+- sessionStorage is a standard browser API, well-supported
+- Data persists only for the current tab session
+- Automatically cleared when tab is closed
+- Flag is removed after reading to prevent re-opening on page refresh
+- State resets after 500ms to allow re-triggering the modal
+- Works reliably on first click without timing issues

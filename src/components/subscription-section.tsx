@@ -98,7 +98,7 @@ export function SubscriptionSection({ subscription, userEmail, initialModalOpen 
     <>
       <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
         {/* Header */}
-        <div className="px-5 py-4 border-b border-gray-50 flex items-center justify-between">
+        <div className="px-5 py-4 border-b border-gray-50">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 bg-green-50 rounded-xl flex items-center justify-center flex-shrink-0">
               <CreditCard className="w-4 h-4 text-green-500" />
@@ -108,29 +108,32 @@ export function SubscriptionSection({ subscription, userEmail, initialModalOpen 
               <p className="text-xs text-gray-400 mt-0.5">Status dan informasi pembayaran</p>
             </div>
           </div>
-          <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full border ${statusConfig.color}`}>
-            {statusConfig.icon}
-            {statusConfig.label}
-          </span>
         </div>
 
         {/* Body */}
         <div className="px-5 py-4 space-y-4">
           {/* Info rows */}
           <div className="space-y-2.5">
-            {/* Only show plan info if subscription was actually paid (active status) */}
-            {isActive && (
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Paket</span>
-                <span className="font-semibold text-gray-900">Menuly — {currentAmount}{currentDuration} ({planLabel})</span>
-              </div>
-            )}
-            {isTrial && (
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Paket</span>
-                <span className="font-semibold text-gray-900">Trial Gratis 3 Hari</span>
-              </div>
-            )}
+            {/* Status badge as first row */}
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-gray-500">Status</span>
+              <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full border ${statusConfig.color}`}>
+                {statusConfig.icon}
+                {statusConfig.label}
+              </span>
+            </div>
+
+            {/* Paket info - show for all states */}
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-gray-500">Paket</span>
+              <span className="font-semibold text-gray-900">
+                {isTrial && 'Trial Gratis 3 Hari'}
+                {isActive && `${planLabel}`}
+                {isExpired && !hasNoSub && (isExpiredFromTrial ? 'Trial Gratis 3 Hari' : planLabel)}
+                {hasNoSub && '-'}
+              </span>
+            </div>
+
             {subscription?.started_at && (
               <div className="flex items-center justify-between text-sm">
                 <span className="text-gray-500">Mulai</span>

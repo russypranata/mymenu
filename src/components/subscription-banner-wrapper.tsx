@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { SubscriptionBanner } from './subscription-banner'
 
@@ -17,8 +16,10 @@ export function SubscriptionBannerWrapper(props: SubscriptionBannerWrapperProps)
   const router = useRouter()
 
   const handleRenewClick = () => {
-    // Navigate to profile page with hash to trigger modal
-    router.push('/profile#renew')
+    // Set flag in sessionStorage to open modal after navigation
+    sessionStorage.setItem('openSubscriptionModal', 'true')
+    // Navigate to profile page
+    router.push('/profile')
   }
 
   return <SubscriptionBanner {...props} onRenewClick={handleRenewClick} />
