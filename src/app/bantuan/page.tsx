@@ -67,7 +67,7 @@ export default function BantuanPage() {
             Hubungi admin langsung via WhatsApp untuk pertanyaan langganan atau masalah teknis.
           </p>
           <a
-            href="https://wa.me/62895338170582"
+            href={`https://wa.me/${process.env.NEXT_PUBLIC_ADMIN_WHATSAPP || '62895338170582'}`}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-4 py-2.5 bg-green-500 text-white text-sm font-semibold rounded-xl hover:bg-green-600 transition-colors"
