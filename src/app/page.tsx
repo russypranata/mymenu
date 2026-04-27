@@ -170,7 +170,7 @@ export default function Home() {
                       className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-500"
                       strokeWidth={2.5}
                     />
-                    <span>Rp20.000/bulan</span>
+                    <span>Mulai Rp20.000/bulan</span>
                   </div>
                 </div>
               </div>
@@ -664,11 +664,11 @@ export default function Home() {
               {[
                 {
                   q: "Apakah benar gratis 3 hari?",
-                  a: "Ya! Anda bisa coba semua fitur Menuly gratis selama 3 hari. Tidak perlu kartu kredit untuk daftar. Setelah trial berakhir, Anda bisa lanjut berlangganan Rp20.000/bulan atau berhenti tanpa biaya apapun.",
+                  a: "Ya! Anda bisa coba semua fitur Menuly gratis selama 3 hari. Tidak perlu kartu kredit untuk daftar. Setelah trial berakhir, Anda bisa lanjut berlangganan Rp20.000/bulan atau Rp200.000/tahun (hemat 2 bulan), atau berhenti tanpa biaya apapun.",
                 },
                 {
                   q: "Bagaimana cara pembayaran setelah trial?",
-                  a: "Setelah trial 3 hari, Anda bisa bayar via transfer bank, OVO, DANA, atau e-wallet lainnya. Hubungi admin via WhatsApp untuk mendapatkan instruksi pembayaran. Pembayaran per bulan, tanpa kontrak jangka panjang.",
+                  a: "Setelah trial 3 hari, Anda bisa bayar via transfer bank, OVO, DANA, atau e-wallet lainnya. Hubungi admin via WhatsApp untuk mendapatkan instruksi pembayaran. Tersedia paket bulanan (Rp20.000/bulan) dan paket tahunan (Rp200.000/tahun, hemat 2 bulan).",
                 },
                 {
                   q: "Bisakah saya punya lebih dari 1 toko?",
@@ -692,7 +692,7 @@ export default function Home() {
                 },
                 {
                   q: "Apakah ada biaya tambahan?",
-                  a: "Tidak ada biaya tersembunyi. Rp20.000/bulan sudah termasuk semua fitur: unlimited menu, foto, QR code, custom tema, dan support. Tidak ada biaya setup atau biaya transaksi.",
+                  a: "Tidak ada biaya tersembunyi. Rp20.000/bulan (atau Rp200.000/tahun) sudah termasuk semua fitur: unlimited menu, foto, QR code, custom tema, dan support. Tidak ada biaya setup atau biaya transaksi.",
                 },
               ].map((item, i) => (
                 <details key={i} className="group bg-gray-50 rounded-xl sm:rounded-2xl border border-gray-100 overflow-hidden hover:border-green-200 transition-all">

@@ -155,12 +155,14 @@ export default async function DashboardLayout({
 
         {/* Page content */}
         <main className="flex-1 p-4 md:p-8 pb-24 md:pb-8">
-          <SubscriptionBanner
-            status={(subscription?.status as 'trial' | 'active' | 'expired') ?? 'expired'}
-            planType={(subscription?.plan_type as 'monthly' | 'annual') ?? 'monthly'}
-            expiresAt={subscription?.expires_at ?? null}
-            daysUntilExpiry={daysUntilExpiry}
-          />
+          {subscription && (subscription.status === 'trial' || subscription.status === 'active' || subscription.status === 'expired') && (
+            <SubscriptionBanner
+              status={subscription.status as 'trial' | 'active' | 'expired'}
+              planType={(subscription.plan_type as 'monthly' | 'annual') ?? 'monthly'}
+              expiresAt={subscription.expires_at ?? null}
+              daysUntilExpiry={daysUntilExpiry}
+            />
+          )}
           {children}
         </main>
 

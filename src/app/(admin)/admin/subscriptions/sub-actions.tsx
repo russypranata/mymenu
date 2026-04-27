@@ -61,6 +61,15 @@ export function SubActions({
   async function handleExtend(days: number) {
     setLoading(true)
     setError(null)
+    // If plan_type was changed in the dropdown, save it first before extending
+    if (planType !== (currentPlanType ?? 'monthly')) {
+      const updateResult = await updateSubscription(subscriptionId, { plan_type: planType })
+      if (updateResult.error) {
+        setError(updateResult.error)
+        setLoading(false)
+        return
+      }
+    }
     const result = await extendSubscription(subscriptionId, days)
     if (result.error) setError(result.error)
     else setOpen(false)
