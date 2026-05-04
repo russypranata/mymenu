@@ -69,7 +69,7 @@ export default async function StoreMenuPage({
           </Link>
           <Link
             href={`/store/${store.id}/menu/new`}
-            className="flex items-center gap-2 px-4 py-2.5 bg-green-500 text-white text-sm font-semibold rounded-xl hover:bg-green-600 transition-colors shadow-sm"
+            className="flex items-center gap-2 px-4 py-2.5 bg-green-500 text-white text-sm font-semibold rounded-xl hover:bg-green-600 transition-colors"
           >
             <Plus className="w-4 h-4" />
             <span>Tambah Menu</span>

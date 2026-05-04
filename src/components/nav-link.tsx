@@ -33,12 +33,13 @@ export function NavLink({ href, label, mobile }: NavLinkProps) {
       <Link
         href={href}
         className={cn(
-          'flex flex-col items-center gap-1 px-3 py-2 text-[10px] font-semibold rounded-xl transition-colors min-w-0',
+          // min-h-[44px] ensures WCAG 2.5 touch target minimum
+          'flex flex-col items-center justify-center gap-0.5 px-3 py-2 min-h-[44px] text-[10px] font-semibold rounded-xl transition-colors min-w-0 flex-1',
           isActive ? 'text-green-500' : 'text-gray-400 hover:text-gray-600'
         )}
       >
-        <Icon className={cn('w-5 h-5', isActive ? 'text-green-500' : 'text-gray-400')} />
-        <span className="truncate">{label}</span>
+        <Icon className={cn('w-5 h-5 flex-shrink-0', isActive ? 'text-green-500' : 'text-gray-400')} />
+        <span className="truncate leading-tight">{label}</span>
       </Link>
     )
   }

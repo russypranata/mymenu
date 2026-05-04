@@ -6,10 +6,9 @@ import { useTheme } from './theme-provider'
 interface DarkModeToggleProps {
   storeId: string
   enabled: boolean
-  primaryColor: string
 }
 
-export function DarkModeToggle({ storeId, enabled, primaryColor }: DarkModeToggleProps) {
+export function DarkModeToggle({ storeId, enabled }: DarkModeToggleProps) {
   const { isDark, setIsDark } = useTheme()
   const storageKey = `dark-mode-${storeId}`
 
@@ -17,19 +16,18 @@ export function DarkModeToggle({ storeId, enabled, primaryColor }: DarkModeToggl
     const newValue = !isDark
     setIsDark(newValue)
     localStorage.setItem(storageKey, String(newValue))
-    
-    // Dispatch custom event for other components to listen
     window.dispatchEvent(new CustomEvent('darkModeChange', { detail: { isDark: newValue } }))
   }
 
   if (!enabled) return null
 
   return (
+    // Kiri bawah — tidak pernah overlap dengan cart (kanan) atau scroll-to-top (kanan)
     <button
       onClick={toggle}
-      className="fixed bottom-24 right-4 sm:right-6 z-40 w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 active:scale-95"
-      style={{ backgroundColor: isDark ? '#1f2937' : primaryColor }}
-      aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+      className="fixed bottom-6 left-4 sm:left-6 z-40 w-11 h-11 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95"
+      style={{ backgroundColor: isDark ? '#1f2937' : 'var(--color-primary)' }}
+      aria-label={isDark ? 'Aktifkan mode terang' : 'Aktifkan mode gelap'}
       title={isDark ? 'Mode Terang' : 'Mode Gelap'}
     >
       {isDark ? (

@@ -13,20 +13,17 @@ import { ThemeProvider } from '@/components/theme-provider'
 import { PublicMenuWrapper } from '@/components/public-menu-wrapper'
 import { DarkModeToggle } from '@/components/dark-mode-toggle'
 import { PublicMenuContent } from '@/components/public-menu-content'
+import { ScrollToTop } from '@/components/scroll-to-top'
+import { ShareButton } from '@/components/share-button'
+import {
+  getFontClass,
+  getTextSizeClass,
+  getBorderRadiusClass,
+  getBackgroundPattern,
+} from '@/lib/utils'
 
+// ISR: revalidate every 60 seconds. Remove force-dynamic to allow caching.
 export const revalidate = 60
-export const dynamic = 'force-dynamic'
-
-// Disable static generation for this page since it requires Supabase at build time
-// export async function generateStaticParams() {
-//   const { createClient } = await import('@supabase/supabase-js')
-//   const supabase = createClient(
-//     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-//     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-//   )
-//   const { data } = await supabase.from('stores').select('slug')
-//   return (data ?? []).map(({ slug }: { slug: string }) => ({ slug }))
-// }
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -71,73 +68,58 @@ export default async function PublicMenuPage({ params }: PageProps) {
     getStoreLocations(store.id),
   ])
 
-  const primaryColor = store.store_settings?.primary_color ?? '#16a34a'
-  const accentColor = store.store_settings?.accent_color ?? '#10b981'
-  const theme = store.store_settings?.theme ?? 'default'
-  const font = store.store_settings?.font ?? 'sans'
-  const menuLayout = store.store_settings?.menu_layout ?? 'list'
-  const showPrice = store.store_settings?.show_price ?? true
-  const darkModeEnabled = store.store_settings?.dark_mode_enabled ?? false
-  const borderRadius = store.store_settings?.border_radius ?? 'rounded'
-  const cardStyle = store.store_settings?.card_style ?? 'card'
-  const textSize = store.store_settings?.text_size ?? 'md'
-  const backgroundPattern = store.store_settings?.background_pattern ?? 'none'
-  const menuSectionTitle = store.menu_section_title
+  const settings = store.store_settings
+
+  const primaryColor    = settings?.primary_color      ?? '#16a34a'
+  const accentColor     = settings?.accent_color       ?? '#10b981'
+  const theme           = settings?.theme              ?? 'default'
+  const menuLayout      = settings?.menu_layout        ?? 'list'
+  const showPrice       = settings?.show_price         ?? true
+  const darkModeEnabled = settings?.dark_mode_enabled  ?? false
+  const cardStyle       = settings?.card_style         ?? 'card'
+
+  // Derive classes from utility maps — single source of truth
+  const fontClass              = getFontClass(settings?.font              ?? 'sans')
+  const textSizeClass          = getTextSizeClass(settings?.text_size     ?? 'md')
+  const borderRadiusClass      = getBorderRadiusClass(settings?.border_radius ?? 'rounded')
+  const backgroundPattern = getBackgroundPattern(settings?.background_pattern ?? 'none')
+
+  const menuSectionTitle    = store.menu_section_title
   const menuSectionSubtitle = store.menu_section_subtitle
-  
+
   // Only enable ordering if both setting is ON and WhatsApp is filled
-  const enableOrdering = (store.store_settings?.enable_ordering ?? true) && !!store.whatsapp
+  const enableOrdering = (settings?.enable_ordering ?? true) && !!store.whatsapp
+
+  // 'dark' theme means default to dark mode
   const defaultIsDark = theme === 'dark'
 
-  const fontClass =
-    font === 'poppins'  ? 'font-poppins' :
-    font === 'playfair' ? 'font-playfair' :
-    font === 'space'    ? 'font-space' :
-    font === 'nunito'   ? 'font-nunito' :
-    font === 'dm'       ? 'font-dm' :
-    font === 'serif'    ? 'font-serif' :
-    font === 'mono'     ? 'font-mono' :
-    'font-sans'
-
-  const textSizeClass =
-    textSize === 'sm' ? 'text-sm' :
-    textSize === 'lg' ? 'text-lg' :
-    'text-base'
-
-  const borderRadiusClass =
-    borderRadius === 'sharp' ? 'rounded-none' :
-    borderRadius === 'pill' ? 'rounded-full' :
-    'rounded-xl'
-
-  const backgroundPatternStyle =
-    backgroundPattern === 'dots' ? 'bg-[radial-gradient(circle,rgba(148,163,184,0.15)_1px,transparent_1px)] [background-size:20px_20px]' :
-    backgroundPattern === 'grid' ? 'bg-[linear-gradient(rgba(148,163,184,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.08)_1px,transparent_1px)] [background-size:24px_24px]' :
-    backgroundPattern === 'waves' ? `[background-image:repeating-linear-gradient(45deg,transparent,transparent_10px,rgba(148,163,184,0.03)_10px,rgba(148,163,184,0.03)_20px)]` :
-    ''
-
   return (
-    <ThemeProvider storeId={store.id} defaultDark={defaultIsDark} darkModeEnabled={darkModeEnabled}>
+    <ThemeProvider
+      storeId={store.id}
+      defaultDark={defaultIsDark}
+      darkModeEnabled={darkModeEnabled}
+      primaryColor={primaryColor}
+      accentColor={accentColor}
+    >
       <CartProvider storeId={store.id}>
-        <PublicMenuWrapper 
-          fontClass={fontClass} 
+        <PublicMenuWrapper
+          fontClass={fontClass}
           textSizeClass={textSizeClass}
-          backgroundPattern={backgroundPatternStyle}
+          backgroundPattern={backgroundPattern}
         >
           <PageViewTracker storeId={store.id} />
 
           {/* ── Navbar ── */}
           <PublicNavbar
             storeName={store.name}
-            logoUrl={store.store_settings?.logo_url}
-            primaryColor={primaryColor}
+            logoUrl={settings?.logo_url}
           />
 
           {/* ── Hero & Menu Content ── */}
           <PublicMenuContent
             storeName={store.name}
             storeDescription={store.description}
-            bannerUrl={store.store_settings?.banner_url ?? null}
-            primaryColor={primaryColor}
+            bannerUrl={settings?.banner_url ?? null}
             menuSectionTitle={menuSectionTitle}
             menuSectionSubtitle={menuSectionSubtitle}
           >
@@ -147,8 +129,6 @@ export default async function PublicMenuPage({ params }: PageProps) {
               menuLayout={menuLayout}
               showPrice={showPrice}
               enableOrdering={enableOrdering}
-              primaryColor={primaryColor}
-              accentColor={accentColor}
               storeId={store.id}
               borderRadius={borderRadiusClass}
               cardStyle={cardStyle}
@@ -157,32 +137,26 @@ export default async function PublicMenuPage({ params }: PageProps) {
 
           {/* ── Dark Mode Toggle ── */}
           {darkModeEnabled && (
-            <DarkModeToggle
-              storeId={store.id}
-              enabled={darkModeEnabled}
-              primaryColor={primaryColor}
-            />
+            <DarkModeToggle storeId={store.id} enabled={darkModeEnabled} />
           )}
 
-          {/* ── WhatsApp floating ── */}
+          {/* ── Scroll to Top ── */}
+          <ScrollToTop />
+
+          {/* ── WhatsApp floating cart ── */}
           {enableOrdering && (
             <PublicMenuCart
               storeId={store.id}
               storeName={store.name}
               locations={locations}
               storeWhatsapp={store.whatsapp}
-              primaryColor={primaryColor}
-              buttonText={store.store_settings?.whatsapp_button_text}
+              buttonText={settings?.whatsapp_button_text}
               showPrice={showPrice}
             />
           )}
 
           {/* ── Footer ── */}
-          <PublicMenuFooter
-            store={store}
-            locations={locations}
-            primaryColor={primaryColor}
-          />
+          <PublicMenuFooter store={store} locations={locations} />
         </PublicMenuWrapper>
       </CartProvider>
     </ThemeProvider>

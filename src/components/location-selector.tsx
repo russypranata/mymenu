@@ -8,12 +8,11 @@ type StoreLocation = Tables<'store_locations'>
 
 interface LocationSelectorProps {
   locations: StoreLocation[]
-  primaryColor: string
   isDark: boolean
   onLocationChange: (location: StoreLocation) => void
 }
 
-export function LocationSelector({ locations, primaryColor, isDark, onLocationChange }: LocationSelectorProps) {
+export function LocationSelector({ locations, isDark, onLocationChange }: LocationSelectorProps) {
   const [selectedLocation, setSelectedLocation] = useState<StoreLocation>(
     locations.find(loc => loc.is_primary) || locations[0]
   )
@@ -25,10 +24,7 @@ export function LocationSelector({ locations, primaryColor, isDark, onLocationCh
     setIsOpen(false)
   }
 
-  // If only one location, don't show dropdown
-  if (locations.length <= 1) {
-    return null
-  }
+  if (locations.length <= 1) return null
 
   return (
     <div className="relative">
@@ -40,40 +36,31 @@ export function LocationSelector({ locations, primaryColor, isDark, onLocationCh
             : 'bg-white border-gray-200 hover:border-gray-300 text-gray-900'
         }`}
       >
-        <MapPin className="w-4 h-4 flex-shrink-0" style={{ color: primaryColor }} />
+        <MapPin className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--color-primary)' }} />
         <span className="text-sm font-medium">{selectedLocation.name}</span>
         <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (
         <>
-          <div
-            className="fixed inset-0 z-40"
-            onClick={() => setIsOpen(false)}
-          />
+          <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
           <div
             className={`absolute top-full left-0 right-0 mt-2 py-2 rounded-lg border shadow-lg z-50 ${
-              isDark
-                ? 'bg-slate-800 border-slate-700'
-                : 'bg-white border-gray-200'
+              isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-200'
             }`}
           >
-            {locations.map((location) => (
+            {locations.map(location => (
               <button
                 key={location.id}
                 onClick={() => handleSelect(location)}
                 className={`w-full px-4 py-2.5 text-left text-sm transition-colors ${
                   selectedLocation.id === location.id
-                    ? isDark
-                      ? 'bg-slate-700 text-white'
-                      : 'bg-gray-50 text-gray-900'
-                    : isDark
-                    ? 'text-slate-300 hover:bg-slate-700'
-                    : 'text-gray-700 hover:bg-gray-50'
+                    ? isDark ? 'bg-slate-700 text-white' : 'bg-gray-50 text-gray-900'
+                    : isDark ? 'text-slate-300 hover:bg-slate-700' : 'text-gray-700 hover:bg-gray-50'
                 }`}
               >
                 <div className="flex items-center gap-2">
-                  <MapPin className="w-3.5 h-3.5 flex-shrink-0" style={{ color: primaryColor }} />
+                  <MapPin className="w-3.5 h-3.5 flex-shrink-0" style={{ color: 'var(--color-primary)' }} />
                   <span className="font-medium">{location.name}</span>
                   {location.is_primary && (
                     <span className="text-xs text-gray-500">(Utama)</span>

@@ -42,7 +42,7 @@ export default async function StorePage() {
         {stores.length === 0 && (
           <Link
             href="/store/new"
-            className="flex items-center gap-2 px-4 py-2.5 bg-green-500 text-white text-sm font-semibold rounded-xl hover:bg-green-600 transition-colors shadow-sm"
+            className="flex items-center gap-2 px-4 py-2.5 bg-green-500 text-white text-sm font-semibold rounded-xl hover:bg-green-600 transition-colors"
           >
             <Store className="w-4 h-4" />
             <span className="hidden sm:inline">Buat Toko</span>
@@ -92,7 +92,7 @@ export default async function StorePage() {
                   </div>
                 </div>
                 {/* Actions */}
-                <div className="flex items-center gap-1 flex-shrink-0 pl-10 sm:pl-0">
+                <div className="flex items-center gap-1 flex-shrink-0 sm:pl-0 ml-auto sm:ml-0">
                   <Link
                     href={`/${store.slug}`}
                     target="_blank"

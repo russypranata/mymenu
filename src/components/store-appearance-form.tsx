@@ -1,6 +1,6 @@
 ﻿'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import { Palette, ImageIcon, AlertCircle, Save, X, Clock, LayoutList, LayoutGrid, Type } from 'lucide-react'
 import { Spinner } from '@/components/spinner'
@@ -30,6 +30,16 @@ function OpeningHoursPicker({ value, onChange }: { value: string; onChange: (v: 
   const [open, setOpen] = useState(parsed.open)
   const [close, setClose] = useState(parsed.close)
   const [enabled, setEnabled] = useState(!!value)
+
+  // Sync internal state when external value changes (e.g. form reset)
+  useEffect(() => {
+    const p = parseOpeningHours(value)
+    setEnabled(!!value)
+    if (value) {
+      setOpen(p.open)
+      setClose(p.close)
+    }
+  }, [value])
 
   function update(newOpen: string, newClose: string, isEnabled: boolean) {
     if (!isEnabled) { onChange(''); return }
@@ -91,13 +101,11 @@ const THEMES = [
 const BORDER_RADIUS_OPTIONS = [
   { value: 'sharp', label: 'Sharp', preview: 'rounded-none', desc: 'Sudut tajam' },
   { value: 'rounded', label: 'Rounded', preview: 'rounded-xl', desc: 'Sudut melengkung' },
-  { value: 'pill', label: 'Pill', preview: 'rounded-full', desc: 'Sangat melengkung' },
 ]
 
 const CARD_STYLE_OPTIONS = [
   { value: 'minimal', label: 'Minimal', desc: 'Tanpa border, flat' },
   { value: 'card', label: 'Card', desc: 'Dengan border & shadow ringan' },
-  { value: 'elevated', label: 'Elevated', desc: 'Shadow tebal, menonjol' },
 ]
 
 const TEXT_SIZE_OPTIONS = [
@@ -388,7 +396,7 @@ export function StoreAppearanceForm({ storeId, storeName, storeSlug, storeDescri
       {/* Border radius */}
       <div>
         <p className="text-sm font-semibold text-gray-700 mb-2">Gaya Sudut</p>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 gap-3">
           {BORDER_RADIUS_OPTIONS.map(opt => (
             <button key={opt.value} type="button" onClick={() => setBorderRadius(opt.value)}
               className={`flex flex-col items-center gap-2 p-4 rounded-xl border transition-all ${
@@ -407,7 +415,7 @@ export function StoreAppearanceForm({ storeId, storeName, storeSlug, storeDescri
       {/* Card style */}
       <div>
         <p className="text-sm font-semibold text-gray-700 mb-2">Gaya Kartu Menu</p>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 gap-3">
           {CARD_STYLE_OPTIONS.map(opt => (
             <button key={opt.value} type="button" onClick={() => setCardStyle(opt.value)}
               className={`flex flex-col items-center gap-2 p-4 rounded-xl border transition-all ${

@@ -52,7 +52,7 @@ export default async function DashboardPage() {
         {!stores.length && (
           <Link
             href="/store/new"
-            className="flex items-center gap-2 px-4 py-2.5 bg-green-500 text-white text-sm font-semibold rounded-xl hover:bg-green-600 transition-colors shadow-sm"
+            className="flex items-center gap-2 px-4 py-2.5 bg-green-500 text-white text-sm font-semibold rounded-xl hover:bg-green-600 transition-colors"
           >
             <Store className="w-4 h-4" />
             Buat Toko

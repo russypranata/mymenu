@@ -28,12 +28,12 @@ export function OpenBadge({ openingHours }: Props) {
   if (isOpen === null) return null
 
   return isOpen ? (
-    <span className="inline-flex items-center gap-1 text-[10px] sm:text-xs font-bold tracking-wide text-white bg-green-500 px-2.5 py-1 rounded-lg flex-shrink-0 shadow">
+    <span className="inline-flex items-center gap-1 text-[10px] sm:text-xs font-bold tracking-wide text-white bg-green-500 px-2.5 py-1 rounded-lg flex-shrink-0">
       <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse inline-block" />
       BUKA
     </span>
   ) : (
-    <span className="inline-flex items-center gap-1 text-[10px] sm:text-xs font-bold tracking-wide text-white bg-red-500 px-2.5 py-1 rounded-lg flex-shrink-0 shadow">
+    <span className="inline-flex items-center gap-1 text-[10px] sm:text-xs font-bold tracking-wide text-white bg-red-500 px-2.5 py-1 rounded-lg flex-shrink-0">
       <span className="w-1.5 h-1.5 rounded-full bg-white/70 inline-block" />
       TUTUP
     </span>

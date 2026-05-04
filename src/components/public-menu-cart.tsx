@@ -10,7 +10,6 @@ interface PublicMenuCartProps {
   storeName: string
   locations: StoreLocation[]
   storeWhatsapp: string | null
-  primaryColor: string
   buttonText: string | null | undefined
   showPrice: boolean
 }
@@ -20,21 +19,16 @@ export function PublicMenuCart({
   storeName,
   locations,
   storeWhatsapp,
-  primaryColor,
   buttonText,
   showPrice,
 }: PublicMenuCartProps) {
-  // Use store WhatsApp for all orders (locations are info only)
-  const whatsapp = storeWhatsapp
-
-  if (!whatsapp) return null
+  if (!storeWhatsapp) return null
 
   return (
     <CartDrawer
-      whatsapp={whatsapp}
+      whatsapp={storeWhatsapp}
       storeId={storeId}
       storeName={storeName}
-      primaryColor={primaryColor}
       buttonText={buttonText}
       showPrice={showPrice}
     />

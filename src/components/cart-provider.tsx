@@ -25,31 +25,6 @@ const CartContext = createContext<CartContextValue | null>(null)
 
 const STORAGE_KEY = 'mymenu_cart'
 
-function loadFromStorage(): CartItem[] {
-  if (typeof window === 'undefined') return []
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    if (!raw) return []
-    const parsed = JSON.parse(raw)
-    if (!Array.isArray(parsed)) return []
-    return parsed
-  } catch {
-    return []
-  }
-}
-
-function saveToStorage(items: CartItem[]) {
-  try {
-    if (items.length === 0) {
-      localStorage.removeItem(STORAGE_KEY)
-    } else {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(items))
-    }
-  } catch {
-    // storage quota exceeded or private mode — ignore
-  }
-}
-
 export function CartProvider({ children, storeId }: { children: ReactNode; storeId?: string }) {
   const [items, setItems] = useState<CartItem[]>([])
   const [hydrated, setHydrated] = useState(false)

@@ -44,7 +44,7 @@ export function StorePreviewButton({ storeSlug }: StorePreviewButtonProps) {
           <div className="pt-2">
             <button
               onClick={handleOpenPublic}
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-green-500 text-white text-sm font-bold rounded-xl hover:bg-green-600 transition-colors shadow-md hover:shadow-lg"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-green-500 text-white text-sm font-bold rounded-xl hover:bg-green-600 transition-colors"
             >
               <ExternalLink className="w-4 h-4" />
               Lihat Halaman Publik

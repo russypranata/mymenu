@@ -56,24 +56,27 @@ export function MenuNavLink({ stores, mobile }: Props) {
 
   if (mobile) {
     return (
-      <div ref={ref} className="relative">
+      <div ref={ref} className="relative flex-1">
         <button
           onClick={handleClick}
           className={cn(
-            'flex flex-col items-center gap-1 px-4 py-2 text-xs font-medium rounded-xl transition-colors',
+            // min-h-[44px] for WCAG touch target compliance
+            'w-full flex flex-col items-center justify-center gap-0.5 px-3 py-2 min-h-[44px] text-[10px] font-semibold rounded-xl transition-colors',
             isActive ? 'text-green-500' : 'text-gray-400 hover:text-gray-600'
           )}
         >
-          <UtensilsCrossed className={cn('w-5 h-5', isActive ? 'text-green-500' : 'text-gray-400')} />
-          Menu
+          <UtensilsCrossed className={cn('w-5 h-5 flex-shrink-0', isActive ? 'text-green-500' : 'text-gray-400')} />
+          <span className="leading-tight">Menu</span>
         </button>
 
         {open && stores.length > 1 && (
           <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-white rounded-2xl border border-gray-100 shadow-xl w-48 py-2 z-50">
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-4 py-1.5">Pilih Toko</p>
             {stores.map(store => (
-              <button key={store.id} onClick={() => handleSelect(store.id)}
-                className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors text-left"
+              <button
+                key={store.id}
+                onClick={() => handleSelect(store.id)}
+                className="w-full flex items-center gap-2.5 px-4 py-3 text-sm text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors text-left min-h-[44px]"
               >
                 <Store className="w-4 h-4 text-gray-400 flex-shrink-0" />
                 <span className="truncate">{store.name}</span>

@@ -1,31 +1,31 @@
 ﻿'use client'
 
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
 import { X, UtensilsCrossed, ChevronLeft, ChevronRight } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
 import { useTheme } from '@/components/theme-provider'
 import { ImageWithSkeleton } from '@/components/image-with-skeleton'
+import { useFocusTrap } from '@/hooks/use-focus-trap'
 import type { Database } from '@/types/database.types'
 
 type Menu = Database['public']['Tables']['menus']['Row']
 
 interface Props {
   menu: Menu
-  primaryColor: string
   showPrice: boolean
   onClose: () => void
 }
 
-export function MenuDetailModal({
-  menu, primaryColor, showPrice, onClose
-}: Props) {
+export function MenuDetailModal({ menu, showPrice, onClose }: Props) {
   const { isDark } = useTheme()
   const allImages = [
     ...(menu.image_url ? [menu.image_url] : []),
     ...(menu.extra_images ?? []),
   ]
   const [activeIdx, setActiveIdx] = useState(0)
+
+  // Focus trap — WCAG 2.1 SC 2.1.2 compliance
+  const trapRef = useFocusTrap<HTMLDivElement>(true)
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -41,10 +41,10 @@ export function MenuDetailModal({
     }
   }, [onClose, allImages.length])
 
-  const cardBg = isDark ? 'bg-gray-800' : 'bg-white'
-  const titleColor = isDark ? 'text-white' : 'text-gray-900'
-  const descColor = isDark ? 'text-gray-400' : 'text-gray-500'
-  const menuImageBg = isDark ? 'bg-gray-700' : 'bg-gray-100'
+  const cardBg       = isDark ? 'bg-gray-800' : 'bg-white'
+  const titleColor   = isDark ? 'text-white' : 'text-gray-900'
+  const descColor    = isDark ? 'text-gray-400' : 'text-gray-500'
+  const menuImageBg  = isDark ? 'bg-gray-700' : 'bg-gray-100'
   const dividerColor = isDark ? 'border-gray-700' : 'border-gray-100'
 
   return (
@@ -56,10 +56,20 @@ export function MenuDetailModal({
     >
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
 
-      <div className={`relative w-full sm:max-w-sm rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden ${cardBg} max-h-[92vh] sm:max-h-[85vh] flex flex-col`}>
+      <div
+        ref={trapRef}
+        className={`relative w-full sm:max-w-sm rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden ${cardBg}
+          max-h-[90vh] sm:max-h-[85vh] flex flex-col`}
+      >
+        {/* Drag handle — mobile only */}
+        <div className="sm:hidden flex justify-center pt-3 pb-0 flex-shrink-0" aria-hidden="true">
+          <div className={`w-10 h-1 rounded-full ${isDark ? 'bg-gray-600' : 'bg-gray-200'}`} />
+        </div>
 
         {/* Image area */}
-        <div className={`relative w-full aspect-[4/3] ${menuImageBg} flex-shrink-0`}>
+        <div
+          className={`relative w-full aspect-[4/3] ${menuImageBg} flex-shrink-0`}
+        >
           {allImages.length > 0 ? (
             <>
               <ImageWithSkeleton
@@ -77,7 +87,7 @@ export function MenuDetailModal({
                   <button
                     onClick={() => setActiveIdx(i => Math.max(0, i - 1))}
                     disabled={activeIdx === 0}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/40 hover:bg-black/60 rounded-full flex items-center justify-center transition-colors disabled:opacity-20"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 bg-black/40 hover:bg-black/60 rounded-full flex items-center justify-center transition-colors disabled:opacity-20"
                     aria-label="Foto sebelumnya"
                   >
                     <ChevronLeft className="w-5 h-5 text-white" />
@@ -85,12 +95,12 @@ export function MenuDetailModal({
                   <button
                     onClick={() => setActiveIdx(i => Math.min(allImages.length - 1, i + 1))}
                     disabled={activeIdx === allImages.length - 1}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/40 hover:bg-black/60 rounded-full flex items-center justify-center transition-colors disabled:opacity-20"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 bg-black/40 hover:bg-black/60 rounded-full flex items-center justify-center transition-colors disabled:opacity-20"
                     aria-label="Foto berikutnya"
                   >
                     <ChevronRight className="w-5 h-5 text-white" />
                   </button>
-                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5" aria-hidden="true">
                     {allImages.map((_, i) => (
                       <button
                         key={i}
@@ -109,10 +119,10 @@ export function MenuDetailModal({
             </div>
           )}
 
-          {/* Close button */}
+          {/* Close button — min 44px touch target */}
           <button
             onClick={onClose}
-            className="absolute top-3 right-3 w-9 h-9 bg-black/40 hover:bg-black/60 rounded-full flex items-center justify-center transition-colors"
+            className="absolute top-3 right-3 w-11 h-11 bg-black/40 hover:bg-black/60 rounded-full flex items-center justify-center transition-colors"
             aria-label="Tutup"
           >
             <X className="w-4 h-4 text-white" />
@@ -121,29 +131,46 @@ export function MenuDetailModal({
 
         {/* Thumbnail strip */}
         {allImages.length > 1 && (
-          <div className={`flex gap-2 px-4 pt-3 pb-1 overflow-x-auto scrollbar-none flex-shrink-0 border-b ${dividerColor}`}>
+          <div
+            className={`flex gap-2 px-4 pt-3 pb-1 overflow-x-auto scrollbar-hide flex-shrink-0 border-b ${dividerColor}`}
+          >
             {allImages.map((url, i) => (
               <button
                 key={i}
                 onClick={() => setActiveIdx(i)}
-                className={`relative w-12 h-12 flex-shrink-0 rounded-xl overflow-hidden border-2 transition-all ${i === activeIdx ? 'opacity-100 scale-105' : 'border-transparent opacity-50 hover:opacity-80'}`}
-                style={i === activeIdx ? { borderColor: primaryColor } : {}}
+                className={`relative w-12 h-12 flex-shrink-0 rounded-xl overflow-hidden border-2 transition-all ${
+                  i === activeIdx ? 'opacity-100 scale-105' : 'border-transparent opacity-50 hover:opacity-80'
+                }`}
+                style={i === activeIdx ? { borderColor: 'var(--color-primary)' } : {}}
                 aria-label={`Lihat foto ${i + 1}`}
+                aria-pressed={i === activeIdx}
               >
-                <ImageWithSkeleton src={url} alt={`Thumbnail ${i + 1}`} fill sizes="48px" className="object-cover" />
+                <ImageWithSkeleton
+                  src={url}
+                  alt={`Thumbnail ${i + 1}`}
+                  fill
+                  sizes="48px"
+                  className="object-cover"
+                />
               </button>
             ))}
           </div>
         )}
 
         {/* Content */}
-        <div className="p-5 overflow-y-auto flex-1 space-y-4">
+        <div className="p-5 overflow-y-auto flex-1 space-y-4 overscroll-contain">
           <div>
-            <h2 id="menu-detail-title" className={`text-xl font-extrabold leading-snug ${titleColor}`}>
+            <h2
+              id="menu-detail-title"
+              className={`text-xl font-extrabold leading-snug ${titleColor}`}
+            >
               {menu.name}
             </h2>
             {showPrice && (
-              <p className="text-2xl font-extrabold mt-1.5" style={{ color: primaryColor }}>
+              <p
+                className="text-2xl font-extrabold mt-1.5"
+                style={{ color: 'var(--color-primary)' }}
+              >
                 {formatCurrency(menu.price)}
               </p>
             )}

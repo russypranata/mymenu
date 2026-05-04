@@ -28,7 +28,7 @@ export function WhatsAppButton({ whatsapp, storeId, buttonText }: Props) {
     <button
       onClick={handleClick}
       aria-label={label}
-      className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-3 bg-[#25D366] hover:bg-[#20bd5a] text-white text-sm font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all active:scale-95"
+      className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-3 bg-[#25D366] hover:bg-[#20bd5a] text-white text-sm font-semibold rounded-2xl transition-all active:scale-95"
     >
       {/* WhatsApp icon */}
       <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
