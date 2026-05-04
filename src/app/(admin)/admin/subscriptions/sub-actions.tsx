@@ -35,12 +35,10 @@ function isExpired(dateStr: string | null | undefined): boolean {
 export function SubActions({
   subscriptionId,
   currentStatus,
-  currentPlanType,
   currentExpiresAt,
 }: {
   subscriptionId: string
   currentStatus: string
-  currentPlanType?: 'monthly' | 'annual'
   currentExpiresAt?: string | null
 }) {
   const [open, setOpen] = useState(false)

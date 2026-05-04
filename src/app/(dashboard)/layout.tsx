@@ -9,7 +9,7 @@ import { NavLink } from '@/components/nav-link'
 import { MenuNavLink } from '@/components/menu-nav-link'
 import { Breadcrumb } from '@/components/breadcrumb'
 import { getDisplayName } from '@/lib/profile-helpers'
-import { getSubscription, isSubscriptionValid } from '@/lib/queries/dashboard'
+import { getSubscription } from '@/lib/queries/dashboard'
 import { getStoresByUser } from '@/lib/queries/store'
 import { SubscriptionBannerWrapper } from '@/components/subscription-banner-wrapper'
 
@@ -32,14 +32,14 @@ export default async function DashboardLayout({
   const profile = (profileResult.data as Database['public']['Tables']['profiles']['Row'] | null)
   if (profile?.status === 'suspended') redirect('/suspended')
 
-  // Subscription enforcement — block expired users after grace period
+  // Onboarding guard — redirect if phone not filled yet (must complete before subscription check)
+  if (!profile?.phone) redirect('/onboarding')
+
+  // Subscription enforcement — block if no subscription or expired after grace period
   const { isSubscriptionExpiredWithGrace } = await import('@/lib/queries/dashboard')
   if (isSubscriptionExpiredWithGrace(subscription)) {
     redirect('/subscription-expired')
   }
-
-  // Onboarding guard — redirect if phone not filled yet
-  if (!profile?.phone) redirect('/onboarding')
   const navStores = stores.map(s => ({ id: s.id, name: s.name }))
   const displayName = getDisplayName(profile ?? { display_name: null, email: user.email || '' })
   const avatarUrl = profile?.avatar_url ?? null
