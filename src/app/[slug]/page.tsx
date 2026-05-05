@@ -112,6 +112,7 @@ export default async function PublicMenuPage({ params }: PageProps) {
             storeName={store.name}
             storeDescription={store.description}
             bannerUrl={s?.banner_url ?? null}
+            bannerImages={s?.banner_images ?? null}
             menuSectionTitle={menuSectionTitle}
             menuSectionSubtitle={menuSectionSubtitle}
             gallerySection={

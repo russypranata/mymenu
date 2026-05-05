@@ -149,6 +149,7 @@ export async function uploadStoreAsset(
 export interface UpdateStoreSettingsInput {
   storeId: string
   logoUrl?: string | null
+  bannerImages?: string[] | null
   bannerUrl?: string | null
   primaryColor?: string | null
   theme?: string | null
@@ -193,6 +194,7 @@ export async function updateStoreSettings(
   const { error } = await supabase.from('store_settings').upsert({
     store_id: input.storeId,
     ...(input.logoUrl !== undefined && { logo_url: input.logoUrl }),
+    ...(input.bannerImages !== undefined && { banner_images: input.bannerImages }),
     ...(input.bannerUrl !== undefined && { banner_url: input.bannerUrl }),
     ...(input.primaryColor !== undefined && { primary_color: input.primaryColor }),
     ...(input.theme !== undefined && { theme: input.theme }),

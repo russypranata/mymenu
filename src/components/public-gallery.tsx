@@ -22,7 +22,7 @@ export function PublicGallery({ photos }: Props) {
 
   return (
     <>
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-4">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-20">
         {/* Section header */}
         <div className="flex items-center gap-3 mb-5">
           <div

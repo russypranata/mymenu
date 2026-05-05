@@ -145,11 +145,17 @@ interface Props {
 
 export function StoreAppearanceForm({ storeId, storeName, storeSlug, storeDescription, storeWhatsapp, menuSectionTitle, menuSectionSubtitle, settings }: Props) {
   const [logoPreview, setLogoPreview] = useState<string | null>(settings?.logo_url ?? null)
-  const [bannerPreview, setBannerPreview] = useState<string | null>(settings?.banner_url ?? null)
+  // Banner: support multiple images. Existing single banner_url is treated as first image.
+  const [bannerImages, setBannerImages] = useState<string[]>(() => {
+    const existing = settings?.banner_images ?? []
+    if (existing.length > 0) return existing
+    if (settings?.banner_url) return [settings.banner_url]
+    return []
+  })
   const [logoFile, setLogoFile] = useState<File | null>(null)
-  const [bannerFile, setBannerFile] = useState<File | null>(null)
   const [removeLogo, setRemoveLogo] = useState(false)
-  const [removeBanner, setRemoveBanner] = useState(false)
+  // Banner upload queue — files waiting to be uploaded on save
+  const [bannerFiles, setBannerFiles] = useState<File[]>([])
   const [primaryColor, setPrimaryColor] = useState(settings?.primary_color ?? '#16a34a')
   const [accentColor, setAccentColor] = useState(settings?.accent_color ?? '#10b981')
   const [theme, setTheme] = useState(settings?.theme ?? 'default')
@@ -192,18 +198,33 @@ export function StoreAppearanceForm({ storeId, storeName, storeSlug, storeDescri
   const handleCropComplete = (blob: Blob) => {
     const url = URL.createObjectURL(blob)
     const file = new File([blob], `${cropType}.jpg`, { type: 'image/jpeg' })
-    if (cropType === 'logo') { setLogoFile(file); setLogoPreview(url); setRemoveLogo(false) }
-    else if (cropType === 'banner') { setBannerFile(file); setBannerPreview(url); setRemoveBanner(false) }
-    setCropSrc(null); setCropType(null)
+    if (cropType === 'logo') {
+      setLogoFile(file)
+      setLogoPreview(url)
+      setRemoveLogo(false)
+    } else if (cropType === 'banner') {
+      // Add to banner images list (preview)
+      setBannerImages(prev => [...prev, url])
+      setBannerFiles(prev => [...prev, file])
+    }
+    setCropSrc(null)
+    setCropType(null)
   }
 
-  const handleRemove = (type: 'logo' | 'banner') => {
-    if (type === 'logo') {
-      setLogoPreview(null); setLogoFile(null); setRemoveLogo(true)
-      if (logoRef.current) logoRef.current.value = ''
-    } else {
-      setBannerPreview(null); setBannerFile(null); setRemoveBanner(true)
-      if (bannerRef.current) bannerRef.current.value = ''
+  const handleRemoveLogo = () => {
+    setLogoPreview(null)
+    setLogoFile(null)
+    setRemoveLogo(true)
+    if (logoRef.current) logoRef.current.value = ''
+  }
+
+  const handleRemoveBanner = (index: number) => {
+    setBannerImages(prev => prev.filter((_, i) => i !== index))
+    // If it's a new file (not yet uploaded), remove from queue too
+    // New files are appended at the end, so index relative to uploaded count
+    const uploadedCount = bannerImages.length - bannerFiles.length
+    if (index >= uploadedCount) {
+      setBannerFiles(prev => prev.filter((_, i) => i !== index - uploadedCount))
     }
   }
 
@@ -217,7 +238,6 @@ export function StoreAppearanceForm({ storeId, storeName, storeSlug, storeDescri
     setError(null); setIsPending(true)
 
     let logoUrl = removeLogo ? null : (settings?.logo_url ?? null)
-    let bannerUrl = removeBanner ? null : (settings?.banner_url ?? null)
 
     if (logoFile) {
       const fd = new FormData(); fd.append('logo', logoFile)
@@ -225,15 +245,27 @@ export function StoreAppearanceForm({ storeId, storeName, storeSlug, storeDescri
       if (error) { setError('Gagal upload logo: ' + error); setIsPending(false); return }
       logoUrl = url
     }
-    if (bannerFile) {
-      const fd = new FormData(); fd.append('banner', bannerFile)
+
+    // Upload new banner files and collect all URLs
+    const uploadedCount = bannerImages.length - bannerFiles.length
+    const existingUrls = bannerImages.slice(0, uploadedCount)
+    const newUrls: string[] = []
+
+    for (const file of bannerFiles) {
+      const fd = new FormData(); fd.append('banner', file)
       const { url, error } = await uploadStoreAsset(fd, 'banner')
       if (error) { setError('Gagal upload banner: ' + error); setIsPending(false); return }
-      bannerUrl = url
+      if (url) newUrls.push(url)
     }
 
+    const finalBannerImages = [...existingUrls, ...newUrls]
+    // Keep banner_url as first image for backward compat
+    const bannerUrl = finalBannerImages[0] ?? null
+
     const { error } = await updateStoreSettings({
-      storeId, logoUrl, bannerUrl, primaryColor, theme,
+      storeId, logoUrl, bannerUrl,
+      bannerImages: finalBannerImages.length > 0 ? finalBannerImages : null,
+      primaryColor, theme,
       openingHours: openingHours.trim() || null,
       whatsappButtonText: waButtonText.trim() || 'Pesan via WhatsApp',
       showPrice, enableOrdering, font, menuLayout,
@@ -252,8 +284,11 @@ export function StoreAppearanceForm({ storeId, storeName, storeSlug, storeDescri
     setIsPending(false)
     if (error) { setError(error); addToast('Gagal menyimpan tampilan toko.', 'error'); return }
     addToast('Tampilan toko berhasil disimpan.')
-    setLogoFile(null); setBannerFile(null)
-    setRemoveLogo(false); setRemoveBanner(false)
+    setLogoFile(null)
+    setBannerFiles([])
+    setRemoveLogo(false)
+    // Update bannerImages to reflect saved state
+    setBannerImages(finalBannerImages)
   }
 
   return (
@@ -298,7 +333,7 @@ export function StoreAppearanceForm({ storeId, storeName, storeSlug, storeDescri
             <div className="flex items-center justify-between">
               <p className="text-xs text-gray-400">Maks 5 MB. Disarankan rasio 1:1.</p>
               {logoPreview && (
-                <button type="button" onClick={() => handleRemove('logo')}
+                <button type="button" onClick={() => handleRemoveLogo()}
                   className="flex items-center gap-1 text-xs text-red-500 hover:text-red-600 transition-colors">
                   <X className="w-3 h-3" />Hapus logo
                 </button>
@@ -309,29 +344,45 @@ export function StoreAppearanceForm({ storeId, storeName, storeSlug, storeDescri
       </div>
 
       {/* Banner */}
+      {/* Banner — multi-image manager */}
       <div>
-        <p className="text-sm font-semibold text-gray-700 mb-2">Banner Toko</p>
-        <div className="flex items-center gap-4">
-          <div className="relative w-24 h-14 rounded-xl border border-gray-200 bg-gray-50 flex items-center justify-center overflow-hidden flex-shrink-0">
-            {bannerPreview
-              ? <Image src={bannerPreview} alt="Banner" fill sizes="96px" className="object-cover" />
-              : <ImageIcon className="w-5 h-5 text-gray-300" />}
+        <p className="text-sm font-semibold text-gray-700 mb-1">Banner Toko</p>
+        <p className="text-xs text-gray-400 mb-3">Upload hingga 5 banner. Jika lebih dari 1, akan tampil sebagai slideshow otomatis di halaman publik.</p>
+
+        {/* Preview grid */}
+        {bannerImages.length > 0 && (
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
+            {bannerImages.map((url, idx) => (
+              <div key={idx} className="relative group aspect-[3/1] rounded-xl overflow-hidden border border-gray-200 bg-gray-50">
+                <Image src={url} alt={`Banner ${idx + 1}`} fill sizes="200px" className="object-cover" />
+                <button
+                  type="button"
+                  onClick={() => handleRemoveBanner(idx)}
+                  className="absolute top-1.5 right-1.5 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                  aria-label={`Hapus banner ${idx + 1}`}
+                >
+                  <X className="w-3 h-3 text-white" />
+                </button>
+                {idx === 0 && (
+                  <span className="absolute bottom-1.5 left-1.5 text-[10px] font-bold bg-black/50 text-white px-1.5 py-0.5 rounded">Utama</span>
+                )}
+              </div>
+            ))}
           </div>
-          <div className="flex-1 space-y-1.5">
+        )}
+
+        {/* Add banner button */}
+        {bannerImages.length < 5 && (
+          <div>
             <input ref={bannerRef} type="file" accept="image/jpeg,image/png,image/webp"
               onChange={(e) => handleFile(e, 'banner')}
               className="w-full text-sm text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-600 hover:file:bg-green-100 cursor-pointer" />
-            <div className="flex items-center justify-between">
-              <p className="text-xs text-gray-400">Maks 5 MB. Disarankan rasio 3:1.</p>
-              {bannerPreview && (
-                <button type="button" onClick={() => handleRemove('banner')}
-                  className="flex items-center gap-1 text-xs text-red-500 hover:text-red-600 transition-colors">
-                  <X className="w-3 h-3" />Hapus banner
-                </button>
-              )}
-            </div>
+            <p className="text-xs text-gray-400 mt-1.5">Maks 5 MB per foto · Rasio 3:1 · {bannerImages.length}/5 banner</p>
           </div>
-        </div>
+        )}
+        {bannerImages.length >= 5 && (
+          <p className="text-xs text-amber-600 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">Batas 5 banner tercapai. Hapus salah satu untuk menambah yang baru.</p>
+        )}
       </div>
 
       {/* Theme presets */}

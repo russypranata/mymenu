@@ -225,7 +225,7 @@ export function CartDrawer({ whatsapp, storeId, storeName, buttonText, showPrice
               className="w-full flex items-center justify-center gap-2.5 py-3.5 bg-[#25D366] hover:bg-[#20bd5a] text-white text-sm font-bold rounded-2xl transition-all active:scale-[0.98] min-h-[48px]"
             >
               <MessageCircle className="w-5 h-5" />
-              Pesan via WhatsApp
+              {buttonText || 'Pesan via WhatsApp'}
             </button>
           </div>
         )}

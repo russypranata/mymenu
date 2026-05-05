@@ -2,13 +2,14 @@
 
 import { ReactNode } from 'react'
 import React from 'react'
-import Image from 'next/image'
 import { useTheme } from './theme-provider'
+import { HeroSlideshow } from './hero-slideshow'
 
 interface PublicMenuContentProps {
   storeName: string
   storeDescription: string | null
   bannerUrl: string | null
+  bannerImages?: string[] | null
   menuSectionTitle?: string | null
   menuSectionSubtitle?: string | null
   gallerySection?: React.ReactNode
@@ -19,6 +20,7 @@ export function PublicMenuContent({
   storeName,
   storeDescription,
   bannerUrl,
+  bannerImages,
   menuSectionTitle,
   menuSectionSubtitle,
   gallerySection,
@@ -29,39 +31,23 @@ export function PublicMenuContent({
   const titleColor = isDark ? 'text-white' : 'text-slate-900'
   const descColor  = isDark ? 'text-slate-400' : 'text-slate-500'
 
+  // Prefer banner_images array, fallback to single banner_url
+  const slides = (bannerImages && bannerImages.length > 0)
+    ? bannerImages
+    : bannerUrl ? [bannerUrl] : []
+
   return (
     <>
-      {/*
-       * ── Hero / Jumbotron ──
-       * Not full-width — has horizontal + top margin and border radius,
-       * matching the floating card aesthetic of the landing page navbar.
-       *
-       * pt-20 sm:pt-24 accounts for the floating navbar height (56–64px) + gap
-       */}
+      {/* ── Hero / Jumbotron ── */}
       <div className="px-3 sm:px-4 lg:px-6 pt-3 sm:pt-4">
-        <section
-          className="relative max-w-7xl mx-auto h-[260px] sm:h-[360px] flex items-end overflow-hidden rounded-2xl sm:rounded-3xl"
-        >
-          {/* Background — banner image or primary color */}
-          {bannerUrl ? (
-            <Image
-              src={bannerUrl}
-              alt={`Banner ${storeName}`}
-              fill
-              sizes="(max-width: 640px) calc(100vw - 24px), (max-width: 1024px) calc(100vw - 32px), calc(min(100vw - 48px, 1280px))"
-              className="object-cover"
-              quality={90}
-              priority
-            />
+        <section className="relative max-w-7xl mx-auto h-[260px] sm:h-[360px] flex items-end overflow-hidden rounded-2xl sm:rounded-3xl">
+          {slides.length > 0 ? (
+            <HeroSlideshow images={slides} storeName={storeName} />
           ) : (
             <div className="absolute inset-0" style={{ backgroundColor: 'var(--color-primary)' }} />
           )}
-
-          {/* Gradient overlay — bottom-heavy so text is readable */}
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/30 to-transparent" />
-
-          {/* Store info — anchored to bottom with comfortable padding */}
-          <div className="relative z-10 w-full px-5 sm:px-8 pb-8 sm:pb-10">
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/30 to-transparent z-10" />
+          <div className="relative z-20 w-full px-5 sm:px-8 pb-8 sm:pb-10">
             <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white mb-1.5 leading-tight tracking-tight line-clamp-2 break-words">
               {storeName}
             </h1>
@@ -74,18 +60,15 @@ export function PublicMenuContent({
         </section>
       </div>
 
-      {/* ── Gallery Section (antara hero dan menu) ── */}
-      {gallerySection}
-
       {/* ── Menu Section ── */}
-      <section id="menu" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-20">
+      <section id="menu" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-8">
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-1">
             <div
-              className="w-1 h-6 rounded-full flex-shrink-0"
+              className="w-1 h-7 rounded-full flex-shrink-0"
               style={{ backgroundColor: 'var(--color-primary)' }}
             />
-            <h2 className={`text-xl sm:text-2xl font-extrabold tracking-tight ${titleColor}`}>
+            <h2 className={`text-2xl sm:text-3xl font-extrabold tracking-tight ${titleColor}`}>
               {menuSectionTitle || 'Menu Kami'}
             </h2>
           </div>
@@ -95,6 +78,9 @@ export function PublicMenuContent({
         </div>
         {children}
       </section>
+
+      {/* ── Gallery Section (di bawah menu) ── */}
+      {gallerySection}
     </>
   )
 }
