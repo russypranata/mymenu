@@ -6,8 +6,10 @@ import { StoreDeleteSection } from '@/components/store-delete-section'
 import { CategoryManager } from '@/components/category-manager'
 import { StoreQRCode } from '@/components/store-qr-code'
 import { StoreLocationsManager } from '@/components/store-locations-manager'
+import { GalleryManager } from '@/components/gallery-manager'
 import { getCategoriesByStore } from '@/lib/queries/menu'
 import { getStoreLocations } from '@/lib/queries/locations'
+import { getGalleryByStore } from '@/lib/queries/gallery'
 import { Settings } from 'lucide-react'
 import type { Database } from '@/types/database.types'
 import type { Metadata } from 'next'
@@ -29,10 +31,11 @@ export default async function StoreSettingsPage({ params }: { params: Promise<{ 
     .from('stores').select('*').eq('id', id).eq('user_id', user.id).maybeSingle()
   if (!store) notFound()
 
-  const [settingsResult, categories, locations] = await Promise.all([
+  const [settingsResult, categories, locations, galleryPhotos] = await Promise.all([
     supabase.from('store_settings').select('*').eq('store_id', id).maybeSingle(),
     getCategoriesByStore(id),
     getStoreLocations(id),
+    getGalleryByStore(id),
   ])
   
   // Handle potential schema mismatch gracefully
@@ -84,6 +87,15 @@ export default async function StoreSettingsPage({ params }: { params: Promise<{ 
           menuSectionTitle={store.menu_section_title}
           menuSectionSubtitle={store.menu_section_subtitle}
           settings={settings} 
+        />
+      </section>
+
+      <section className="space-y-4">
+        <SectionLabel>Galeri Foto</SectionLabel>
+        <GalleryManager
+          storeId={store.id}
+          initialPhotos={galleryPhotos}
+          galleryEnabled={settings?.gallery_enabled ?? false}
         />
       </section>
 

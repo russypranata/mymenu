@@ -15,6 +15,19 @@ export default function PublicMenuLoading() {
       {/* Content skeleton — same max-w-7xl + px as menu section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-20">
 
+        {/* Gallery skeleton — horizontal scroll placeholder */}
+        <div className="pt-8 pb-4">
+          <div className="flex items-center gap-3 mb-5">
+            <div className="w-1 h-6 bg-slate-200 rounded-full" />
+            <div className="h-6 w-16 bg-slate-200 rounded-lg" />
+          </div>
+          <div className="flex gap-3 overflow-hidden">
+            {[1, 2, 3].map(i => (
+              <div key={i} className="flex-shrink-0 w-48 h-36 bg-slate-200 rounded-xl" />
+            ))}
+          </div>
+        </div>
+
         {/* Section title */}
         <div className="mb-8 space-y-2">
           <div className="flex items-center gap-3">

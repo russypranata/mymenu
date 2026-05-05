@@ -1,8 +1,8 @@
 ﻿import { notFound } from 'next/navigation'
-import Image from 'next/image'
 import { getStoreBySlug } from '@/lib/queries/store'
 import { getActiveMenusByStore, getCategoriesByStore } from '@/lib/queries/menu'
 import { getStoreLocations } from '@/lib/queries/locations'
+import { getGalleryByStore } from '@/lib/queries/gallery'
 import { PublicMenuList } from '@/components/public-menu-list'
 import { CartProvider } from '@/components/cart-provider'
 import { PublicMenuCart } from '@/components/public-menu-cart'
@@ -14,7 +14,7 @@ import { PublicMenuWrapper } from '@/components/public-menu-wrapper'
 import { DarkModeToggle } from '@/components/dark-mode-toggle'
 import { PublicMenuContent } from '@/components/public-menu-content'
 import { ScrollToTop } from '@/components/scroll-to-top'
-import { ShareButton } from '@/components/share-button'
+import { PublicGallery } from '@/components/public-gallery'
 import {
   getFontClass,
   getTextSizeClass,
@@ -22,7 +22,6 @@ import {
   getBackgroundPattern,
 } from '@/lib/utils'
 
-// ISR: revalidate every 60 seconds. Remove force-dynamic to allow caching.
 export const revalidate = 60
 
 interface PageProps {
@@ -62,36 +61,35 @@ export default async function PublicMenuPage({ params }: PageProps) {
   const store = await getStoreBySlug(slug)
   if (!store) notFound()
 
-  const [categories, menus, locations] = await Promise.all([
+  // Destructure settings once — used throughout
+  const s = store.store_settings
+
+  const galleryEnabled = s?.gallery_enabled ?? false
+
+  const [categories, menus, locations, galleryPhotos] = await Promise.all([
     getCategoriesByStore(store.id),
     getActiveMenusByStore(store.id),
     getStoreLocations(store.id),
+    galleryEnabled ? getGalleryByStore(store.id) : Promise.resolve([]),
   ])
 
-  const settings = store.store_settings
+  const primaryColor    = s?.primary_color      ?? '#16a34a'
+  const accentColor     = s?.accent_color       ?? '#10b981'
+  const theme           = s?.theme              ?? 'default'
+  const menuLayout      = s?.menu_layout        ?? 'list'
+  const showPrice       = s?.show_price         ?? true
+  const darkModeEnabled = s?.dark_mode_enabled  ?? false
+  const cardStyle       = s?.card_style         ?? 'card'
 
-  const primaryColor    = settings?.primary_color      ?? '#16a34a'
-  const accentColor     = settings?.accent_color       ?? '#10b981'
-  const theme           = settings?.theme              ?? 'default'
-  const menuLayout      = settings?.menu_layout        ?? 'list'
-  const showPrice       = settings?.show_price         ?? true
-  const darkModeEnabled = settings?.dark_mode_enabled  ?? false
-  const cardStyle       = settings?.card_style         ?? 'card'
-
-  // Derive classes from utility maps — single source of truth
-  const fontClass              = getFontClass(settings?.font              ?? 'sans')
-  const textSizeClass          = getTextSizeClass(settings?.text_size     ?? 'md')
-  const borderRadiusClass      = getBorderRadiusClass(settings?.border_radius ?? 'rounded')
-  const backgroundPattern = getBackgroundPattern(settings?.background_pattern ?? 'none')
+  const fontClass         = getFontClass(s?.font              ?? 'sans')
+  const textSizeClass     = getTextSizeClass(s?.text_size     ?? 'md')
+  const borderRadiusClass = getBorderRadiusClass(s?.border_radius ?? 'rounded')
+  const backgroundPattern = getBackgroundPattern(s?.background_pattern ?? 'none')
 
   const menuSectionTitle    = store.menu_section_title
   const menuSectionSubtitle = store.menu_section_subtitle
-
-  // Only enable ordering if both setting is ON and WhatsApp is filled
-  const enableOrdering = (settings?.enable_ordering ?? true) && !!store.whatsapp
-
-  // 'dark' theme means default to dark mode
-  const defaultIsDark = theme === 'dark'
+  const enableOrdering      = (s?.enable_ordering ?? true) && !!store.whatsapp
+  const defaultIsDark       = theme === 'dark'
 
   return (
     <ThemeProvider
@@ -109,19 +107,19 @@ export default async function PublicMenuPage({ params }: PageProps) {
         >
           <PageViewTracker storeId={store.id} />
 
-          {/* ── Navbar ── */}
-          <PublicNavbar
-            storeName={store.name}
-            logoUrl={settings?.logo_url}
-          />
+          <PublicNavbar storeName={store.name} logoUrl={s?.logo_url} />
 
-          {/* ── Hero & Menu Content ── */}
           <PublicMenuContent
             storeName={store.name}
             storeDescription={store.description}
-            bannerUrl={settings?.banner_url ?? null}
+            bannerUrl={s?.banner_url ?? null}
             menuSectionTitle={menuSectionTitle}
             menuSectionSubtitle={menuSectionSubtitle}
+            gallerySection={
+              galleryEnabled && galleryPhotos.length > 0
+                ? <PublicGallery photos={galleryPhotos} />
+                : undefined
+            }
           >
             <PublicMenuList
               menus={menus}
@@ -135,27 +133,23 @@ export default async function PublicMenuPage({ params }: PageProps) {
             />
           </PublicMenuContent>
 
-          {/* ── Dark Mode Toggle ── */}
           {darkModeEnabled && (
             <DarkModeToggle storeId={store.id} enabled={darkModeEnabled} />
           )}
 
-          {/* ── Scroll to Top ── */}
           <ScrollToTop />
 
-          {/* ── WhatsApp floating cart ── */}
           {enableOrdering && (
             <PublicMenuCart
               storeId={store.id}
               storeName={store.name}
               locations={locations}
               storeWhatsapp={store.whatsapp}
-              buttonText={settings?.whatsapp_button_text}
+              buttonText={s?.whatsapp_button_text}
               showPrice={showPrice}
             />
           )}
 
-          {/* ── Footer ── */}
           <PublicMenuFooter store={store} locations={locations} />
         </PublicMenuWrapper>
       </CartProvider>

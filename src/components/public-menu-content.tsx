@@ -1,6 +1,7 @@
 'use client'
 
 import { ReactNode } from 'react'
+import React from 'react'
 import Image from 'next/image'
 import { useTheme } from './theme-provider'
 
@@ -10,6 +11,7 @@ interface PublicMenuContentProps {
   bannerUrl: string | null
   menuSectionTitle?: string | null
   menuSectionSubtitle?: string | null
+  gallerySection?: React.ReactNode
   children: ReactNode
 }
 
@@ -19,6 +21,7 @@ export function PublicMenuContent({
   bannerUrl,
   menuSectionTitle,
   menuSectionSubtitle,
+  gallerySection,
   children,
 }: PublicMenuContentProps) {
   const { isDark } = useTheme()
@@ -70,6 +73,9 @@ export function PublicMenuContent({
           </div>
         </section>
       </div>
+
+      {/* ── Gallery Section (antara hero dan menu) ── */}
+      {gallerySection}
 
       {/* ── Menu Section ── */}
       <section id="menu" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-20">
