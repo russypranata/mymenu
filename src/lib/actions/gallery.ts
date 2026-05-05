@@ -209,7 +209,8 @@ export async function toggleGallery(
   if (error) return { error: error.message }
 
   revalidatePath(`/store/${storeId}/settings`)
-  // Revalidate halaman publik juga agar galeri langsung muncul/hilang
-  revalidatePath('/[slug]', 'page')
+  // ISR revalidate = 60 di [slug]/page.tsx sudah handle refresh halaman publik.
+  // Tidak perlu revalidatePath untuk halaman publik karena path [slug] tidak bisa
+  // di-revalidate secara spesifik tanpa slug yang konkret.
   return { error: null }
 }

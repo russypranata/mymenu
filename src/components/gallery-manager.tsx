@@ -2,6 +2,7 @@
 
 import { useState, useRef, useTransition } from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { ImageIcon, X, ChevronUp, ChevronDown, AlertCircle, Images } from 'lucide-react'
 import { ImageCropModal } from '@/components/image-crop-modal'
 import { useToast, ToastContainer } from '@/components/toast'
@@ -30,6 +31,7 @@ export function GalleryManager({ storeId, initialPhotos, galleryEnabled: initial
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const fileRef = useRef<HTMLInputElement>(null)
   const { toasts, addToast, removeToast } = useToast()
+  const router = useRouter()
 
   // ── Toggle gallery enabled ──
   const handleToggle = () => {
@@ -73,8 +75,8 @@ export function GalleryManager({ storeId, initialPhotos, galleryEnabled: initial
         addToast(error, 'error')
       } else {
         addToast('Foto berhasil diupload.')
-        // Refresh photos dari server via revalidation — optimistic update tidak diperlukan
-        // karena revalidatePath akan trigger re-render dari server
+        // Refresh Server Component untuk mendapat foto terbaru dari DB
+        router.refresh()
       }
     })
   }
@@ -104,6 +106,7 @@ export function GalleryManager({ storeId, initialPhotos, galleryEnabled: initial
         addToast(error, 'error')
       } else {
         addToast('Foto dihapus.')
+        router.refresh()
       }
     })
   }
