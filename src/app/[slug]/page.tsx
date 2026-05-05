@@ -13,7 +13,6 @@ import { ThemeProvider } from '@/components/theme-provider'
 import { PublicMenuWrapper } from '@/components/public-menu-wrapper'
 import { DarkModeToggle } from '@/components/dark-mode-toggle'
 import { PublicMenuContent } from '@/components/public-menu-content'
-import { ScrollToTop } from '@/components/scroll-to-top'
 import { PublicGallery } from '@/components/public-gallery'
 import {
   getFontClass,
@@ -136,8 +135,6 @@ export default async function PublicMenuPage({ params }: PageProps) {
           {darkModeEnabled && (
             <DarkModeToggle storeId={store.id} enabled={darkModeEnabled} />
           )}
-
-          <ScrollToTop />
 
           {enableOrdering && (
             <PublicMenuCart

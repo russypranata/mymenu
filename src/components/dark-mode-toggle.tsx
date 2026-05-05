@@ -22,10 +22,14 @@ export function DarkModeToggle({ storeId, enabled }: DarkModeToggleProps) {
   if (!enabled) return null
 
   return (
-    // Kiri bawah — tidak pernah overlap dengan cart (kanan) atau scroll-to-top (kanan)
+    /*
+     * Posisi: kanan bawah, tepat di atas WA/cart button
+     * WA button: bottom-6 right-6 (24px dari bawah, tinggi ~44px)
+     * Dark mode: bottom-20 right-6 (80px dari bawah = 24 + 44 + 12 gap)
+     */
     <button
       onClick={toggle}
-      className="fixed bottom-6 left-4 sm:left-6 z-40 w-11 h-11 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95"
+      className="fixed bottom-20 right-6 z-40 w-11 h-11 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95"
       style={{ backgroundColor: isDark ? '#1f2937' : 'var(--color-primary)' }}
       aria-label={isDark ? 'Aktifkan mode terang' : 'Aktifkan mode gelap'}
       title={isDark ? 'Mode Terang' : 'Mode Gelap'}
