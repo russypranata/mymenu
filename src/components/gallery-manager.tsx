@@ -37,6 +37,9 @@ export function GalleryManager({ storeId, initialPhotos, galleryEnabled: initial
   const { toasts, addToast, removeToast } = useToast()
   const router = useRouter()
 
+  // isPending is true only during upload — used for placeholder loading state
+  const isPending = isUploading
+
   // Sync state dengan prop terbaru setelah router.refresh() re-fetch Server Component
   useEffect(() => {
     setPhotos(initialPhotos)
